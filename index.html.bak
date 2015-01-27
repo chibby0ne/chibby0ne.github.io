@@ -69,6 +69,7 @@ $ git checkout gh-pages
     </div>
 
     
+    {{ site.time | date_to_string }}
 
   </body>
 </html>
