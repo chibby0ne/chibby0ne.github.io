@@ -7,15 +7,17 @@ I'm [Antonio Gutierrez][linkedin] and I'm a Computer Engineer from Venezuela, cu
 
 On the Software side I'm proficient in C and C++, and experienced in Python, Shell scripting and Java.
 
-Additonally on the Hardware side, I'm well experienced in in the Hardware Description Language VHDL, which I used for my masters' thesis. 
+Additionally on the Hardware side, I'm well experienced in the Hardware Description Language VHDL, which I used for my masters' thesis. 
 
-I love learning and as such, in my spare time I taken several courses from [Udacity][udacity] and [Coursera][coursera] such as Intro to Computer Science, Intro to Statistics, Algorithms I and Algorithms II.
+<!--
+I love learning and as such, in my spare time I have taken several courses from [Udacity][Udacity] and [Coursera][Coursera] such as Intro to Computer Science, Intro to Statistics, Algorithms I and Algorithms II.
+-->
 
 I am a huge fan of [VIM][vim] and Linux.
 
-When I'm not doing creating something using any of the above, you can find me reading a book, reading/editing wikipedia articles, watching educational youtube videos, or hacking away.
+When I'm not doing creating something using any of the above, you can find me reading a book, reading/editing Wikipedia articles, watching educational Youtube videos, or hacking away.
 
-I have several diverse interests, some realted to my line of work are: SW dev of Embedded Systems, HW dev of Embedded Systems, Android, Linux, Machine Learning, Ambient Intelligence ([IoT][iot]), Robotics, among others.
+I have several diverse interests, some related to my line of work are: SW Development of Embedded Systems, HW Development of Embedded Systems, Android, Linux, Machine Learning, Ambient Intelligence ([IoT][iot]), Robotics, among others.
 
 [iot]: http://en.wikipedia.org/wiki/Internet_of_Things
 [linkedin]: http://www.linkedin.com/in/antoniojgutierrezp
