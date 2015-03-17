@@ -31,7 +31,7 @@ layout: default
 
 #### **[Game of Life](https://github.com/chibby0ne/Game_of_Life)**
 
-*A C Implementation of John Conway's famous Game of Life cellular automata*
+*A C implementation of John Conway's famous Game of Life cellular automata*
 
 #### **[ARM Assembly tutorials](https://github.com/chibby0ne/ARM_Assembly)**
 
@@ -39,7 +39,7 @@ layout: default
 
 #### **[Add Times](https://github.com/chibby0ne/add_times)**
 
-*Python script for adding times*
+*Python script for adding times in the format `hours:minutes:seconds`*
 
 #### **[Downloader](https://github.com/chibby0ne/downloader)**
 
@@ -47,13 +47,15 @@ layout: default
 
 #### **[Accelerated C++](https://github.com/chibby0ne/AcceleratedC)**
 
-*Python script for downloading all files of a given format from a given site*
+*Solution to exercises of the book **Accelerated C++***
 
 #### **[Coursera Algorithms Part 1 Course](https://github.com/chibby0ne/Coursera_Algorithms_Part1)**
 
 *Coursera's Algorithm Part 1 Programming Exercises in Java*
 
+#### **[VHDL Book Exercises](https://github.com/chibby0ne/vhdl_book)**
 
+*Solution to exercises of the book **Circuit Design and Simulation with VHDL***
 
 ### [Gists](https://gist.github.com/chibby0ne)
 
