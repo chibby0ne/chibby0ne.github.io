@@ -1,6 +1,7 @@
 ---
-layout: default
-title: about me
+layout: page
+title: About
+permalink: /about/
 ---
 
 I'm [Antonio Gutierrez][linkedin] and I'm a Computer Engineer from Venezuela, currently living in Germany. I hold a BS degree in Electronics Engineering with a major in Automation and Control from the [Rafael Belloso Chacin University][urbe] and a MS degree in Electrical and Computer Engineering with a major in Embedded Systems from the [Technical University of Kaiserslautern][tuk]. I've previously worked in the Industrial Automation sector for a bit more than a year and now I'm more oriented towards the Embedded Systems sector.
@@ -9,9 +10,7 @@ On the Software side I'm proficient in C and C++, and experienced in Python, She
 
 Additionally on the Hardware side, I'm well experienced in the Hardware Description Language VHDL, which I used for my masters' thesis. 
 
-<!--
 I love learning and as such, in my spare time I have taken several courses from [Udacity][Udacity] and [Coursera][Coursera] such as Intro to Computer Science, Intro to Statistics, Algorithms I and Algorithms II.
--->
 
 I am a huge fan of [VIM][vim] and Linux.
 
