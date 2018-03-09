@@ -4,24 +4,27 @@ title: About
 permalink: /about/
 ---
 
-I'm [Antonio Gutierrez][linkedin] and I'm a Computer Engineer from Venezuela, currently living in Germany. I hold a BS degree in Electronics Engineering with a major in Automation and Control from the [Rafael Belloso Chacin University][urbe] and a MS degree in Electrical and Computer Engineering with a major in Embedded Systems from the [Technical University of Kaiserslautern][tuk]. I've previously worked in the Industrial Automation sector for a bit more than a year and now I'm more oriented towards the Embedded Systems sector.
+I'm [Antonio][linkedin] and I'm a Software Developer from Venezuela, currently located in Munich, Germany. I hold a M.Sc. degree in Embedded Systems from the [Technical University of Kaiserslautern][tuk]. I worked for over 2 years as a Software Engineer for [Intel][intel] in Ulm and then here in Munich in GUI Development of Eclipse for IoT, Microcontrollers and Debugger Tools, and before that I worked in the Industrial Automation sector for almost two year using Siemens PLCs. Nowadays, I'm orienting my career more towards data science and machine learning.
 
-On the Software side I'm proficient in C and C++, and experienced in Python, Shell scripting and Java.
+On the Software side I'm proficient in C, C++, Java, and experienced in Python, Bash and golang.
 
 Additionally on the Hardware side, I'm well experienced in the Hardware Description Language VHDL, which I used for my masters' thesis. 
 
-I love learning and as such, in my spare time I have taken several courses from [Udacity][Udacity] and [Coursera][Coursera] such as Intro to Computer Science, Intro to Statistics, Algorithms I and Algorithms II.
+I love learning and as such, in my spare time I have taken several courses from [Udacity][Udacity] and [Coursera][Coursera] such as Intro to Computer Science, Intro to Statistics, Machine Learning, Algorithms I and Algorithms II. I also love staying in touch with the latest developments in Software Development, that has led me to dabble with [Docker][docker] and [Kubernetes][kubernetes].
 
-I am a huge fan of [VIM][vim] and Linux.
+I am a huge fan of [vim][vim] and Linux. My current distro of choice is [Arch Linux][archlinux]. I'm also starting to grow fond of the [golang][golang] programming language.
 
-When I'm not doing creating something using any of the above, you can find me reading a book, reading/editing Wikipedia articles, watching educational Youtube videos, or hacking away.
+When I'm not doing creating something using any of the above, you can find me reading a book, reading/editing Wikipedia articles, watching educational YouTube videos, or hacking away.
 
-I have several diverse interests, some related to my line of work are: SW Development of Embedded Systems, HW Development of Embedded Systems, Android, Linux, Machine Learning, Ambient Intelligence ([IoT][iot]), Robotics, among others.
+I have several diverse interests, some related to my line of work are: Machine Learning, Data Science, Cloud computing, Container technology, Blockchain technology, Ambient Intelligence (IoT), Robotics, Sustainable Transportation, among others.
 
-[iot]: http://en.wikipedia.org/wiki/Internet_of_Things
-[linkedin]: http://www.linkedin.com/in/antoniojgutierrezp
-[urbe]:http://urbe.edu
-[tuk]: http://www.uni-kl.de
-[vim]: http://www.vim.org
-[coursera]: http://www.coursera.org
-[udacity]: http://www.udacity.com
+[linkedin]: https://www.linkedin.com/in/antoniojgutierrezp
+[tuk]: https://www.uni-kl.de
+[intel]: https://www.intel.com/content/www/us/en/homepage.html
+[udacity]: https://www.udacity.com
+[coursera]: https://www.coursera.org
+[docker]: https://www.docker.com/
+[kubernetes]: https://kubernetes.io/
+[vim]: https://www.vim.org
+[archlinux]: https://www.archlinux.org/
+[golang]: https://golang.org/
