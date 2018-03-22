@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Open Terminal Here" using thunar in i3
+title: '"Open Terminal Here" using thunar in i3'
 ---
 
 I have i3 and *some* xfce4 packages installed in an Arch Linux installation.
