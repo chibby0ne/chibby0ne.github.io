@@ -24,6 +24,7 @@ github_username:  chibby0ne
 linkedin_username:  antoniojgutierrezp
 disqus:
     shortname: antoniojgutierrez
+google_analytics: UA-55399960-1
 
 # Build settings
 markdown: kramdown
