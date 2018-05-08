@@ -38,4 +38,9 @@
             width: -webkit-calc(100% - (30px / 2));
             width: calc(100% - (30px / 2)); } }
   </style>
+
+  <!-- Need this to show Latex formulas in posts -->
+  {% if page.math != false %}
+    {% include mathjax.html %}
+  {% endif %}
 </head>
