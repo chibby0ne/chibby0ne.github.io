@@ -13,7 +13,7 @@ I like to tinker in [several open source projects](./projects/projects.md).
 
 I'm a huge fan of [vim][vim] (also [neovim][neovim]) and Linux. My current distro of choice is [Arch Linux][archlinux]. I'm also starting to grow fond of the [go][golang] programming language.
 
-In this blog I [write](./posts) about my interests: machine learning, artificial intelligence, data science, software development, Linux, and things that I've learned along the way.
+I occasionally [write](./posts) about my interests in machine learning, artificial intelligence, data science, software development, Linux, and things that I've learned along the way.
 
 [vim]: https://www.vim.org
 [neovim]: https://neovim.io
