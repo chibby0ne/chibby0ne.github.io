@@ -4,12 +4,13 @@ title: Installing Tensorflow with GPU acceleration in Arch
 math: true
 ---
 
-I recently started doing the [fast.ai] course where you follow a top-down
+I recently started doing the [fast.ai](https://www.fast.ai) course where you follow a top-down
 approach into the world of machine learning.
 
 The first thing you need to do is have access to a Nvidia GPU, and in the
 first video lesson they show the setup of a cloud instance that runs
-Tensorflow using either [crestle] or [paperspace].
+Tensorflow using either [crestle](https://www.crestle.com) or
+[paperspace](https://www.paperspace.com).
 
 But since either of them are paid by the hour, and considering I already have
 Nvidia GPU in my desktop (albeit not as powerful as the ones offered in the
@@ -28,7 +29,7 @@ repositories was 9.1.
 I thought of compiling Tensorflow myself, since that would make it work with
 9.1. But that would take a long time and probably space as well.
 
-Instead I opted out for a docker image which required [nvidia-docker] from AUR,
+Instead I opted out for a docker image which required [nvidia-docker](https://aur.archlinux.org/packages/nvidia-docker/) from AUR,
 and rebooting the docker-service. Then I followed the instructions found in
 the [github repository](https://github.com/NVIDIA/nvidia-docker) to run the
 image after it pulled it. Afterwards, I started a Jupyter Notebook that
@@ -41,8 +42,3 @@ GPU acceleration.
 Simple enough if you know where to look. But even if digging up took some
 time, is time well spent considering the speedup achieved with GPU
 acceleration when using Tensorflow.
-
-[fast.ai]: www.fast.ai
-[crestle]: www.crestle.com
-[paperspace]: www.paperspace.com
-[nvidia-docker]: https://aur.archlinux.org/packages/nvidia-docker/
