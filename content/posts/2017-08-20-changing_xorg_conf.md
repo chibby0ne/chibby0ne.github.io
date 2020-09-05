@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2017-08-20
 title: Removing of an Nvidia GPU from arch Linux with i3
 ---
 

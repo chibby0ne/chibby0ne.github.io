@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2019-12-15
 title: Backing up Google Authenticators's Keys from an Android Phone
 ---
 

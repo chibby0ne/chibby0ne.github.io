@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-04-09
 title: Automount SMB directory with systemd in Arch
 ---
 

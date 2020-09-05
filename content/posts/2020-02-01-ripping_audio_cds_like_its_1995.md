@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2020-02-01
 title: Mounting/Playing/Ripping audio CDs like it's 1995 (in Arch Linux)
 ---
 

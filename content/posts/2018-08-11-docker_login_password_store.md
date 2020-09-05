@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-08-11
 title: Using a credential store for DockerHub login
 math: true
 ---

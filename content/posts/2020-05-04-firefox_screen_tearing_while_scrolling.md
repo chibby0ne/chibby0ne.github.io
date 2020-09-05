@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2020-05-04
 title: Fixing Firefox screen tearing while scrolling / video playback
 ---
 

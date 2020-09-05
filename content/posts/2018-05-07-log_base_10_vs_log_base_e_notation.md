@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-05-07
 title: Log base 10 vs Log base e notation
 math: true
 ---

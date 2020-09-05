@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2015-02-20
 title: The Power of Habit
 ---
 

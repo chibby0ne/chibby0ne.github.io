@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-03-04
 title: Java Util's Priority Queue Mishap
 ---
 

@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-05-11
 title: Installing Tensorflow with GPU acceleration in Arch
 math: true
 ---

@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-03-06
 title: libtinfo in Arch Linux
 ---
 

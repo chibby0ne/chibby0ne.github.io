@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-03-22
 title: '"Open Terminal Here" using thunar in i3'
 ---
 

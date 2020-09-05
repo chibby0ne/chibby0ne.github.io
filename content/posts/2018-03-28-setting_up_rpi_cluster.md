@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2018-03-28
 title: 'Setting up a Raspberry Pi Cluster (Part 1)'
 ---
 

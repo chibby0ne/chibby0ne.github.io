@@ -1,5 +1,6 @@
 ---
 layout: post
+date: 2015-01-27
 title: First Post (yey!)
 ---
 
