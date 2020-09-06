@@ -1,14 +1,29 @@
-name: deploy
+name: github pages
+
 on:
-  # Trigger the workflow on push but only for the master branch
   push:
     branches:
-      - master
+      - master  # Set a branch name to trigger deployment
+
 jobs:
   deploy:
-    name: Build and deploy site
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
-      - name: Install Hugo and build site
-        run: |
-          sudo apt-get update && sudo apt-get install hugo -y && ls -lh
+      - uses: actions/checkout@v2
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.74.3'
+
+      - name: Build
+        run: hugo --minify -d docs
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./docs
