@@ -2,8 +2,6 @@
 *~
 *swp
 
-# Bundle/Jekyll local build/run artifacts
-vendor/
-.bundle/
-.sass-cache/
-_site/
+# Hugo build
+public/
+docs/
