@@ -1,10 +1,10 @@
-baseURL = "http://example.org/"
+baseURL = "http://www.antoniojgutierrez.com/"
 DefaultContentLanguage = "en" # Theme's display language, supports: en, fr, zh, zh-hant
 languageCode = "en-us"
-title = "A Hugo Site"
-copyright = "This is a customized copyright."
+title = "Bits and pieces"
+copyright = "Antonio Gutierrez 2020. CC-BY-NC 4.0"
 theme = "diary"
-# googleAnalytics = "UA-123-45"
+googleAnalytics = "UA-55399960-1"
 
 [markup]
   [markup.highlight]
@@ -19,20 +19,17 @@ theme = "diary"
     tabWidth = 4
 
 [params]
-subtitle = "Themed by Diary."
-enableGitalk = true
+subtitle = "Antonio's blog"
+disqusShortname = "antoniojgutierrez"
+github_username = "chibby0ne"
+enableReadingTime = true
 
 # Twitter Card and Open Graph settings
 enableOpenGraph = true
 enableTwitterCards = true
-title = "My Blog" # will set 'og:site_name'
-description = "My HomePage Description"  # will set 'og:description'
+title = "Bits and pieces" # will set 'og:site_name'
+description = "Antonio's Blog"  # will set 'og:description'
 
-[params.gitalk]
-  owner = "user"
-  repo = "repo name"
-  client_id = "your client id"
-  client_secret = "your client secret"
 [taxonomies]
    tag = "tags"
    category = "categories"
@@ -53,3 +50,11 @@ weight = 1
 url = "/index.xml"
 name = "RSS Feed"
 weight = 4
+[[menu.main]]
+url = "/cv"
+name = "CV"
+weight = 4
+[[menu.main]]
+url = "/about"
+name = "About me"
+weight = 1
