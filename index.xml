@@ -1,24 +1,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bits and pieces</title>
-    <link>https://www.antoniojgutierrez.com/</link>
+    <link>https://chibby0ne.github.io/</link>
     <description>Recent content on Bits and pieces</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright>
     <lastBuildDate>Mon, 04 May 2020 00:00:00 +0000</lastBuildDate>
     
-        <atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://chibby0ne.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     
         <item>
         <title>Fixing Firefox screen tearing while scrolling / video playback</title>
-        <link>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</link>
+        <link>https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</link>
         <pubDate>Mon, 04 May 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ -&lt;p&gt;For a while now I&amp;rsquo;ve noticed screen tearing while scrolling on Wikipedia or on
+        <guid>https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ -&lt;p&gt;For a while now I&amp;rsquo;ve noticed screen tearing while scrolling on Wikipedia or on
 YouTube videos whenever there&amp;rsquo;s sudden movement.&lt;/p&gt;
 &lt;p&gt;Today I decided to do something about it, and considering I hadn&amp;rsquo;t touch the
 Xorg conf files &amp;ldquo;generated&amp;rdquo; by &lt;code&gt;nvidia-xconfig&lt;/code&gt; in more than 4 years, I was
@@ -71,18 +71,18 @@ on most, if not all Linux distributions is because WebGL is considered by many
 as a security risk. For more a detailed explanation &lt;a href=&#34;https://security.stackexchange.com/questions/13799/is-webgl-a-security-concern&#34;&gt;check this
 security.stackexchange
 answer&lt;/a&gt;&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Mounting/Playing/Ripping audio CDs like it&#39;s 1995 (in Arch Linux)</title>
-        <link>https://www.antoniojgutierrez.com/posts/2020-02-01-ripping_audio_cds_like_its_1995/</link>
+        <link>https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/</link>
         <pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2020-02-01-ripping_audio_cds_like_its_1995/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-02-01-ripping_audio_cds_like_its_1995/ -&lt;p&gt;First post of the year! Yey!&lt;/p&gt;
+        <guid>https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/ -&lt;p&gt;First post of the year! Yey!&lt;/p&gt;
 &lt;p&gt;Like many other posts, the motivation of this one is to facilitate other
 people running into the same issues as me, to quickly find
 their solution.&lt;/p&gt;
@@ -153,18 +153,18 @@ your current directory as wav files.&lt;/p&gt;
 &lt;p&gt;There&amp;rsquo;s more information in the article in case you would like to encode them
 into other formats, like mp3 or flac.&lt;/p&gt;
 &lt;p&gt;Happy listening!&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2020-02-01-ripping_audio_cds_like_its_1995/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Backing up Google Authenticators&#39;s Keys from an Android Phone</title>
-        <link>https://www.antoniojgutierrez.com/posts/2019-12-15-backing_up_google_authenticator_keys/</link>
+        <link>https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/</link>
         <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2019-12-15-backing_up_google_authenticator_keys/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2019-12-15-backing_up_google_authenticator_keys/ -&lt;p&gt;I wanted to backup my 2FA codes stored in Google&amp;rsquo;s Authenticator app. I don&amp;rsquo;t
+        <guid>https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/ -&lt;p&gt;I wanted to backup my 2FA codes stored in Google&amp;rsquo;s Authenticator app. I don&amp;rsquo;t
 want lose access to my accounts, in case I lose that phone.&lt;/p&gt;
 &lt;p&gt;Sure there are also the backup codes, which are given/shown whenever 2FA is
 set up, and are intended to be used on a rainy day such as when your
@@ -296,18 +296,18 @@ sqlite&amp;gt; select * from accounts;
 a different phone.&lt;/p&gt;
 &lt;p&gt;That&amp;rsquo;s it! Hope that helps you in some way!&lt;/p&gt;
 &lt;p&gt;PS: These are &lt;strong&gt;not real 2FA private keys&lt;/strong&gt; in case you&amp;rsquo;re wondering, potential hacker.&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2019-12-15-backing_up_google_authenticator_keys/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Using a credential store for DockerHub login</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-08-11-docker_login_password_store/</link>
+        <link>https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/</link>
         <pubDate>Sat, 11 Aug 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-08-11-docker_login_password_store/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-08-11-docker_login_password_store/ -&lt;p&gt;Whenever there&amp;rsquo;s a need to push images (public or private) or pull images from
+        <guid>https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/ -&lt;p&gt;Whenever there&amp;rsquo;s a need to push images (public or private) or pull images from
 privates repositories from DockerHub you need to login first. With the docker
 client CLI that&amp;rsquo;s achieved with:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;docker login
@@ -405,18 +405,18 @@ anymore.&lt;/p&gt;
 unencrypted in the &lt;code&gt;~/.docker/config.json&lt;/code&gt; file.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-- https://www.antoniojgutierrez.com/posts/2018-08-11-docker_login_password_store/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Installing Tensorflow with GPU acceleration in Arch</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</link>
+        <link>https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</link>
         <pubDate>Fri, 11 May 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ -&lt;p&gt;I recently started doing the &lt;a href=&#34;https://www.fast.ai&#34;&gt;fast.ai&lt;/a&gt; course where you follow a top-down
+        <guid>https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ -&lt;p&gt;I recently started doing the &lt;a href=&#34;https://www.fast.ai&#34;&gt;fast.ai&lt;/a&gt; course where you follow a top-down
 approach into the world of machine learning.&lt;/p&gt;
 &lt;p&gt;The first thing you need to do is have access to a Nvidia GPU, and in the
 first video lesson they show the setup of a cloud instance that runs
@@ -444,18 +444,18 @@ GPU acceleration.&lt;/p&gt;
 &lt;p&gt;Simple enough if you know where to look. But even if digging up took some
 time, is time well spent considering the speedup achieved with GPU
 acceleration when using Tensorflow.&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Log base 10 vs Log base e notation</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link>
+        <link>https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link>
         <pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p&gt;I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong&gt;log&lt;/strong&gt;&amp;rdquo; notation.&lt;/p&gt;
+        <guid>https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p&gt;I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong&gt;log&lt;/strong&gt;&amp;rdquo; notation.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s go step by step:&lt;/p&gt;
 &lt;p&gt;Two of the most common logarithms are the logarithm of base $$e$$, also called
 natural logarithm which is written in two forms:&lt;/p&gt;
@@ -484,18 +484,18 @@ indeed the natural logarithm&lt;/em&gt;, it&amp;rsquo;s just being used as menti
 excerpt of common logarithm (i.e: mathematicians usually mean natural logarithm when they write &amp;ldquo;log&amp;rdquo;), and therefore its derivative is:&lt;/p&gt;
 &lt;p&gt;$$ \dfrac{\partial L_{\boldsymbol{y}}}{\partial \boldsymbol{y}} = -\dfrac{1}{\boldsymbol{y}} $$&lt;/p&gt;
 &lt;p&gt;Mathematicians be crazy!&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Using Javascript completion including adding Google Chrome API in vim</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/</link>
+        <link>https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/</link>
         <pubDate>Fri, 20 Apr 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ -&lt;p&gt;&lt;a href=&#34;https://github.com/Valloric/YouCompleteMe&#34;&gt;YouCompleteMe&lt;/a&gt; is a very powerful code completion engine built
+        <guid>https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/ -&lt;p&gt;&lt;a href=&#34;https://github.com/Valloric/YouCompleteMe&#34;&gt;YouCompleteMe&lt;/a&gt; is a very powerful code completion engine built
 for the vim editor. It has several completion engines for many languages
 including C/C++, Rust, Go, Python, Javascript among others. It contains two
 parts: a vim-plugin and a daemon.&lt;/p&gt;
@@ -557,18 +557,18 @@ chrome-extension to the plugins section.&lt;/p&gt;
   }
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That&amp;rsquo;s it! Now you can enjoy having the Chrome API completion in vim.&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Automount SMB directory with systemd in Arch</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</link>
+        <link>https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/</link>
         <pubDate>Mon, 09 Apr 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ -&lt;h1 id=&#34;problem-statement&#34;&gt;Problem statement&lt;/h1&gt;
+        <guid>https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/ -&lt;h1 id=&#34;problem-statement&#34;&gt;Problem statement&lt;/h1&gt;
 &lt;p&gt;I wanted to mount a directory from a local desktop in my laptop regardless of
 the OS it might be running at the moment. Also, not just mount it. &lt;em&gt;Automount&lt;/em&gt;
 it either whenever I boot or on demand.&lt;/p&gt;
@@ -664,18 +664,18 @@ service you select, enabling the &lt;code&gt;.mount&lt;/code&gt; file so that it
 at boot, the system will fail to mount it.&lt;/p&gt;
 &lt;p&gt;Even more, I found that most guides and tutorials used the automount as the
 actual enabled unit, which mounts on demand and not on boot.&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>Setting up a Raspberry Pi Cluster (Part 1)</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</link>
+        <link>https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/</link>
         <pubDate>Wed, 28 Mar 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ -&lt;p&gt;I recently decided to set up a raspberry pi cluster, with whom I could
+        <guid>https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/ -&lt;p&gt;I recently decided to set up a raspberry pi cluster, with whom I could
 experiment, learn and use cluster technologies like Kubernetes, Apache Hadoop,
 Spark, and even small programs using RPC and OpenMP.&lt;/p&gt;
 &lt;p&gt;In setting up the raspberry pi (a process which I think I&amp;rsquo;m fairly acquainted
@@ -809,18 +809,18 @@ very enlightening experience.&lt;/p&gt;
 &lt;p&gt;Now that I can ssh to it, I don&amp;rsquo;t expect to disassemble the cluster again
 again to attach the usb-serial cable (which I did two times =( ), to set up
 the kubernetes/hadoop tech stack.&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
     
         <item>
         <title>&#34;Open Terminal Here&#34; using thunar in i3</title>
-        <link>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</link>
+        <link>https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/</link>
         <pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate>
         
-        <guid>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</guid>
-        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ -&lt;p&gt;I have i3 and &lt;em&gt;some&lt;/em&gt; xfce4 packages installed in an Arch Linux installation.
+        <guid>https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/</guid>
+        <description>Bits and pieces https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/ -&lt;p&gt;I have i3 and &lt;em&gt;some&lt;/em&gt; xfce4 packages installed in an Arch Linux installation.
 I mostly use i3 because I like how it, as a tiling manager, efficiently uses
 all of the monitor&amp;rsquo;s real state.&lt;/p&gt;
 &lt;p&gt;Something that I might forget in the future and was mildly annoying when I
@@ -838,7 +838,7 @@ funny thing is that it didn&amp;rsquo;t execute xfce4-terminal. Instead it runs
 &lt;code&gt;exo&lt;/code&gt; package, and allows you open urls and launch preferred applications in xfce4.&lt;/p&gt;
 &lt;p&gt;All I needed to do then is to modify the preferred application for terminal
 emulator in &lt;code&gt;xfce4-settings-manager&lt;/code&gt;, set &lt;code&gt;urxvt&lt;/code&gt; and voila!&lt;/p&gt;
-- https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+- https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
         </item>
     
     
