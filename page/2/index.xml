@@ -1,0 +1,286 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bits and pieces</title>
+    <link>https://www.antoniojgutierrez.com/</link>
+    <description>Recent content on Bits and pieces</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright>
+    <lastBuildDate>Mon, 04 May 2020 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>libtinfo in Arch Linux</title>
+        <link>https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/</link>
+        <pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate>
+        
+        <guid>https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/</guid>
+        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/ -&lt;p&gt;&lt;em&gt;&lt;strong&gt;pacaur&lt;/strong&gt;&lt;/em&gt; is &amp;ldquo;a AUR Helper which minimizes user interaction&amp;rdquo;
+meaning it helps us install AUR packages without too much hassle.&lt;/p&gt;
+&lt;p&gt;With it I install and update packages like spotify and google-chrome which are
+not in the official repositories i.e: core, extra, community or multilib
+repositories.&lt;/p&gt;
+&lt;p&gt;What does this have to do with libtinfo?&lt;/p&gt;
+&lt;p&gt;Well libtinfo (more specifically libtinfo5) was one of those packages managed
+by pacaur. Problem is every time I did an update it warned with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;libtinfo5 not present in AUR with pacaur --skipping
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Meaning that it wasn&amp;rsquo;t being maintained anymore since it is not in the AUR.&lt;/p&gt;
+&lt;p&gt;So I decide to remove it. I couldn&amp;rsquo;t remember what I was using it for, but I
+was sure it wasn&amp;rsquo;t very important, and in case something failed I&amp;rsquo;d just
+google it. I also removed several other packages because I disliked seeing
+that message.&lt;/p&gt;
+&lt;p&gt;Uninstalled. Rebooted. Opened a Terminal&amp;hellip;. Couldn&amp;rsquo;t open a Terminal. Looks
+like one of the packages was actually important.&lt;/p&gt;
+&lt;p&gt;I switch to console mode, since I need a shell if I want to reinstall any of
+the packages I uninstalled again.&lt;/p&gt;
+&lt;p&gt;I try logging in with my user&amp;hellip; A quick refresh of the terminal and nothing happens.&lt;/p&gt;
+&lt;p&gt;Mmm&amp;hellip; let&amp;rsquo;s try loggin in as root. It worked!&lt;/p&gt;
+&lt;p&gt;Now just for science (queue meme), I tried try to su as my user, I get the
+clue:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;zsh: error while loading shared libraries: libtinfo.so.6: cannot open shared object file: No such file or directory
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Turns out &lt;code&gt;libtinfo&lt;/code&gt; is a library that &lt;em&gt;normally&lt;/em&gt; (read: in other distros)
+gets installed when installing &lt;code&gt;libncurses&lt;/code&gt;, just &lt;em&gt;&lt;strong&gt;not&lt;/strong&gt;&lt;/em&gt; in Arch.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;libtinfo&lt;/code&gt; is in turn is required by zsh (I discovered from the message),
+which is the shell I&amp;rsquo;m using, and since this failed it prevented me from
+opening a terminal emulator.&lt;/p&gt;
+&lt;p&gt;A quick google revealed the best working solution:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ln -s libncursesw.so.6 libtinfo.so.6
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This solution doesn&amp;rsquo;t require you to install the old unmaintained package again,
+and can be done for any version of &lt;code&gt;libncurses&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In the future, the package maintainers of &lt;code&gt;libncurses&lt;/code&gt; should probably add
+this symbolic link as part of the package installation.&lt;/p&gt;
+&lt;p&gt;Credits to &lt;a href=&#34;https://bbs.archlinux.org/viewtopic.php?id=142384&#34;&gt;this Arch Linux Forum
+thread&lt;/a&gt; for the idea.&lt;/p&gt;
+&lt;p&gt;I later also noticed that someone commented on the &lt;a href=&#34;https://aur.archlinux.org/packages/libtinfo5/&#34;&gt;AUR package
+website&lt;/a&gt; itself with the same
+approach.&lt;/p&gt;
+- https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>Java Util&#39;s Priority Queue Mishap</title>
+        <link>https://www.antoniojgutierrez.com/posts/2018-03-04-java_priority_queue/</link>
+        <pubDate>Sun, 04 Mar 2018 00:00:00 +0000</pubDate>
+        
+        <guid>https://www.antoniojgutierrez.com/posts/2018-03-04-java_priority_queue/</guid>
+        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-04-java_priority_queue/ -&lt;p&gt;I recently found out by doing &lt;a href=&#34;https://www.hackerrank.com/challenges/bfsshortreach&#34;&gt;Hackerrank&amp;rsquo;s Breadth First Search: Shortest
+Reach&lt;/a&gt; that Java&amp;rsquo;s
+Priority Queue does not maintain the heap property if you modify the priority
+of one of the elements in the queue. The only moment where the heap property
+is maintained is when the queue is being populated, i.e:  when elements are
+added to the queue.&lt;/p&gt;
+&lt;p&gt;This is better shown with a small example.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s a simple PriorityQueue used as a min priority queue, of Vertex, which
+represents a vertex (node) of a Graph and its members are its index and its
+distance to the source vertex.&lt;/p&gt;
+&lt;p&gt;The relevant parts of the implementation are:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Vertex {
+    private int distance;
+    private int index;
+    
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int d) {
+        distance = d;
+    }
+.
+.
+.
+
+import java.util.PriorityQueue;
+
+class Example {
+    public static void main(String[] args) {
+        PriorityQueue&amp;lt;Vertex&amp;gt; queue = new PriorityQueue&amp;lt;Vertex&amp;gt;(n, new Comparator&amp;lt;Vertex&amp;gt;() {
+            @Override
+            public int compare(Vertex o1, Vertex o2) {
+                if (o1.getDistance() &amp;lt; o2.getDistance()) {
+                    return -1;
+                } else if (o1.getDistance() &amp;gt; o2.getDistance()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+        
+        Vertex[] vertices = new Vertex[10];
+        
+        // initialize the vertices and add them to the queue
+        for (int i = 0; i &amp;lt; 10; i++) {
+            vertices[i] = new Vertex(i);
+            vertices[i].setDistance(i + 1);
+            queue.add(v);
+        }
+    }
+    
+.
+.
+.
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The constructor that takes a Comparator is necessary to establish the priority
+of the elements and the structure of the heap in the backend.
+In our case, the priority is given by the distance of the Vertex.&lt;/p&gt;
+&lt;p&gt;The problem surges in that if we later do:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    v[i].setDistance(0);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The position in the queue will not change, i.e &lt;strong&gt;the heap in the backend
+remains in the same state as it was before the distance for &lt;em&gt;v[i]&lt;/em&gt; was changed&lt;/strong&gt;.
+The only moment where the priority queue actually runs the comparator is when
+is when the queue is being acted upon i.e: either when using &lt;em&gt;add&lt;/em&gt; or &lt;em&gt;remove&lt;/em&gt;
+methods.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    \\ initial state
+    v[i].setDistance(0);
+    \\ same state as &#39;initial state&#39;!
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The only way to achieve the expected result is to
+do this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    // initial state i.e: v[i] is in position P
+    v[i].setDistance(0);
+    // same state as initial state i.e: v[i] is in position P
+    queue.remove(v[i]);
+    queue.add(v[i]);
+    // different state i.e: v[i] is in position Q, in a different from the position it was in `initial state`
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It&amp;rsquo;s crazy to think I spent the better part of two hours thinking and looking
+into the code just to start doubting everything I know and then realize that
+the issue is in that the implementation doesn&amp;rsquo;t work as one might expect.&lt;/p&gt;
+&lt;p&gt;I don&amp;rsquo;t suppose everyone thinks the same way I do, but it would have been nice
+if the class contained some method that could &lt;em&gt;reheapify&lt;/em&gt; the priority queue
+or something in that regard.&lt;/p&gt;
+&lt;p&gt;Oh well, I&amp;rsquo;ve learned my lesson now, Java Class Library. &lt;em&gt;Never make any
+assumption about your behaviour&lt;/em&gt;&lt;/p&gt;
+- https://www.antoniojgutierrez.com/posts/2018-03-04-java_priority_queue/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>Removing of an Nvidia GPU from arch Linux with i3</title>
+        <link>https://www.antoniojgutierrez.com/posts/2017-08-20-changing_xorg_conf/</link>
+        <pubDate>Sun, 20 Aug 2017 00:00:00 +0000</pubDate>
+        
+        <guid>https://www.antoniojgutierrez.com/posts/2017-08-20-changing_xorg_conf/</guid>
+        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2017-08-20-changing_xorg_conf/ -&lt;p&gt;This post is to help me and other people that might have had this issue before
+(and mostly future me).&lt;/p&gt;
+&lt;p&gt;When you have installed an Nvidia GPU in Arch Linux with i3 as Window Manager
+(WM), you probably needed to install and &lt;code&gt;nvidia&lt;/code&gt;  or another similar package,
+which contains drivers and generally includes a tool that automatically
+creates/modifies the Xorg configuration file (Xorg.conf), for the correct
+operation of the GPU in Arch and i3.&lt;/p&gt;
+&lt;p&gt;Now the problem is that if you for some reason need to remove the GPU, then
+the Xorg.conf will still expect to use the GPU as device for rendering the
+Display.&lt;/p&gt;
+&lt;p&gt;First a bit of background,&lt;/p&gt;
+&lt;p&gt;When you start the X Windows System, an X session will be created. The
+standard ways of starting an X session are to run &lt;code&gt;startx&lt;/code&gt; from console login
+or to login using a Display Manager (DM), such as lightdm (the DM I was
+using).&lt;/p&gt;
+&lt;p&gt;The solution is simple:
+Just remove any reference to nvidia on the Section corresponding to the Device.&lt;/p&gt;
+&lt;p&gt;One one you can test the Xorg.conf is in a sane state is by using&lt;/p&gt;
+&lt;p&gt;Your /etc/X11/Xorg.conf will look something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section &amp;quot;Monitor&amp;quot;
+    Identifier      &amp;quot;Monitor0&amp;quot;
+    VendorName      &amp;quot;Unknown&amp;quot;
+    ModelName       &amp;quot;Unknown&amp;quot;
+    HorizSync       28.0 - 33.0
+    VertRefresh     43.0 - 72.0
+    Option          &amp;quot;DPMS&amp;quot;
+EndSection
+
+Section &amp;quot;Device&amp;quot;
+    Identifier      &amp;quot;Device0&amp;quot;
+    Driver          &amp;quot;nvidia&amp;quot;
+    VendorName      &amp;quot;NVIDIA Corporation&amp;quot;
+EndSection
+
+Section &amp;quot;Screen&amp;quot;
+    Identifer       &amp;quot;Screen0&amp;quot;
+    Device          &amp;quot;Device0&amp;quot;
+    Monitor         &amp;quot;Monitor0&amp;quot;
+    DefaultDepth    24
+    SubSection      &amp;quot;Display&amp;quot;
+        Depth       24
+    EndSubSection
+EndSection
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You should modify it so that it looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section &amp;quot;Monitor&amp;quot;
+    Identifier      &amp;quot;Monitor0&amp;quot;
+    VendorName      &amp;quot;Unknown&amp;quot;
+    ModelName       &amp;quot;Unknown&amp;quot;
+    HorizSync       28.0 - 33.0
+    VertRefresh     43.0 - 72.0
+    Option          &amp;quot;DPMS&amp;quot;
+EndSection
+
+Section &amp;quot;Screen&amp;quot;
+    Identifer       &amp;quot;Screen0&amp;quot;
+    Device          &amp;quot;Device0&amp;quot;
+    Monitor         &amp;quot;Monitor0&amp;quot;
+    DefaultDepth    24
+    SubSection      &amp;quot;Display&amp;quot;
+        Depth       24
+    EndSubSection
+EndSection
+&lt;/code&gt;&lt;/pre&gt;- https://www.antoniojgutierrez.com/posts/2017-08-20-changing_xorg_conf/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>The Power of Habit</title>
+        <link>https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/</link>
+        <pubDate>Fri, 20 Feb 2015 00:00:00 +0000</pubDate>
+        
+        <guid>https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/</guid>
+        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/ -&lt;p&gt;This morning (or afternoon if you&amp;rsquo;re not a morning person) did you consciously decide which shoe to put first? What about shaving after or before taking a shower? Do you remember taking time to decide?&lt;/p&gt;
+&lt;p&gt;If your answer is No, then you were in the middle of a loop. A habit loop.&lt;/p&gt;
+&lt;p&gt;Yesterday I started reading a book called, &lt;strong&gt;The Power of Habit&lt;/strong&gt;, by Charles Duhigg. The premise is that habits are as much part of our brain as memory and reason. But in contrast to the latter, when we act by habit it is normally not consciously, more like second-nature, like a reflex. Habits served an evolutionary purpose in the survival of our species many eons ago, and they still continue to pervade our daily lives in invisible ways, but sometimes they can work against our own wellbeing.&lt;/p&gt;
+&lt;p&gt;That we are not the paramounts of logic and reason as we would like to be is a shocking discovery by itself, but reading the examples the author gives of people suffering from memory disorders, addictions, and uncontrolled behaviours is eye opening to say the least.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m not sure this is the best place to make book reviews but I still want to say it somewhere besides the normal &lt;a href=&#34;http://www.goodreads.com&#34;&gt;Goodreads&lt;/a&gt; review.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s all for now!&lt;/p&gt;
+- https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>Finally Looking OK</title>
+        <link>https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/</link>
+        <pubDate>Wed, 28 Jan 2015 00:00:00 +0000</pubDate>
+        
+        <guid>https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/</guid>
+        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ -&lt;p&gt;After several hours of googling, hacking, reading, and messing around with Firefox Inspector tool, things are starting to look a bit better. I&amp;rsquo;ve added a mini-bio and also a dummy first post, just trying things out.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve been almost about to give up several times during the day but then again, as Benjamin Franklin said: &amp;ldquo;&lt;strong&gt;Energy and Persistence conquer all things&lt;/strong&gt;&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;That&amp;rsquo;s all for now, let&amp;rsquo;s see what else I come up with.&lt;/p&gt;
+- https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>First Post (yey!)</title>
+        <link>https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/</link>
+        <pubDate>Tue, 27 Jan 2015 00:00:00 +0000</pubDate>
+        
+        <guid>https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/</guid>
+        <description>Bits and pieces https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/ -&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus interdum ornare augue quis suscipit. Integer dui justo, finibus sit amet rutrum vitae, sagittis vitae nisi. Nam tortor dolor, volutpat vitae sapien nec, accumsan faucibus lorem. Mauris viverra arcu blandit ex feugiat tempor ac non metus. Pellentesque vel arcu bibendum, posuere diam et, rutrum dui. Nunc non porttitor purus. Aliquam sit amet dictum tellus. Nulla interdum tortor sed fermentum sodales. Etiam finibus felis eu nunc elementum vestibulum. Fusce urna nibh, vehicula ut sollicitudin sed, porttitor eu mi. Nulla nec nibh nec sapien molestie eleifend. Integer cursus sapien nec tincidunt volutpat. Nam sit amet tempus justo.&lt;/p&gt;
+&lt;p&gt;Mauris consectetur, mauris nec malesuada sagittis, magna ligula vestibulum massa, eget semper purus diam non leo. Aenean hendrerit interdum nisi, nec maximus neque pretium et. Mauris condimentum scelerisque augue porttitor ultrices. Maecenas hendrerit posuere nunc, at posuere arcu. Aenean quis fermentum ex. Fusce hendrerit augue et diam elementum, ut luctus lectus dapibus. Nulla gravida cursus augue, nec ullamcorper metus pharetra pharetra.&lt;/p&gt;
+&lt;p&gt;Donec ullamcorper elit porttitor elit vulputate, et pharetra sem blandit. Etiam eu laoreet eros, a cursus ex. In lacus augue, venenatis id venenatis non, suscipit at odio. Curabitur vitae lorem metus. Nullam varius rhoncus volutpat. Nulla ullamcorper erat quam, in convallis leo lacinia eget. Sed id condimentum purus. Aliquam ac mi orci. Quisque accumsan mattis vehicula. Aenean eu massa vel tellus mattis tempor. Nullam non lectus auctor, hendrerit ante eget, pulvinar erat. Nunc hendrerit elit ut suscipit feugiat. Ut metus sapien, convallis vestibulum eros vitae, pulvinar auctor est. Pellentesque finibus neque eget metus scelerisque porttitor. Aliquam auctor nunc nec fermentum euismod. Morbi nec metus ut nibh convallis hendrerit quis eget metus.&lt;/p&gt;
+&lt;p&gt;Duis euismod nisl non nisi vehicula convallis. Sed tempus pellentesque cursus. Nam pulvinar augue lorem, ut gravida quam eleifend ac. Vivamus pulvinar commodo leo, et posuere orci. Mauris non massa vitae mi porta rhoncus sit amet nec ex. Nullam placerat nulla sed libero laoreet, at sollicitudin massa aliquet. Morbi vulputate tellus tortor, eget vulputate elit dictum sit amet. Nunc at lacus euismod ante tincidunt malesuada a nec ex. Phasellus fringilla vestibulum arcu, nec elementum mi pretium in. Ut ullamcorper sapien nulla, in lobortis turpis auctor at.&lt;/p&gt;
+&lt;p&gt;Cras et bibendum turpis. Donec dolor ipsum, pharetra quis felis sed, fringilla mattis odio. Nulla commodo rhoncus congue. Morbi ultricies quis leo in eleifend. Quisque mollis dictum purus eu efficitur. Cras non lobortis purus. Nullam vulputate, lorem vel fringilla mattis, eros elit ultrices nibh, vitae pellentesque augue ante non odio. Suspendisse facilisis imperdiet arcu, sed tempus nunc mattis sed. Aenean placerat sapien felis, sit amet facilisis orci rhoncus ac. Nulla nec lectus euismod, suscipit neque et, pellentesque erat. Cras bibendum pulvinar ullamcorper.&lt;/p&gt;
+- https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description>
+        </item>
+    
+    
+    
+    
+    
+    
+  </channel>
+</rss> 
