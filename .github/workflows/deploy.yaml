@@ -1,0 +1,14 @@
+name: deploy
+on:
+  # Trigger the workflow on push but only for the master branch
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Build and deploy site
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Hugo and build site
+        run: |
+          sudo apt-get update && sudo apt-get install hugo -y && ls -lh
