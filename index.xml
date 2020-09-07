@@ -1,0 +1,717 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://chibby0ne.github.io/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 04 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://chibby0ne.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Fixing Firefox screen tearing while scrolling / video playback</title><link>https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</link><pubDate>Mon, 04 May 2020 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ -&lt;p>For a while now I&amp;rsquo;ve noticed screen tearing while scrolling on Wikipedia or on
+YouTube videos whenever there&amp;rsquo;s sudden movement.&lt;/p>
+&lt;p>Today I decided to do something about it, and considering I hadn&amp;rsquo;t touch the
+Xorg conf files &amp;ldquo;generated&amp;rdquo; by &lt;code>nvidia-xconfig&lt;/code> in more than 4 years, I was
+optimistic that it would be some configuration issue that would have been
+automatically resolved by now with newer drivers and OpenGL versions.
+Furthermore as the quotes on generated suggest, they weren&amp;rsquo;t pristine
+generated Xorg conf files since I had tinkered with them
+quite a bit in the past when I was running two Nvidia cards on Arch which I
+mentioned in passing in a &lt;a href="https://www.antoniojgutierrez.com/2017/08/20/changing_xorg_conf.html">previous
+post&lt;/a>&lt;/p>
+&lt;p>So the first thing I did was generate a new Xorg conf, using the command:&lt;/p>
+&lt;pre>&lt;code>$ nvidia-xconfig
+&lt;/code>&lt;/pre>&lt;p>Which graciously backups the previous config and generates a new one in its stead.&lt;/p>
+&lt;p>Having done that I rebooted the computer, opened Firefox and scrolled some
+long articles in Wikipedia (like the one for the current &lt;a href="https://en.wikipedia.org/wiki/COVID-19_pandemic">Covid-19
+Pandemic&lt;/a>) but the tearing
+was still there.&lt;/p>
+&lt;p>So I searched the web and found &lt;a href="https://www.reddit.com/r/linuxmint/comments/9pb5ur/screen_tearing_while_scrolling/">this post on
+reddit&lt;/a>
+which basically describes exactly what was happening to me.&lt;/p>
+&lt;p>In it there are basically two solutions provided by the community:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Force GPU Acceleration on Firefox&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Force Full Composition Pipeline of the Nvidia card.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>The first one was self explanatory and the simplest, besides if you have the
+hardware you would want to use it whenever and wherever you can, specially in
+a desktop environment, where you&amp;rsquo;re not restricted by power consumption from a
+battery.&lt;/p>
+&lt;p>As for the second option, from the comments and after looking into the good
+ole trusty &lt;a href="https://wiki.archlinux.org/index.php/NVIDIA/Troubleshooting#Avoid_screen_tearing">Arch Wiki for screen tearing on
+nvidia&lt;/a>,
+it seems that while this &lt;em>does&lt;/em> avoid screen tearing not just in Firefox
+but in every application, it comes with a performance penalty in OpenGL
+applications as well as increasing the time needed for the GPU to &amp;ldquo;clock down&amp;rdquo;
+i.e: bring its frequency back down due to changing power states after some
+rendering task is finished.&lt;/p>
+&lt;p>Since in my case I&amp;rsquo;ve only noticed the screen tearing in Firefox, it seemed
+like a no-brainer opt for this approach.&lt;/p>
+&lt;p>To change I simply needed to go to the advanced preferences page of Firefox
+reached by navigating to &lt;code>about:config&lt;/code> in the browser, search for
+&lt;code>layers.acceleration.force-enabled&lt;/code>, set it to &lt;code>true&lt;/code> and restart Firefox.&lt;/p>
+&lt;p>Voilà.&lt;/p>
+&lt;p>Side note: The reason why GPU Acceleration is disabled by default in Firefox
+on most, if not all Linux distributions is because WebGL is considered by many
+as a security risk. For more a detailed explanation &lt;a href="https://security.stackexchange.com/questions/13799/is-webgl-a-security-concern">check this
+security.stackexchange
+answer&lt;/a>&lt;/p>
+- https://chibby0ne.github.io/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Mounting/Playing/Ripping audio CDs like it's 1995 (in Arch Linux)</title><link>https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/</link><pubDate>Sat, 01 Feb 2020 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/ -&lt;p>First post of the year! Yey!&lt;/p>
+&lt;p>Like many other posts, the motivation of this one is to facilitate other
+people running into the same issues as me, to quickly find
+their solution.&lt;/p>
+&lt;p>So here&amp;rsquo;s the problem statement:&lt;/p>
+&lt;p>You want to play an audio CD in an Arch Laptop or simply get the audio files. What do you do?&lt;/p>
+&lt;p>Well first you buy an external CD/DVD ROM player, which you can connect (and
+power) through USB.&lt;/p>
+&lt;p>Then you should mount it, to later get the files or simply rip them, right?&amp;hellip;&lt;/p>
+&lt;p>If you assume that mounting a CD ROM is exactly the same as mounting a
+USB, then you would just connect the CD ROM player to the laptop, insert the
+CD and
+mount it with a command like:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">sudo mount /dev/sr0 /mnt/cdrom
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But you would get an error:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">mount: /mnt/cdrom: can&lt;span style="color:#a61717;background-color:#e3d2d2">&amp;#39;&lt;/span>t &lt;span style="color:#658b00">read&lt;/span> superblock on /dev/sr0.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So you search online the error and realize that it&amp;rsquo;s due to the fact that CD
+doesn&amp;rsquo;t use the same filesystem as the laptop, which by default for most
+distros is ext4. CDs/DVDs use a different filesystem. That filesystem is
+ISO9660, which is the regular filesystem for optical media.&lt;/p>
+&lt;p>So now you search online: for something like &lt;em>&amp;ldquo;mount+CD+ROM+linux&amp;rdquo;&lt;/em>, which tells you the right command is:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">mount -t iso9660 -o ro /dev/sr0 /mnt/cdrom
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>But when you try it, you get this error:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">mount: /mnt/cdrom: wrong fs type, bad option, bad superblock on /dev/sr0, missing codepage or helper program, or other
+error.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then you wonder if it&amp;rsquo;s a hardware issue and you look for the message buffer
+of the kernel, using &lt;code>dmesg&lt;/code> and find some errors like:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">[ 4325.239696] sr 1:0:0:0: [sr0] tag#0 FAILED Result: &lt;span style="color:#00688b">hostbyte&lt;/span>=DID_OK &lt;span style="color:#00688b">driverbyte&lt;/span>=DRIVER_SENSE
+[ 4325.239708] sr 1:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
+[ 4325.239718] sr 1:0:0:0: [sr0] tag#0 Add. Sense: Illegal mode &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> this track
+[ 4325.239729] sr 1:0:0:0: [sr0] tag#0 CDB: Read(10) &lt;span style="color:#b452cd">28&lt;/span> &lt;span style="color:#b452cd">00&lt;/span> &lt;span style="color:#b452cd">00&lt;/span> &lt;span style="color:#b452cd">04&lt;/span> 0c &lt;span style="color:#b452cd">60&lt;/span> &lt;span style="color:#b452cd">00&lt;/span> &lt;span style="color:#b452cd">00&lt;/span> &lt;span style="color:#b452cd">02&lt;/span> &lt;span style="color:#b452cd">00&lt;/span> &lt;span style="color:#b452cd">00&lt;/span> &lt;span style="color:#b452cd">00&lt;/span>
+[ 4325.239741] blk_update_request: I/O error, dev sr0, sector &lt;span style="color:#b452cd">1061248&lt;/span> op 0x0:(READ) flags 0x80700 phys_seg &lt;span style="color:#b452cd">1&lt;/span> prio class
+&lt;span style="color:#b452cd">0&lt;/span>
+[ 4325.241965] attempt to access beyond end of device
+[ 4325.241974] sr0: &lt;span style="color:#00688b">rw&lt;/span>=0, &lt;span style="color:#00688b">want&lt;/span>=1061256, &lt;span style="color:#00688b">limit&lt;/span>=&lt;span style="color:#b452cd">1061248&lt;/span>
+[ 4325.241982] Buffer I/O error on dev sr0, logical block 132656, async page &lt;span style="color:#658b00">read&lt;/span>
+[ 4325.242014] blk_update_request: I/O error, dev loop0, sector &lt;span style="color:#b452cd">1061248&lt;/span> op 0x0:(READ) flags 0x80700 phys_seg &lt;span style="color:#b452cd">1&lt;/span> prio cla
+ss &lt;span style="color:#b452cd">0&lt;/span>
+[ 4325.243811] attempt to access beyond end of device
+[ 4325.243820] sr0: &lt;span style="color:#00688b">rw&lt;/span>=0, &lt;span style="color:#00688b">want&lt;/span>=1061256, &lt;span style="color:#00688b">limit&lt;/span>=&lt;span style="color:#b452cd">1061248&lt;/span>
+[ 4325.243828] Buffer I/O error on dev sr0, logical block 132656, async page &lt;span style="color:#658b00">read&lt;/span>
+[ 4325.243855] blk_update_request: I/O error, dev loop0, sector &lt;span style="color:#b452cd">1061248&lt;/span> op 0x0:(READ) flags 0x0 phys_seg &lt;span style="color:#b452cd">1&lt;/span> prio class &lt;span style="color:#b452cd">0&lt;/span>
+[ 4325.243862] Buffer I/O error on dev loop0, logical block 530624, async page &lt;span style="color:#658b00">read&lt;/span>
+[ 4325.243880] attempt to access beyond end of device
+[ 4325.243885] sr0: &lt;span style="color:#00688b">rw&lt;/span>=0, &lt;span style="color:#00688b">want&lt;/span>=1061256, &lt;span style="color:#00688b">limit&lt;/span>=&lt;span style="color:#b452cd">1061248&lt;/span>
+[ 4325.243890] Buffer I/O error on dev sr0, logical block 132656, async page &lt;span style="color:#658b00">read&lt;/span>
+[ 4325.243904] blk_update_request: I/O error, dev loop0, sector &lt;span style="color:#b452cd">1061250&lt;/span> op 0x0:(READ) flags 0x0 phys_seg &lt;span style="color:#b452cd">1&lt;/span> prio class &lt;span style="color:#b452cd">0&lt;/span>
+[ 4325.243909] Buffer I/O error on dev loop0, logical block 530625, async page &lt;span style="color:#658b00">read&lt;/span>
+[ 4325.243919] attempt to access beyond end of device
+[ 4325.243924] sr0: &lt;span style="color:#00688b">rw&lt;/span>=0, &lt;span style="color:#00688b">want&lt;/span>=1061256, &lt;span style="color:#00688b">limit&lt;/span>=&lt;span style="color:#b452cd">1061248&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which suggest we are still trying to mount it wrongly.&lt;/p>
+&lt;p>At which point you then start searching for: &lt;em>&amp;ldquo;mount+Audio+CD+linux&amp;rdquo;&lt;/em>, which
+leads you to this &lt;a href="https://unix.stackexchange.com/a/204032">answer in unix
+stackexchange&lt;/a>, which explains that
+you &lt;strong>can&amp;rsquo;t&lt;/strong> mount Audio CDs, you simply &lt;em>play them directly&lt;/em>.&lt;/p>
+&lt;p>You can try the command in the answer to verify that it in fact works:&lt;/p>
+&lt;pre>&lt;code>mplayer -cdrom-device /dev/cdrom -cache 5000 cdda://1
+&lt;/code>&lt;/pre>&lt;p>This should get the ROM spinning and you would start hearing one of the audio tracks.&lt;/p>
+&lt;p>Ok so &lt;strong>Audio CDs can&amp;rsquo;t be mounted&lt;/strong>, so you skip to the second part, which is ripping the tracks.&lt;/p>
+&lt;p>As usual, the ArchWiki has the answer. 99% of the times you have an issue in an
+Arch installation it is already addressed in one article or another, but it
+never ceases to surprise me how wide their breadth of topics is!&lt;/p>
+&lt;p>The article: &lt;a href="https://wiki.archlinux.org/index.php/Rip_Audio_CDs#Ripping">Rip Audio
+CDs&lt;/a>, has the
+command that would get you all tracks, which requires installing &lt;code>cdrtools&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cdda2wav -vall &lt;span style="color:#00688b">cddb&lt;/span>=&lt;span style="color:#b452cd">0&lt;/span> &lt;span style="color:#00688b">speed&lt;/span>=&lt;span style="color:#b452cd">4&lt;/span> -paranoia &lt;span style="color:#00688b">paraopts&lt;/span>=proof -B -D /dev/sr0
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>That will get your CD ROM spinning and after some minutes all the tracks in
+your current directory as wav files.&lt;/p>
+&lt;p>There&amp;rsquo;s more information in the article in case you would like to encode them
+into other formats, like mp3 or flac.&lt;/p>
+&lt;p>Happy listening!&lt;/p>
+- https://chibby0ne.github.io/posts/2020-02-01-ripping_audio_cds_like_its_1995/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Backing up Google Authenticators's Keys from an Android Phone</title><link>https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/</link><pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/ -&lt;p>I wanted to backup my 2FA codes stored in Google&amp;rsquo;s Authenticator app. I don&amp;rsquo;t
+want lose access to my accounts, in case I lose that phone.&lt;/p>
+&lt;p>Sure there are also the backup codes, which are given/shown whenever 2FA is
+set up, and are intended to be used on a rainy day such as when your
+phone dies, gets stolen, or simply wiped accidentally or even on purpose but
+they just forgot about the 2FA codes living there (not speaking from personal
+experience at all of course :cry: ). Unfortunately, many people don&amp;rsquo;t pay too
+much attention to these, myself included.&lt;/p>
+&lt;p>I &lt;strong>strongly encourage you to store those backup codes&lt;/strong> because you
+never know when you&amp;rsquo;re going to need them. They have saved me in the past
+from being able to access an account when my phone battery died, I had no
+charger and needed to access it urgently.&lt;/p>
+&lt;p>But in those cases where everything goes wrong, well you just have to reset
+all accounts where you have 2FA, i.e: reset passwords and somehow prove that
+you are who you say you are and not a malicious attacker that obtained the
+passwords for those accounts (which is kind of a tricky situation for many
+services since they don&amp;rsquo;t want to be accidentally victims of a social
+engineering attack trying to collaborate with the so-claimed user).&lt;/p>
+&lt;p>Hopefully this serves as enough warning and encouragement to backup your 2FA
+or simply write down the backup codes. If you get anything out of this post,
+let it be that.&lt;/p>
+&lt;p>Now back to backing up the 2FA keys in Google Authenticator (GA) app: the main
+advantage of this approach being that you don&amp;rsquo;t have to change/edit or add any
+new device into any of your accounts, but instead you simply add the keys
+manually to another 2FA app whether it lives in app in your phone, a desktop
+app or somewhere else.&lt;/p>
+&lt;p>You also don&amp;rsquo;t need to use any of your &lt;em>limited&lt;/em> backup codes in case you need
+access and don&amp;rsquo;t have that one phone with all the 2FA keys at hand in that
+moment.&lt;/p>
+&lt;h1 id="prerequisites">Prerequisites&lt;/h1>
+&lt;p>This guide assumes you have rooted your Android phone.&lt;/p>
+&lt;p>If you don&amp;rsquo;t want to do this due to security concerns, then your only option
+is to use the backup codes and that&amp;rsquo;s the end of this road for you.&lt;/p>
+&lt;p>If you don&amp;rsquo;t mind rooting your phone, and you haven&amp;rsquo;t there are many ways of
+doing so, a simple duckduckgo search will lead you down the rabbithole.&lt;/p>
+&lt;p>In addition we will need
+&lt;a href="https://developer.android.com/studio/command-line/adb">adb&lt;/a> adb i.e: android
+debug bridge. This is part of
+the &lt;code>android-tools&lt;/code> package in Arch Linux. You can also download and install
+it as part of the platform-tools from the &lt;a href="https://developer.android.com/studio/releases/platform-tools">Android
+website&lt;/a>&lt;/p>
+&lt;p>This guide also assumes your phone is connected to the computer and you have
+USB debugging enabled (For more detailed steps please check this &lt;a href="https://developer.android.com/studio/debug/dev-options">official
+android guide&lt;/a>.&lt;/p>
+&lt;h1 id="run-adb-as-root">Run adb as root&lt;/h1>
+&lt;p>First of we need to run adb as root. This is easier said that done.&lt;/p>
+&lt;p>For this we can run &lt;code>adb root&lt;/code> in a terminal, but it might be the case that after we do that
+and try to fetch GA&amp;rsquo;s database we get the following error:&lt;/p>
+&lt;pre>&lt;code>$ adb pull /data/data/com.google.android.apps.authenticator2/databases/databases
+adb: error: failed to stat remote object '/data/data/com.google.android.apps.authenticator2/databases/databases': Permission denied
+&lt;/code>&lt;/pre>&lt;pre>&lt;code>$ sudo adb shell
+AndroidPhone:/ $ ls -lh
+ls: ./init.rc: Permission denied
+ls: ./init: Permission denied
+ls: ./ueventd.rc: Permission denied
+&lt;/code>&lt;/pre>&lt;p>You can also tell that the session is &lt;strong>not&lt;/strong> a root session because the
+prompt ends with &lt;code>$&lt;/code> instead of &lt;code>#&lt;/code>.&lt;/p>
+&lt;pre>&lt;code>$ adb root
+adbd cannot run as root in production builds
+&lt;/code>&lt;/pre>&lt;pre>&lt;code>$ adb shell &amp;quot;su&amp;quot;
+Permission denied
+&lt;/code>&lt;/pre>&lt;p>In my particular case, this is an issue caused of having Magisck Hide enabled,
+mentioned in this &lt;a href="https://github.com/topjohnwu/Magisk/issues/425#issuecomment-409101558">Github
+issue&lt;/a>.&lt;/p>
+&lt;p>In case you&amp;rsquo;re wondering Magisck Hide is part of
+&lt;a href="https://www.xda-developers.com/how-to-use-magisk/">Magisck&lt;/a> and is a feature
+that &amp;ldquo;&lt;em>allows you put a cloaking device on root permissions for certain
+apps.&lt;/em>&amp;rdquo;. Very useful for banking apps, for instance, which don&amp;rsquo;t allow you to
+login on a rooted device.&lt;/p>
+&lt;p>So I decided to disable Magisck Hide for now and reboot.&lt;/p>
+&lt;p>Afterwards I was able to start an adb root session:&lt;/p>
+&lt;pre>&lt;code>$ adb root
+restarting adbd as root
+timeout expired while waiting for device
+&lt;/code>&lt;/pre>&lt;p>And then checking the prompt for the &lt;code>#&lt;/code> at the end.&lt;/p>
+&lt;pre>&lt;code>$ adb shell
+OnePlus3:/ # ls -lh
+total 2.7M
+dr-xr-xr-x 90 root root 0 1972-06-20 21:28 acct
+lrwxrwxrwx 1 root root 11 1970-01-01 01:00 bin -&amp;gt; /system/bin
+lrwxrwxrwx 1 root root 19 1970-01-01 01:00 bt_firmware -&amp;gt; /vendor/bt_firmware
+lrwxrwxrwx 1 root root 50 1970-01-01 01:00 bugreports -&amp;gt; /data/user_de/0/com.android.shell/files/bugreports
+&lt;/code>&lt;/pre>&lt;h1 id="fetching-the-database">Fetching the database&lt;/h1>
+&lt;p>Afterwards I was able to pull the database, and I noticed that it hadn&amp;rsquo;t been
+modified since many months ago, even though I had recently added new 2FA entries,
+after trying to open it I only found a handful of 2FA keys, but I also noticed
+something else.&lt;/p>
+&lt;p>There were two additional files next to the &lt;code>database&lt;/code> file: a &lt;code>-wal&lt;/code> and a &lt;code>-shm&lt;/code> file.&lt;/p>
+&lt;p>After some more duckduckgo searching I found a well written in a well written and
+useful &lt;a href="https://medium.com/@Zredna/browsing-your-android-apps-database-3c67aa3f4a3c">Medium
+post&lt;/a>
+by &lt;a href="https://medium.com/@Zredna">@Zredna&lt;/a>, in which he explore sqlite
+databases in android apps.&lt;/p>
+&lt;p>In it he explains that the &lt;code>-wal&lt;/code> file, is used for the &lt;a href="https://en.wikipedia.org/wiki/Write-ahead_logging">write-ahead
+logging&lt;/a>, which is a
+technique for providing atomicity and durability in databases, part of the
+&lt;a href="https://en.wikipedia.org/wiki/ACID">ACID properties&lt;/a>, and Wikipedia explains
+that the technique relies on first writing the changes in the log &lt;strong>before&lt;/strong>
+writing them in the database. Kind of the equivalent of journaling in filesystems.
+In short the directory looked something like this:&lt;/p>
+&lt;pre>&lt;code>OnePlus3:/data/data/com.google.android.apps.authenticator2/databases# ls -lh
+total 2.7M
+lrwxrwxrwx 1 root root 6K 1970-01-01 01:00 databases
+lrwxrwxrwx 1 root root 80 1970-01-01 01:00 databases-shm
+lrwxrwxrwx 1 root root 10K 1970-01-01 01:00 databases-wal
+&lt;/code>&lt;/pre>&lt;p>As to the meaning of the &lt;code>-shm&lt;/code> file, that is a &lt;strong>shared-memory file&lt;/strong> and is
+used by the sqlite databases when operating in WAL mode, used as an index of
+the WAL file. You can read more about it the [sqlite tempfiles
+documentation](here: &lt;a href="https://www.sqlite.org/tempfiles.html">https://www.sqlite.org/tempfiles.html&lt;/a>)&lt;/p>
+&lt;p>So that required actually fetching both of those extra files in order to get a
+complete picture of the current database state.&lt;/p>
+&lt;h1 id="opening-the-database">Opening the database&lt;/h1>
+&lt;p>As per the blog, we need to commit the changes from the &lt;code>wal&lt;/code> file to the
+database file, in order to do that we run the command:&lt;/p>
+&lt;pre>&lt;code>sqlite3 app.db &amp;quot;PRAGMA wal_checkpoint&amp;quot;
+&lt;/code>&lt;/pre>&lt;p>Afterwards, we can open the database using an interactive sqlite session,
+select all the entries from the &lt;code>account&lt;/code> table:&lt;/p>
+&lt;pre>&lt;code>$ sqlite3 ./databases
+SQLite version 3.31.1 2019-12-10 19:55:54
+Enter &amp;quot;.help&amp;quot; for usage hints.
+sqlite&amp;gt; select * from accounts;
+&lt;/code>&lt;/pre>&lt;p>Or simply save all the values without an interactive session to another file:&lt;/p>
+&lt;pre>&lt;code>sqlite3 databases 'select * from accounts' &amp;gt; 2fa_accounts
+&lt;/code>&lt;/pre>&lt;p>Which will write a table representation that looks like this:&lt;/p>
+&lt;pre>&lt;code>$ cat 2fa_accounts
+1|Github|asdf12345asdf|0|0|0||Github
+2|Twitch|deadbeef101010|0|0|0||Twitch
+&lt;/code>&lt;/pre>&lt;p>And the 2FA private keys would be the &lt;strong>deadbeef101010&lt;/strong> and the
+&lt;strong>asdf12345asdf&lt;/strong> in this case, which you can then now use in case you move to
+a different phone.&lt;/p>
+&lt;p>That&amp;rsquo;s it! Hope that helps you in some way!&lt;/p>
+&lt;p>PS: These are &lt;strong>not real 2FA private keys&lt;/strong> in case you&amp;rsquo;re wondering, potential hacker.&lt;/p>
+- https://chibby0ne.github.io/posts/2019-12-15-backing_up_google_authenticator_keys/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Using a credential store for DockerHub login</title><link>https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/</link><pubDate>Sat, 11 Aug 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/ -&lt;p>Whenever there&amp;rsquo;s a need to push images (public or private) or pull images from
+privates repositories from DockerHub you need to login first. With the docker
+client CLI that&amp;rsquo;s achieved with:&lt;/p>
+&lt;pre>&lt;code>docker login
+&lt;/code>&lt;/pre>&lt;p>It then asks for the credentials to use for logging in.
+The problem with this approach is explicitly mentioned in output of that
+command.&lt;/p>
+&lt;p>In my case:&lt;/p>
+&lt;pre>&lt;code>Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: chibby0ne
+Password:
+WARNING! Your password will be stored unencrypted in /home/turing/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+&lt;/code>&lt;/pre>&lt;p>The password is stored unencrypted (although not in plain-text).&lt;/p>
+&lt;p>Visiting the link you will find there are a number of docker-credentials
+helpers in &lt;a href="https://github.com/docker/docker-credential-helpers">docker-credentials-helpers&lt;/a> for every Operating
+System.&lt;/p>
+&lt;p>For Linux, I decided to go with &lt;a href="https://www.passwordstore.org/">pass&lt;/a> and use the appropriate
+docker-credential-helper for it.&lt;/p>
+&lt;p>Pass is a password store that keeps passwords in a GPG encrypted file.&lt;/p>
+&lt;p>The steps to set it up are very straightforward:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Install &lt;code>pass&lt;/code>&lt;/p>
+&lt;p>Install &lt;code>pass&lt;/code> using your package manager if its available, otherwise download
+a release and install it using &lt;code>make install&lt;/code>&lt;/p>
+&lt;p>You can find all the options in the official website: &lt;a href="https://www.passwordstore.org/">pass&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Install &lt;code>docker-credential-pass&lt;/code>&lt;/p>
+&lt;p>You need a Go installation to build the binaries. If you don&amp;rsquo;t have one yet
+just install it using your package manager, and set the &lt;code>GOPATH&lt;/code> environment
+variable to the place where you want to have your go projects. For more
+information visit:&lt;/p>
+&lt;p>Assuming you have a Go installation then:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Fetch the sources with:&lt;/p>
+&lt;pre>&lt;code>go get github.com/docker/docker-credential-helpers
+&lt;/code>&lt;/pre>&lt;p>This will download the repo and place it in
+&lt;code>$GOPATH/src/github.com/docker/docker-credential-helpers&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Build the helper that uses pass by running:&lt;/p>
+&lt;pre>&lt;code>make pass
+&lt;/code>&lt;/pre>&lt;p>The binary &lt;code>docker-credential-pass&lt;/code> will be located in the &lt;code>bin/&lt;/code> directory.
+You need to copy the binary to a directory included in the &lt;code>PATH&lt;/code> environment so
+that the docker client CLI can actually find it.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Log out&lt;/p>
+&lt;p>Run &lt;code>docker logout&lt;/code>.&lt;/p>
+&lt;p>If you where already logged in you should see:&lt;/p>
+&lt;pre>&lt;code>Removing login credentials for https://index.docker.io/v1/
+&lt;/code>&lt;/pre>&lt;p>If you where not logged in, you should see:&lt;/p>
+&lt;pre>&lt;code>Not logged in to https://index.docker.io/v1/
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>
+&lt;p>Modify the &lt;code>~/.docker/config.json&lt;/code> to use the &lt;code>docker-credential-pass&lt;/code>&lt;/p>
+&lt;p>Add the following key/value pair:&lt;/p>
+&lt;pre>&lt;code> &amp;quot;credsStore&amp;quot;: &amp;quot;pass&amp;quot;
+&lt;/code>&lt;/pre>&lt;p>By now your &lt;code>~/.docker/config.json&lt;/code> should look something like this
+(User-Agent might be different):&lt;/p>
+&lt;pre>&lt;code>{
+&amp;quot;auths&amp;quot;: {},
+&amp;quot;HttpHeaders&amp;quot;: {
+&amp;quot;User-Agent&amp;quot;: &amp;quot;Docker-Client/18.05.0-ce (linux)&amp;quot;
+},
+&amp;quot;credsStore&amp;quot;: &amp;quot;pass&amp;quot;
+}
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>
+&lt;p>Initialize &lt;code>pass&lt;/code>&lt;/p>
+&lt;p>You need to tell pass which GPG keypair you&amp;rsquo;re going to use to encrypt/decrypt
+the password.&lt;/p>
+&lt;p>Run:&lt;/p>
+&lt;pre>&lt;code>pass init GPG_ID
+&lt;/code>&lt;/pre>&lt;p>Where GPG_ID is the fingerprint or email address that identifies the key.&lt;/p>
+&lt;p>If you don&amp;rsquo;t have a GPG keypair yet, then proceed to create it using:
+&lt;code>gpg --full-gen-key&lt;/code> and configure the settings using the interactive prompt.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Login&lt;/p>
+&lt;p>Run &lt;code>docker login&lt;/code> and enter your credentials, but this time after entering
+the username and password, you should see a prompt to enter the password for
+the selected GPG key.&lt;/p>
+&lt;p>Important to note is that the output should not have the warning message
+anymore.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Done!&lt;/p>
+&lt;p>That&amp;rsquo;s it. Now the you are logged in but the credentials are not stored
+unencrypted in the &lt;code>~/.docker/config.json&lt;/code> file.&lt;/p>
+&lt;/li>
+&lt;/ol>
+- https://chibby0ne.github.io/posts/2018-08-11-docker_login_password_store/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Installing Tensorflow with GPU acceleration in Arch</title><link>https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</link><pubDate>Fri, 11 May 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ -&lt;p>I recently started doing the &lt;a href="https://www.fast.ai">fast.ai&lt;/a> course where you follow a top-down
+approach into the world of machine learning.&lt;/p>
+&lt;p>The first thing you need to do is have access to a Nvidia GPU, and in the
+first video lesson they show the setup of a cloud instance that runs
+Tensorflow using either &lt;a href="https://www.crestle.com">crestle&lt;/a> or
+&lt;a href="https://www.paperspace.com">paperspace&lt;/a>.&lt;/p>
+&lt;p>But since either of them are paid by the hour, and considering I already have
+Nvidia GPU in my desktop (albeit not as powerful as the ones offered in the
+aforementioned services, just an GTX 1070), I thought of going in a tangent
+and setting it up myself.&lt;/p>
+&lt;p>The first thing to do is install Tensorflow.&lt;/p>
+&lt;p>I already had CUDA installed, so I proceeded to install Tensorflow.&lt;/p>
+&lt;p>There was a problem: the CUDA version was too bleeding edge for the Tensroflow
+version. Tensorflow 1.9 requires CUDA 9.0 and the latest CUDA in Arch
+repositories was 9.1.&lt;/p>
+&lt;p>I thought of compiling Tensorflow myself, since that would make it work with
+9.1. But that would take a long time and probably space as well.&lt;/p>
+&lt;p>Instead I opted out for a docker image which required &lt;a href="https://aur.archlinux.org/packages/nvidia-docker/">nvidia-docker&lt;/a> from AUR,
+and rebooting the docker-service. Then I followed the instructions found in
+the &lt;a href="https://github.com/NVIDIA/nvidia-docker">github repository&lt;/a> to run the
+image after it pulled it. Afterwards, I started a Jupyter Notebook that
+required a token to login, which was specified in the output of the jupyter
+command line prompt.&lt;/p>
+&lt;p>Once inside the jupyter notebook, I was finally able to run Tensroflow with
+GPU acceleration.&lt;/p>
+&lt;p>Simple enough if you know where to look. But even if digging up took some
+time, is time well spent considering the speedup achieved with GPU
+acceleration when using Tensorflow.&lt;/p>
+- https://chibby0ne.github.io/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Log base 10 vs Log base e notation</title><link>https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link><pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p>I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; notation.&lt;/p>
+&lt;p>Let&amp;rsquo;s go step by step:&lt;/p>
+&lt;p>Two of the most common logarithms are the logarithm of base $$e$$, also called
+natural logarithm which is written in two forms:&lt;/p>
+&lt;p>$$\ln{x} = \log_{e}{x}$$&lt;/p>
+&lt;p>and the logarithm of base 10 also called common logarithm or decimal
+logarithm:&lt;/p>
+&lt;p>$$ \log_{10}{x}$$&lt;/p>
+&lt;p>Additionally scientific calculators have a &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; and a &amp;ldquo;&lt;strong>ln&lt;/strong>&amp;rdquo; function,
+which apply the logarithm of base 10 and the logarithm of base $$e$$ respectively:&lt;/p>
+&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logarithm_keys.jpg" alt="log keys in calculator">&lt;/p>
+&lt;h5 id="by-waifer-x---100502-1150494uploaded-by-pieter-kuiper-cc-by-20-httpscommonswikimediaorgwindexphpcurid10715338">By Waifer X - 100502-1150494Uploaded by Pieter Kuiper, CC BY 2.0, &lt;a href="https://commons.wikimedia.org/w/index.php?curid=10715338">https://commons.wikimedia.org/w/index.php?curid=10715338&lt;/a>&lt;/h5>
+&lt;p>But something that I learned while checking for errors doing the derivative is that mathematicians and calculator designers
+have different things in mind when writing &amp;ldquo;&lt;strong>log&lt;/strong>&amp;quot;:&lt;/p>
+&lt;p>From Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Common_logarithm">Common Logarithm&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>On calculators it is usually &amp;ldquo;log&amp;rdquo;, but mathematicians usually mean natural logarithm (logarithm with base e ≈ 2.71828) rather than common logarithm when they write &amp;ldquo;log&amp;rdquo;. To mitigate this ambiguity the ISO 80000 specification recommends that $$log_{10}{x}$$ should be written $$lg{x}$$ and $$log_{e}{x}$$ should be $$ln{x}$$.&lt;/p>
+&lt;/blockquote>
+&lt;p>And from Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Natural_logarithm">Natural Logarithm&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>The natural logarithm of x is generally written as $$ln x$$, $$log_{e} x$$, or sometimes, if the base $$e$$ is implicit, simply $$log x$$.&lt;/p>
+&lt;/blockquote>
+&lt;p>Therefore in the case of the negative log-likelihood function:&lt;/p>
+&lt;p>$$ L(\boldsymbol{y}) = - \log(\boldsymbol{y}) $$&lt;/p>
+&lt;p>Although it&amp;rsquo;s not implicit that it refers to a logarithm of base $$e$$, &lt;em>it is
+indeed the natural logarithm&lt;/em>, it&amp;rsquo;s just being used as mentioned in the given
+excerpt of common logarithm (i.e: mathematicians usually mean natural logarithm when they write &amp;ldquo;log&amp;rdquo;), and therefore its derivative is:&lt;/p>
+&lt;p>$$ \dfrac{\partial L_{\boldsymbol{y}}}{\partial \boldsymbol{y}} = -\dfrac{1}{\boldsymbol{y}} $$&lt;/p>
+&lt;p>Mathematicians be crazy!&lt;/p>
+- https://chibby0ne.github.io/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Using Javascript completion including adding Google Chrome API in vim</title><link>https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/</link><pubDate>Fri, 20 Apr 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/ -&lt;p>&lt;a href="https://github.com/Valloric/YouCompleteMe">YouCompleteMe&lt;/a> is a very powerful code completion engine built
+for the vim editor. It has several completion engines for many languages
+including C/C++, Rust, Go, Python, Javascript among others. It contains two
+parts: a vim-plugin and a daemon.&lt;/p>
+&lt;p>A very simple explanation of how YouCompleteMe works is by starting a server
+whenever a file is opened whose filetype corresponds to one of the installed
+languages engines. After this, the file is analyzed by communicating with from
+vim using the vim plugin (client) to the daemon (server).
+&lt;em>The languages for which YouCompleteMe provides auto completion are selected
+are install time, therefore if you don&amp;rsquo;t explicitly install it selecting a
+language, autocompletion for that language will probably be disabled.&lt;/em>&lt;/p>
+&lt;p>For Javascript, &lt;a href="http://ternjs.net/">tern&lt;/a> is used for the code analysis. Tern itself
+requires a &lt;code>.tern-project&lt;/code> or a &lt;code>.tern-config&lt;/code> file describing the specific
+configuration in the root of the project or above or the home directory
+respectively. Tern then opens a server in a unused port that listens for POST
+requests from a client that asks questions about the code in the form of JSON.&lt;/p>
+&lt;p>When vim is started is runs tern in a separate process and starts the
+querying whenever possible as described before.&lt;/p>
+&lt;p>In addition, tern supports server plugins, which are normal Javascript
+programs that add extra functionality to the server. There are a few plugins
+that come with the distribution such as doc and nodejs.&lt;/p>
+&lt;p>Now what if I wanted to develop a Chrome Extension and wanted the
+autocompletion for the Chrome API in vim?&lt;/p>
+&lt;p>Well since tern supports this it would be only a matter of installing the tern
+plugin and adding the plugin to the &lt;code>.tern-project&lt;/code>.&lt;/p>
+&lt;p>First installing the tern Chrome Extension:
+I found this &lt;a href="https://www.npmjs.com/package/tern-chrome-extension">tern-chrome-extension&lt;/a> which worked
+pretty well.&lt;/p>
+&lt;p>And we can&amp;rsquo;t just install it in the project directory that would install it in
+the &lt;code>node modules&lt;/code> but vim(and tern) would be aware of it. We have to install it
+in &lt;code>node_modules&lt;/code> of the tern instance that&amp;rsquo;s run by vim.&lt;/p>
+&lt;p>To find it we run, with a vim instance reading a Javascript file:&lt;/p>
+&lt;pre>&lt;code>ps aux | grep tern
+&lt;/code>&lt;/pre>&lt;p>We find that the process is running as:&lt;/p>
+&lt;pre>&lt;code>/usr/bin/node /home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/node_modules/tern/bin/tern --port 46973 --host 127.0.0.1 --persistent --no-port-file
+&lt;/code>&lt;/pre>&lt;p>We want to navigate to this directory &lt;code>/home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/&lt;/code>, because the &lt;code>node_modules&lt;/code> is the place where we want it to be installed.&lt;/p>
+&lt;p>We run:&lt;/p>
+&lt;pre>&lt;code>npm install --prefix . tern-chrome-extension
+&lt;/code>&lt;/pre>&lt;p>And we make sure everything went ok by checking if there&amp;rsquo;s a directory with
+that name in &lt;code>node_modules&lt;/code> or in the &lt;code>package.json&lt;/code>&lt;/p>
+&lt;pre>&lt;code>$ cat package.json
+{
+&amp;quot;description&amp;quot;: &amp;quot;ycmd tern runtime area with required tern version and plugins&amp;quot;,
+&amp;quot;dependencies&amp;quot;: {
+&amp;quot;tern&amp;quot;: &amp;quot;0.21.0&amp;quot;,
+&amp;quot;tern-chrome-extension&amp;quot;: &amp;quot;^46.1.20160420&amp;quot;
+}
+}
+&lt;/code>&lt;/pre>&lt;p>Now all that&amp;rsquo;s needed to create/edit the &lt;code>.tern-project&lt;/code> file, and add the
+chrome-extension to the plugins section.&lt;/p>
+&lt;pre>&lt;code>$ cat .tern-project
+{
+&amp;quot;libs&amp;quot;: [
+&amp;quot;browser&amp;quot;,
+&amp;quot;ecma5&amp;quot;
+],
+&amp;quot;plugins&amp;quot;: {
+&amp;quot;node&amp;quot;: {},
+&amp;quot;chrome-extension&amp;quot;: {}
+}
+}
+&lt;/code>&lt;/pre>&lt;p>That&amp;rsquo;s it! Now you can enjoy having the Chrome API completion in vim.&lt;/p>
+- https://chibby0ne.github.io/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Automount SMB directory with systemd in Arch</title><link>https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/</link><pubDate>Mon, 09 Apr 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/ -&lt;h1 id="problem-statement">Problem statement&lt;/h1>
+&lt;p>I wanted to mount a directory from a local desktop in my laptop regardless of
+the OS it might be running at the moment. Also, not just mount it. &lt;em>Automount&lt;/em>
+it either whenever I boot or on demand.&lt;/p>
+&lt;p>At the moment in my particular case, both laptop and desktop are running Arch
+Linux.&lt;/p>
+&lt;p>First let&amp;rsquo;s do a bit of a primer:&lt;/p>
+&lt;h2 id="smb-primer">SMB Primer&lt;/h2>
+&lt;p>&lt;em>SMB&lt;/em> is a network protocol (that also acts as a network/distributed file
+system) used for sharing file and print services between Windows clients. The
+original version was also known as &lt;em>CIFS&lt;/em>, and since then both names are used
+interchangeably.&lt;/p>
+&lt;p>Samba is a FOSS implementation of the SMB protocol that runs on *nix systems.&lt;/p>
+&lt;p>The other competitor to SMB is NFS, but the former is more Windows oriented as
+it was originally created for the Microsoft ecosystem, while the latter was
+created towards a more *nix friendly environment.&lt;/p>
+&lt;p>Using SMB is the traditionally way of sharing directories between Linux/Windows.&lt;/p>
+&lt;p>TL;DR: SMB for Windows/Linux. NFS for Linux/Linux.&lt;/p>
+&lt;h1 id="what-to-install">What to install&lt;/h1>
+&lt;p>You need the install &lt;code>cifs-utils&lt;/code> which provides user-space tools for mounting
+SMB/CIFS file systems (or shares as they are also called).&lt;/p>
+&lt;p>Basically, &lt;code>cifs-utils&lt;/code> add the possibility of selecting cifs as filesystem to
+&lt;code>mount&lt;/code>.&lt;/p>
+&lt;h2 id="credentials">Credentials&lt;/h2>
+&lt;p>We create a file containing the credentials used for that.
+Unfortunately there&amp;rsquo;s no other way that I&amp;rsquo;m aware of, of storing the
+credentials other than &lt;em>plaintext&lt;/em>.&lt;/p>
+&lt;p>The file should contain two entries as such:&lt;/p>
+&lt;pre>&lt;code>username=USERNAME
+password=PASSWORD
+&lt;/code>&lt;/pre>&lt;p>You should store it somewhere in /etc/samba/ and set its permissions to 600 so
+that only root has read/write access.&lt;/p>
+&lt;h2 id="mount-file">Mount file&lt;/h2>
+&lt;p>The mount file contains the information on how to mount the filesystem.&lt;/p>
+&lt;p>One important note is that &lt;strong>the filename should encode the mount point,
+otherwise systemd will fail at mounting it&lt;/strong>.&lt;/p>
+&lt;p>The filename should be of the pattern:
+&lt;code>directory1-directory2-directory3.mount&lt;/code>&lt;/p>
+&lt;p>Where the actual path where it is mounted is:&lt;/p>
+&lt;p>&lt;code>/directory1/directory2/directory3&lt;/code>&lt;/p>
+&lt;p>That is, the internal forward slashes of the path should be the minuses (&amp;quot;-&amp;quot;)
+in the filename.&lt;/p>
+&lt;p>Otherwise you will get an error like this&lt;/p>
+&lt;pre>&lt;code>$ systemctl start mntdir.mount
+$ systemctl status mntdir.mount
+...
+...
+mntdir.mount's Where= setting doesn't match unit name. Refusing
+&lt;/code>&lt;/pre>&lt;p>This file should contain something like this:&lt;/p>
+&lt;pre>&lt;code>[Unit]
+Description=DESCRIPTION
+Requires=systemd-networkd.service
+After=network-online.target
+Wants=network-online.target
+[Mount]
+What=PATH_IN_SMB_SERVER
+Where=PATH_TO_MOUNT_POINT
+Options=vers=2.1,credentials=CREDENTIALS_PATH,iocharset=utf8,rw,x-systemd.automount
+Type=cifs
+TimeoutSec=30
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>Replacing the upper case values with the relevant parameters in your case.&lt;/p>
+&lt;h2 id="automount-file">Automount file&lt;/h2>
+&lt;p>The automount file contains the information as to where and how to automount.
+This automount works on-demand, i.e: it mounts the filesystem when you
+navigate to that directory.&lt;/p>
+&lt;p>Just like the mount file: the name of the file should encode the mount
+location. i.e: it should have the same name as the &lt;code>.mount&lt;/code> file but with the
+file extension: &lt;code>.automount&lt;/code>&lt;/p>
+&lt;p>Its contents should be something like this:&lt;/p>
+&lt;pre>&lt;code>[Unit]
+Description=DESCRIPTION
+Requires=network-online.target
+[Automount]
+Where=PATH_TO_MOUNT_POINT
+TimeoutIdleSec=0
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>Replacing the upper case values with the relevant parameters in your case, but
+keeping in mind that the &lt;code>PATH_TO_MOUNT_POINT&lt;/code> should be the same as the one
+in the &lt;code>.mount&lt;/code> file.&lt;/p>
+&lt;p>This file should be enabled so that it runs at boot.&lt;/p>
+&lt;pre>&lt;code>systemctl enable mnt-dir.automount
+&lt;/code>&lt;/pre>&lt;p>Asumming the mount point is /mnt/dir (and therefore the filename is
+mnt-dir.automout).&lt;/p>
+&lt;h2 id="tips">Tips&lt;/h2>
+&lt;p>In my particulaar case no matter what &lt;code>Requires&lt;/code>, &lt;code>After&lt;/code> and/or &lt;code>Wants&lt;/code>
+service you select, enabling the &lt;code>.mount&lt;/code> file so that it runs automatically
+at boot, the system will fail to mount it.&lt;/p>
+&lt;p>Even more, I found that most guides and tutorials used the automount as the
+actual enabled unit, which mounts on demand and not on boot.&lt;/p>
+- https://chibby0ne.github.io/posts/2018-04-09-automounting_systemd/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Setting up a Raspberry Pi Cluster (Part 1)</title><link>https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/</link><pubDate>Wed, 28 Mar 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/ -&lt;p>I recently decided to set up a raspberry pi cluster, with whom I could
+experiment, learn and use cluster technologies like Kubernetes, Apache Hadoop,
+Spark, and even small programs using RPC and OpenMP.&lt;/p>
+&lt;p>In setting up the raspberry pi (a process which I think I&amp;rsquo;m fairly acquainted
+with) I ran through a few things which caught me by surprise, or were
+completely new to me, so after being half way into the process I wanted to
+write it down so that people that might want to undertake it, can it setup up
+much more smoothly.&lt;/p>
+&lt;h2 id="hardware">Hardware&lt;/h2>
+&lt;p>I chose to be as minimal and cheap as possible.&lt;/p>
+&lt;h3 id="devices-and-microsd">Devices and MicroSD&lt;/h3>
+&lt;p>The cluster consists of 3 Raspberry Pi&amp;rsquo;s: 2 of which are RPI 3 B+, and other
+one is a RPI 3 B, with 2 32 GB and 1 64 GB microSDs respectively.&lt;/p>
+&lt;h3 id="network">Network&lt;/h3>
+&lt;p>They will be connected to the network using the integrated wifi module. No
+external dongles, or ethernet cables are required. Saving money!&lt;/p>
+&lt;h3 id="case">Case&lt;/h3>
+&lt;p>I bought a dog bone cluster case in Amazon, that fits 4 Pis in case future me
+decides to expand the cluster.&lt;/p>
+&lt;h3 id="power-supply">Power supply&lt;/h3>
+&lt;p>30W 3-Port USB Wall Charger. It can output up to 2 A per port.&lt;/p>
+&lt;h2 id="flashing-the-cards">Flashing the cards&lt;/h2>
+&lt;p>I flashed the minimal Raspbian Stretch image, since I don&amp;rsquo;t need any GUI or
+X session running for applications I have mind (so far at least).&lt;/p>
+&lt;p>This process was simple just repeat it 3 times with different micro sd cards.&lt;/p>
+&lt;p>I knew that once flashed, I could mount the sd in my desktop, and edit the
+&lt;code>boot/&lt;/code> and the &lt;code>rootfs/&lt;/code> partition to configure them whichever way I want, but
+there were still a few things I didn&amp;rsquo;t have completely clear.&lt;/p>
+&lt;h2 id="configuring-each-device">Configuring each device&lt;/h2>
+&lt;p>At first I decided to configure one of them manually so that I can take note
+on what group of file configuration constitute the minimum to be able to ssh
+to them remotely.&lt;/p>
+&lt;p>Immediately I realized I had flashed the smallest image without GUI, therefore
+I couldn&amp;rsquo;t attach a Monitor. Ethernet for ssh&amp;rsquo;ing wasn&amp;rsquo;t an option since I
+didn&amp;rsquo;t have any spare cables, that could reach the router.&lt;/p>
+&lt;p>Fortunately, I have a USB-to-Serial 3.3V cable that can be used to open a
+Linux console. In fact, one could argue it is even more useful than having an
+Ethernet connection, since it captures even the boot sequence, something you
+can&amp;rsquo;t do with ssh.&lt;/p>
+&lt;p>So I attached usb cable from my desktop to the pi and powered it on, and I
+waited for a bit. Then a longer bit. There was nothing. No output.&lt;/p>
+&lt;p>An auspicious start :p&lt;/p>
+&lt;p>I quickly remembered something about the RPI 3 changing the way serial
+connection is used. So I consult &lt;a href="https://elinux.org/RPi_Serial_Connection">elinux page for RPi Serial Connection&lt;/a>
+and effectively, ever since RPI 3, UART is disabled by default.&lt;/p>
+&lt;p>I went back, took the microsd out of the pi, and edited the &lt;code>/boot/config.txt&lt;/code>
+as mentioned in the wiki, adding a line with &lt;code>enable_uart=1&lt;/code>, popped the
+microSD back and now I could see the booting sequence.&lt;/p>
+&lt;p>We&amp;rsquo;re in business!&lt;/p>
+&lt;p>So I start editing:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;code>/etc/hostname&lt;/code> and &lt;code>/etc/hosts&lt;/code> with the hostnames I wanted to use. In my
+case, I&amp;rsquo;m using &lt;code>rpiX&lt;/code> where &lt;code>X&lt;/code> is an increasing number for each device
+in the cluster, starting from 0.&lt;/p>
+&lt;p>&lt;em>&lt;strong>Note:&lt;/strong>&lt;/em> &lt;em>Initially I only edited &lt;code>/etc/hostname/&lt;/code>, in addition to the
+other files, and rebooted, but during the boot sequence I noticed the pi
+still used the default &lt;code>raspberry&lt;/code> hostname. After reading the &lt;a href="https://wiki.debian.org/HowTo/ChangeHostname">Debian
+Wiki&lt;/a>, I learned that changing /etc/hosts is also required so that local
+addresses can resolve with the new hostname&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>/etc/wpa_supplicant/wpa_supplicant.conf&lt;/code>, adding the network entry
+with the wifi&amp;rsquo;s SSID and Credentials. This is one of those files that I
+could copy to the rest in the cluster.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>/etc/dhcpcd.conf&lt;/code>, setting the static ip address, router, and gateway for
+the &lt;code>wlan0&lt;/code> interface (the name used for the interfaces by the raspbian
+images). In my case, I&amp;rsquo;m using from &lt;code>192.168.178.X&lt;/code> where &lt;code>X&lt;/code> is an
+increasing number for each device in the cluster starting with 5.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Those are the three files I could think of.&lt;/p>
+&lt;p>Then I ran the &lt;code>raspi-config&lt;/code> tool to enable wifi, shrink the GPU, set the
+locale, and keyboard layout.&lt;/p>
+&lt;p>I rebooted. Everything seem OK. Verified that wifi was working.&lt;/p>
+&lt;p>Now all I had to do was copy all the files I edited to the other two microSD
+cards, with the consideration of increasing the hostname number (as explained
+in #1, and ip address (as explained in #3).&lt;/p>
+&lt;p>After doing so, and inserting the remaining microSDs, I was expecting to see
+the other two pi&amp;rsquo;s in nmap as I could see the first one, but I couldn&amp;rsquo;t.&lt;/p>
+&lt;p>At this point I remembered that even with the configuration of the interface
+(dhcpcd more precisely) and wpa_supplicant, I still had to run &lt;code>raspi-config&lt;/code>
+to enable the wifi and bluetooth. I thought this might be a rfkill switch on
+disabling the radio signals.&lt;/p>
+&lt;p>Using the usb serial cable I checked the status of dhcpcd.service:&lt;/p>
+&lt;p>&lt;em>&lt;strong>Note&lt;/strong>&lt;/em> &lt;em>The artifacts shown in the output are part of the minicom output&lt;/em>&lt;/p>
+&lt;pre>&lt;code>pi@rpi1:/dev$ sudo systemctl status dhcpcd.service
+â● dhcpcd.service - dhcpcd on all interfaces
+Loaded: loaded (/lib/systemd/system/dhcpcd.service; enabled; vendor preset: e
+Drop-In: /etc/systemd/system/dhcpcd.service.d
+â└â─wait.conf
+Active: active (running) since Tue 2018-03-13 22:53:56 UTC; 2h 1min ago
+Process: 331 ExecStart=/usr/lib/dhcpcd5/dhcpcd -q -w (code=exited, status=0/SU
+Main PID: 457 (dhcpcd)
+CGroup: /system.slice/dhcpcd.service
+â├â417 wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -iw
+â└â─457 /sbin/dhcpcd -q -w
+Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
+Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: waiting for carrier
+&lt;/code>&lt;/pre>&lt;p>The line that confirms it is:&lt;/p>
+&lt;pre>&lt;code>Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
+&lt;/code>&lt;/pre>&lt;p>I knew about Linux&amp;rsquo;s rfkill because that&amp;rsquo;s what laptops enable/disable when
+you press the function (Fn) key that enables/disable wifi in Linux. There are
+two types of block: soft and hard block. Normally laptops&amp;rsquo; Fn key shortcut
+enable/disable a soft block.&lt;/p>
+&lt;p>To find out what case is there is I ran:&lt;/p>
+&lt;pre>&lt;code>pi@rpi1:/dev$ rfkill list all
+0: phy0: Wireless LAN
+Soft blocked: yes
+Hard blocked: no
+1: hci0: Bluetooth
+Soft blocked: no
+Hard blocked: no
+&lt;/code>&lt;/pre>&lt;p>I ran &lt;code>rfkill unblock all&lt;/code> and verified that the Wireless was indeed
+unblocked.&lt;/p>
+&lt;p>I didn&amp;rsquo;t know of another way of unblocking the radios, other than the command
+line utility, therefore no copying of file there. Or is there?&lt;/p>
+&lt;p>I could add this line to the &lt;code>/etc/rc.local&lt;/code> script, that is run by init after
+the system finished changing runlevels as part of the boot process.&lt;/p>
+&lt;p>Although there was only one more pi left to be configured I wanted to see if I
+could set it up the wifi connection from the microSD without booting the pi.&lt;/p>
+&lt;p>So I did this for the 3rd pi&amp;rsquo;s microSD card, and verified with nmap from my
+desktop.&lt;/p>
+&lt;pre>&lt;code>Nmap scan report for 192.168.178.7
+Host is up (0.073s latency).
+&lt;/code>&lt;/pre>&lt;p>Finally, I was able to set up a pi&amp;rsquo;s wifi by directly editing the microsd on
+my desktop, without needing to boot into the device. All in all, it was a
+very enlightening experience.&lt;/p>
+&lt;p>Now that I can ssh to it, I don&amp;rsquo;t expect to disassemble the cluster again
+again to attach the usb-serial cable (which I did two times =( ), to set up
+the kubernetes/hadoop tech stack.&lt;/p>
+- https://chibby0ne.github.io/posts/2018-03-28-setting_up_rpi_cluster/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>"Open Terminal Here" using thunar in i3</title><link>https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/</guid><description>Bits and pieces https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/ -&lt;p>I have i3 and &lt;em>some&lt;/em> xfce4 packages installed in an Arch Linux installation.
+I mostly use i3 because I like how it, as a tiling manager, efficiently uses
+all of the monitor&amp;rsquo;s real state.&lt;/p>
+&lt;p>Something that I might forget in the future and was mildly annoying when I
+made the shift to i3, is making sure thunar (xfce4 file manager) had the
+option of &lt;em>Open Terminal Here&lt;/em> &lt;strong>and&lt;/strong> that it opened the right terminal.
+After a few minutes of googling, I figured out how to add the option.&lt;/p>
+&lt;p>Problem was that it was always opening &lt;code>xfce4-terminal&lt;/code>, and not &lt;code>urvxt&lt;/code> terminal
+which is the terminal emulator I use for i3.&lt;/p>
+&lt;p>After digging in a bit, I discovered that the &lt;em>Open Terminal Here&lt;/em> option is
+actually a custom action of thunar itself, that can be edited in &lt;code>Edit &amp;gt; Configure custom actions...&lt;/code>, there you find the action &lt;em>Open Terminal
+Here&lt;/em> After clicking edit I could see the command that is being executed. The
+funny thing is that it didn&amp;rsquo;t execute xfce4-terminal. Instead it runs
+&lt;code>exo-open&lt;/code>.&lt;/p>
+&lt;p>That&amp;rsquo;s how I learned that &lt;code>exo-open&lt;/code> is a shell command that is comes with the
+&lt;code>exo&lt;/code> package, and allows you open urls and launch preferred applications in xfce4.&lt;/p>
+&lt;p>All I needed to do then is to modify the preferred application for terminal
+emulator in &lt;code>xfce4-settings-manager&lt;/code>, set &lt;code>urxvt&lt;/code> and voila!&lt;/p>
+- https://chibby0ne.github.io/posts/2018-03-22-opening_terminal_here/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item></channel></rss>
