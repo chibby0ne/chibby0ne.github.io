@@ -1,4 +1,4 @@
-baseURL = "https://antoniojgutierrez.com"
+baseURL = "https://www.antoniojgutierrez.com/"
 DefaultContentLanguage = "en" # Theme's display language, supports: en, fr, zh, zh-hant
 languageCode = "en-us"
 title = "Bits and pieces"
