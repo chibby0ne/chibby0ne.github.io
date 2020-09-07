@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/chibby0ne
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.antoniojgutierrez.com
+  * I am chibby0ne (https://keybase.io/chibby0ne) on keybase.
+  * I have a public key with fingerprint EA67 1980 505E B9D6 7D8E  5399 9292 84BA BCCF F39D
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01015f7150b8fec92d18864019f033a1486f3d8635700e327d3613337d66598599a30a",
+      "fingerprint": "ea671980505eb9d67d8e5399929284babccff39d",
+      "host": "keybase.io",
+      "key_id": "929284babccff39d",
+      "kid": "01015f7150b8fec92d18864019f033a1486f3d8635700e327d3613337d66598599a30a",
+      "uid": "3b9cc7b83d6634729c7e29aaf2d39819",
+      "username": "chibby0ne"
+    },
+    "service": {
+      "hostname": "www.antoniojgutierrez.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "ctime": 1525650433,
+  "expire_in": 157680000,
+  "prev": "fc4585e96789c676294e2771414cd91d6d1301701e32f55d0941450220af95bc",
+  "seqno": 10,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.76
+Comment: https://keybase.io/crypto
+
+yMI1AnicrZJdSBVBFMevaeE1+qRMUgiWfCiut5mdnd2dS/YQGn0QBGV1K7vs7sxe
+N3X3unevZmVioAhBhfTQh30S9qFCaYEPEaU9BEZSKYmF9GIfFBgSJVTWrNhbj83L
+MOf8z++c82cez0sPZKXt6/z2qzN7f0Fa/6O2VGDP+Om0w4Lu0FohclgoZ9MXq6As
+6cXKLSpEBAABxKYCMdBVkxlEpFBVZQlAYgKENCipsomoKiOsAMCQqFAkQ4SQQmUZ
+ExUToiGgCSHBtOw4cxOuZXscyzRZgUQFGGCmEyorVGUYEUJEIqqSrumGYZqIUF5Y
+5iT9Cj6criVZ2HJ4jD9i0+P9Q/+f505N45BODEPRVcTTSFJEYihMJJpmihQRFRJf
+mGSurVUyrjbKLF2vBTYT6kICD1dbBvOd9VeZkdTU1IQ123NsyzkQT3kWc112KGw4
+lZyUcB3PMZwKLivzvEQy4mO82sR0HdNjM8SYbtmUu8orqpmbtBxbiECuNDzLbwGx
+iGUMJIRCAjuYsFwWs3wFVmQV8OP3YdUcaRoSVjEjsqISQ1ZkkUhMVBQoQcmgBFKZ
+QgSgAiC3ycSYAsIzGIgi0EyCdUPwd6yyHc7mUE+Lc2bSitual3K5A70P92UE0rIC
+c2bP8r9bICu48O8nPHMiM3DDHN0/9kFoebASnd870mbWHyy+pPY2XY/s2DTyueXR
+Vqk589TZrJ9D57o62dX3xQ0nGpfE7PVNfXVfhlf+Hvh4bLBUvv8Mvbkg2HdqarMX
+7PjR87qs255fvOtp+6vgrYs3zcKS1cvlu1HWNv58rd6/uz/Tyr98s/DTkHfleH3e
+2OL8RatWDNQXLUvvYNEh8eU1Z/uLkevDg99nx+9ty954Lje45d1EWCovadjZ0jrZ
+NzGnf3i052Fr49xfdaejwa9r2qNv2+mTowtzi8ZLQ5M5wYKTt80NwTXN3Q8WbM3Y
+bDdObSIlbh5u7Mo50hfvGO9s6ghsnKrq7bm4VL20rqs0cPUPamJBzg==
+=t7e3
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/chibby0ne
+
+==================================================================
