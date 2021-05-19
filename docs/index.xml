@@ -1,4 +1,41 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 04 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Fixing Firefox screen tearing while scrolling / video playback</title><link>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</link><pubDate>Mon, 04 May 2020 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ -&lt;p>For a while now I&amp;rsquo;ve noticed screen tearing while scrolling on Wikipedia or on
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 14 Sep 2020 00:12:04 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Notes from Lex Fridman and Chris Lattner interview Part 2 (Lex Fridman Podcast)</title><link>https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/</link><pubDate>Mon, 14 Sep 2020 00:12:04 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/ -&lt;p>After watching the 2 hour+ interview of Chris Lattner in the Lex Fridman
+podcast I just &lt;em>had&lt;/em> to write down some of the gems I heard from Chris
+Lattner.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;em>&lt;strong>“Turns out if you ask a lot of dumb questions, you learn pretty quickly”&lt;/strong>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;strong>“In a way, types are like assertions which are checked at compile time”&lt;/strong>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;strong>“Just making a hello world, won&amp;rsquo;t get you get used to the language. Your mind
+need time and practice. Is the same as if you change diet, you need time for
+your metabolism to adapt”&lt;/strong>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;strong>“What I mean by messed up: very rarely used for good, often used for bugs”&lt;/strong>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;strong>“Being first principles where you&amp;rsquo;re coming from and what you&amp;rsquo;re trying to
+achieve”&lt;/strong>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;em>&lt;strong>“Fun things about learning programming languages: when you start doing
+them, you start learning new things. You have a new way of doing things and
+you&amp;rsquo;re forced to do them, and that forces you to explore. That puts you in
+learning mode and your mind kind of opens a little bit. And you start seeing
+things differently even the old things”&lt;/strong>&lt;/em>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>These are just some of the few nuggets of wisdoms and insights that I stuck
+with me after watching it. These long form conversations from Lex Fridman, are
+an awesome medium through which I learn form other people and I find it
+particularly engrossing since it allows more nuance in the dialogue.&lt;/p>
+&lt;p>I 1000% recommend &lt;a href="https://www.youtube.com/watch?v=nWTvXbQHwWs">this episode&lt;/a>
+and the podcast itself, and will probably write down some more notes for
+future episodes.&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Fixing Firefox screen tearing while scrolling / video playback</title><link>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</link><pubDate>Mon, 04 May 2020 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ -&lt;p>For a while now I&amp;rsquo;ve noticed screen tearing while scrolling on Wikipedia or on
 YouTube videos whenever there&amp;rsquo;s sudden movement.&lt;/p>
 &lt;p>Today I decided to do something about it, and considering I hadn&amp;rsquo;t touch the
 Xorg conf files &amp;ldquo;generated&amp;rdquo; by &lt;code>nvidia-xconfig&lt;/code> in more than 4 years, I was
@@ -696,22 +733,4 @@ very enlightening experience.&lt;/p>
 &lt;p>Now that I can ssh to it, I don&amp;rsquo;t expect to disassemble the cluster again
 again to attach the usb-serial cable (which I did two times =( ), to set up
 the kubernetes/hadoop tech stack.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>"Open Terminal Here" using thunar in i3</title><link>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ -&lt;p>I have i3 and &lt;em>some&lt;/em> xfce4 packages installed in an Arch Linux installation.
-I mostly use i3 because I like how it, as a tiling manager, efficiently uses
-all of the monitor&amp;rsquo;s real state.&lt;/p>
-&lt;p>Something that I might forget in the future and was mildly annoying when I
-made the shift to i3, is making sure thunar (xfce4 file manager) had the
-option of &lt;em>Open Terminal Here&lt;/em> &lt;strong>and&lt;/strong> that it opened the right terminal.
-After a few minutes of googling, I figured out how to add the option.&lt;/p>
-&lt;p>Problem was that it was always opening &lt;code>xfce4-terminal&lt;/code>, and not &lt;code>urvxt&lt;/code> terminal
-which is the terminal emulator I use for i3.&lt;/p>
-&lt;p>After digging in a bit, I discovered that the &lt;em>Open Terminal Here&lt;/em> option is
-actually a custom action of thunar itself, that can be edited in &lt;code>Edit &amp;gt; Configure custom actions...&lt;/code>, there you find the action &lt;em>Open Terminal
-Here&lt;/em> After clicking edit I could see the command that is being executed. The
-funny thing is that it didn&amp;rsquo;t execute xfce4-terminal. Instead it runs
-&lt;code>exo-open&lt;/code>.&lt;/p>
-&lt;p>That&amp;rsquo;s how I learned that &lt;code>exo-open&lt;/code> is a shell command that is comes with the
-&lt;code>exo&lt;/code> package, and allows you open urls and launch preferred applications in xfce4.&lt;/p>
-&lt;p>All I needed to do then is to modify the preferred application for terminal
-emulator in &lt;code>xfce4-settings-manager&lt;/code>, set &lt;code>urxvt&lt;/code> and voila!&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item></channel></rss>
+- https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item></channel></rss>

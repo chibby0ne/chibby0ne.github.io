@@ -1,4 +1,22 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 04 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>libtinfo in Arch Linux</title><link>https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/</link><pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/ -&lt;p>&lt;em>&lt;strong>pacaur&lt;/strong>&lt;/em> is &amp;ldquo;a AUR Helper which minimizes user interaction&amp;rdquo;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 14 Sep 2020 00:12:04 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>"Open Terminal Here" using thunar in i3</title><link>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ -&lt;p>I have i3 and &lt;em>some&lt;/em> xfce4 packages installed in an Arch Linux installation.
+I mostly use i3 because I like how it, as a tiling manager, efficiently uses
+all of the monitor&amp;rsquo;s real state.&lt;/p>
+&lt;p>Something that I might forget in the future and was mildly annoying when I
+made the shift to i3, is making sure thunar (xfce4 file manager) had the
+option of &lt;em>Open Terminal Here&lt;/em> &lt;strong>and&lt;/strong> that it opened the right terminal.
+After a few minutes of googling, I figured out how to add the option.&lt;/p>
+&lt;p>Problem was that it was always opening &lt;code>xfce4-terminal&lt;/code>, and not &lt;code>urvxt&lt;/code> terminal
+which is the terminal emulator I use for i3.&lt;/p>
+&lt;p>After digging in a bit, I discovered that the &lt;em>Open Terminal Here&lt;/em> option is
+actually a custom action of thunar itself, that can be edited in &lt;code>Edit &amp;gt; Configure custom actions...&lt;/code>, there you find the action &lt;em>Open Terminal
+Here&lt;/em> After clicking edit I could see the command that is being executed. The
+funny thing is that it didn&amp;rsquo;t execute xfce4-terminal. Instead it runs
+&lt;code>exo-open&lt;/code>.&lt;/p>
+&lt;p>That&amp;rsquo;s how I learned that &lt;code>exo-open&lt;/code> is a shell command that is comes with the
+&lt;code>exo&lt;/code> package, and allows you open urls and launch preferred applications in xfce4.&lt;/p>
+&lt;p>All I needed to do then is to modify the preferred application for terminal
+emulator in &lt;code>xfce4-settings-manager&lt;/code>, set &lt;code>urxvt&lt;/code> and voila!&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>libtinfo in Arch Linux</title><link>https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/</link><pubDate>Tue, 06 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-06-libtinfo_in_arch/ -&lt;p>&lt;em>&lt;strong>pacaur&lt;/strong>&lt;/em> is &amp;ldquo;a AUR Helper which minimizes user interaction&amp;rdquo;
 meaning it helps us install AUR packages without too much hassle.&lt;/p>
 &lt;p>With it I install and update packages like spotify and google-chrome which are
 not in the official repositories i.e: core, extra, community or multilib
