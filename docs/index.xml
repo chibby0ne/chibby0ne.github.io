@@ -1,5 +1,5 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 14 Sep 2020 00:12:04 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Notes from Lex Fridman and Chris Lattner interview Part 2 (Lex Fridman Podcast)</title><link>https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/</link><pubDate>Mon, 14 Sep 2020 00:12:04 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/ -&lt;p>After watching the 2 hour+ interview of Chris Lattner in the Lex Fridman
-podcast I just &lt;em>had&lt;/em> to write down some of the gems I heard from Chris
+podcast I just knew I &lt;em>had&lt;/em> to write down some of the gems I heard from Chris
 Lattner.&lt;/p>
 &lt;ul>
 &lt;li>
@@ -9,9 +9,9 @@ Lattner.&lt;/p>
 &lt;p>&lt;em>&lt;strong>“In a way, types are like assertions which are checked at compile time”&lt;/strong>&lt;/em>&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>&lt;em>&lt;strong>“Just making a hello world, won&amp;rsquo;t get you get used to the language. Your mind
-need time and practice. Is the same as if you change diet, you need time for
-your metabolism to adapt”&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>&lt;em>&lt;strong>“Just making a hello world, won&amp;rsquo;t get you get used to the language. Your
+mind needs time and practice. It&amp;rsquo;s the same as if you change diet, you need
+time for your metabolism to adapt”&lt;/strong>&lt;/em>&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>&lt;em>&lt;strong>“What I mean by messed up: very rarely used for good, often used for bugs”&lt;/strong>&lt;/em>&lt;/p>
@@ -33,7 +33,7 @@ with me after watching it. These long form conversations from Lex Fridman, are
 an awesome medium through which I learn form other people and I find it
 particularly engrossing since it allows more nuance in the dialogue.&lt;/p>
 &lt;p>I 1000% recommend &lt;a href="https://www.youtube.com/watch?v=nWTvXbQHwWs">this episode&lt;/a>
-and the podcast itself, and will probably write down some more notes for
+and the whole podcast itself, and will probably write down some more notes of
 future episodes.&lt;/p>
 - https://www.antoniojgutierrez.com/posts/2020-09-14-notes_on_lex_fridman_chris_lattner_interview_part2/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Fixing Firefox screen tearing while scrolling / video playback</title><link>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</link><pubDate>Mon, 04 May 2020 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2020-05-04-firefox_screen_tearing_while_scrolling/ -&lt;p>For a while now I&amp;rsquo;ve noticed screen tearing while scrolling on Wikipedia or on
 YouTube videos whenever there&amp;rsquo;s sudden movement.&lt;/p>
