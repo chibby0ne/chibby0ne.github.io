@@ -1,4 +1,137 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 14 Sep 2020 00:12:04 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>"Open Terminal Here" using thunar in i3</title><link>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ -&lt;p>I have i3 and &lt;em>some&lt;/em> xfce4 packages installed in an Arch Linux installation.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Sun, 31 Jan 2021 23:46:55 +0100</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Setting up a Raspberry Pi Cluster (Part 1)</title><link>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</link><pubDate>Wed, 28 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ -&lt;p>I recently decided to set up a raspberry pi cluster, with whom I could
+experiment, learn and use cluster technologies like Kubernetes, Apache Hadoop,
+Spark, and even small programs using RPC and OpenMP.&lt;/p>
+&lt;p>In setting up the raspberry pi (a process which I think I&amp;rsquo;m fairly acquainted
+with) I ran through a few things which caught me by surprise, or were
+completely new to me, so after being half way into the process I wanted to
+write it down so that people that might want to undertake it, can it setup up
+much more smoothly.&lt;/p>
+&lt;h2 id="hardware">Hardware&lt;/h2>
+&lt;p>I chose to be as minimal and cheap as possible.&lt;/p>
+&lt;h3 id="devices-and-microsd">Devices and MicroSD&lt;/h3>
+&lt;p>The cluster consists of 3 Raspberry Pi&amp;rsquo;s: 2 of which are RPI 3 B+, and other
+one is a RPI 3 B, with 2 32 GB and 1 64 GB microSDs respectively.&lt;/p>
+&lt;h3 id="network">Network&lt;/h3>
+&lt;p>They will be connected to the network using the integrated wifi module. No
+external dongles, or ethernet cables are required. Saving money!&lt;/p>
+&lt;h3 id="case">Case&lt;/h3>
+&lt;p>I bought a dog bone cluster case in Amazon, that fits 4 Pis in case future me
+decides to expand the cluster.&lt;/p>
+&lt;h3 id="power-supply">Power supply&lt;/h3>
+&lt;p>30W 3-Port USB Wall Charger. It can output up to 2 A per port.&lt;/p>
+&lt;h2 id="flashing-the-cards">Flashing the cards&lt;/h2>
+&lt;p>I flashed the minimal Raspbian Stretch image, since I don&amp;rsquo;t need any GUI or
+X session running for applications I have mind (so far at least).&lt;/p>
+&lt;p>This process was simple just repeat it 3 times with different micro sd cards.&lt;/p>
+&lt;p>I knew that once flashed, I could mount the sd in my desktop, and edit the
+&lt;code>boot/&lt;/code> and the &lt;code>rootfs/&lt;/code> partition to configure them whichever way I want, but
+there were still a few things I didn&amp;rsquo;t have completely clear.&lt;/p>
+&lt;h2 id="configuring-each-device">Configuring each device&lt;/h2>
+&lt;p>At first I decided to configure one of them manually so that I can take note
+on what group of file configuration constitute the minimum to be able to ssh
+to them remotely.&lt;/p>
+&lt;p>Immediately I realized I had flashed the smallest image without GUI, therefore
+I couldn&amp;rsquo;t attach a Monitor. Ethernet for ssh&amp;rsquo;ing wasn&amp;rsquo;t an option since I
+didn&amp;rsquo;t have any spare cables, that could reach the router.&lt;/p>
+&lt;p>Fortunately, I have a USB-to-Serial 3.3V cable that can be used to open a
+Linux console. In fact, one could argue it is even more useful than having an
+Ethernet connection, since it captures even the boot sequence, something you
+can&amp;rsquo;t do with ssh.&lt;/p>
+&lt;p>So I attached usb cable from my desktop to the pi and powered it on, and I
+waited for a bit. Then a longer bit. There was nothing. No output.&lt;/p>
+&lt;p>An auspicious start :p&lt;/p>
+&lt;p>I quickly remembered something about the RPI 3 changing the way serial
+connection is used. So I consult &lt;a href="https://elinux.org/RPi_Serial_Connection">elinux page for RPi Serial Connection&lt;/a>
+and effectively, ever since RPI 3, UART is disabled by default.&lt;/p>
+&lt;p>I went back, took the microsd out of the pi, and edited the &lt;code>/boot/config.txt&lt;/code>
+as mentioned in the wiki, adding a line with &lt;code>enable_uart=1&lt;/code>, popped the
+microSD back and now I could see the booting sequence.&lt;/p>
+&lt;p>We&amp;rsquo;re in business!&lt;/p>
+&lt;p>So I start editing:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;code>/etc/hostname&lt;/code> and &lt;code>/etc/hosts&lt;/code> with the hostnames I wanted to use. In my
+case, I&amp;rsquo;m using &lt;code>rpiX&lt;/code> where &lt;code>X&lt;/code> is an increasing number for each device
+in the cluster, starting from 0.&lt;/p>
+&lt;p>&lt;em>&lt;strong>Note:&lt;/strong>&lt;/em> &lt;em>Initially I only edited &lt;code>/etc/hostname/&lt;/code>, in addition to the
+other files, and rebooted, but during the boot sequence I noticed the pi
+still used the default &lt;code>raspberry&lt;/code> hostname. After reading the &lt;a href="https://wiki.debian.org/HowTo/ChangeHostname">Debian
+Wiki&lt;/a>, I learned that changing /etc/hosts is also required so that local
+addresses can resolve with the new hostname&lt;/em>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>/etc/wpa_supplicant/wpa_supplicant.conf&lt;/code>, adding the network entry
+with the wifi&amp;rsquo;s SSID and Credentials. This is one of those files that I
+could copy to the rest in the cluster.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>/etc/dhcpcd.conf&lt;/code>, setting the static ip address, router, and gateway for
+the &lt;code>wlan0&lt;/code> interface (the name used for the interfaces by the raspbian
+images). In my case, I&amp;rsquo;m using from &lt;code>192.168.178.X&lt;/code> where &lt;code>X&lt;/code> is an
+increasing number for each device in the cluster starting with 5.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>Those are the three files I could think of.&lt;/p>
+&lt;p>Then I ran the &lt;code>raspi-config&lt;/code> tool to enable wifi, shrink the GPU, set the
+locale, and keyboard layout.&lt;/p>
+&lt;p>I rebooted. Everything seem OK. Verified that wifi was working.&lt;/p>
+&lt;p>Now all I had to do was copy all the files I edited to the other two microSD
+cards, with the consideration of increasing the hostname number (as explained
+in #1, and ip address (as explained in #3).&lt;/p>
+&lt;p>After doing so, and inserting the remaining microSDs, I was expecting to see
+the other two pi&amp;rsquo;s in nmap as I could see the first one, but I couldn&amp;rsquo;t.&lt;/p>
+&lt;p>At this point I remembered that even with the configuration of the interface
+(dhcpcd more precisely) and wpa_supplicant, I still had to run &lt;code>raspi-config&lt;/code>
+to enable the wifi and bluetooth. I thought this might be a rfkill switch on
+disabling the radio signals.&lt;/p>
+&lt;p>Using the usb serial cable I checked the status of dhcpcd.service:&lt;/p>
+&lt;p>&lt;em>&lt;strong>Note&lt;/strong>&lt;/em> &lt;em>The artifacts shown in the output are part of the minicom output&lt;/em>&lt;/p>
+&lt;pre>&lt;code>pi@rpi1:/dev$ sudo systemctl status dhcpcd.service
+â● dhcpcd.service - dhcpcd on all interfaces
+Loaded: loaded (/lib/systemd/system/dhcpcd.service; enabled; vendor preset: e
+Drop-In: /etc/systemd/system/dhcpcd.service.d
+â└â─wait.conf
+Active: active (running) since Tue 2018-03-13 22:53:56 UTC; 2h 1min ago
+Process: 331 ExecStart=/usr/lib/dhcpcd5/dhcpcd -q -w (code=exited, status=0/SU
+Main PID: 457 (dhcpcd)
+CGroup: /system.slice/dhcpcd.service
+â├â417 wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -iw
+â└â─457 /sbin/dhcpcd -q -w
+Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
+Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: waiting for carrier
+&lt;/code>&lt;/pre>&lt;p>The line that confirms it is:&lt;/p>
+&lt;pre>&lt;code>Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
+&lt;/code>&lt;/pre>&lt;p>I knew about Linux&amp;rsquo;s rfkill because that&amp;rsquo;s what laptops enable/disable when
+you press the function (Fn) key that enables/disable wifi in Linux. There are
+two types of block: soft and hard block. Normally laptops&amp;rsquo; Fn key shortcut
+enable/disable a soft block.&lt;/p>
+&lt;p>To find out what case is there is I ran:&lt;/p>
+&lt;pre>&lt;code>pi@rpi1:/dev$ rfkill list all
+0: phy0: Wireless LAN
+Soft blocked: yes
+Hard blocked: no
+1: hci0: Bluetooth
+Soft blocked: no
+Hard blocked: no
+&lt;/code>&lt;/pre>&lt;p>I ran &lt;code>rfkill unblock all&lt;/code> and verified that the Wireless was indeed
+unblocked.&lt;/p>
+&lt;p>I didn&amp;rsquo;t know of another way of unblocking the radios, other than the command
+line utility, therefore no copying of file there. Or is there?&lt;/p>
+&lt;p>I could add this line to the &lt;code>/etc/rc.local&lt;/code> script, that is run by init after
+the system finished changing runlevels as part of the boot process.&lt;/p>
+&lt;p>Although there was only one more pi left to be configured I wanted to see if I
+could set it up the wifi connection from the microSD without booting the pi.&lt;/p>
+&lt;p>So I did this for the 3rd pi&amp;rsquo;s microSD card, and verified with nmap from my
+desktop.&lt;/p>
+&lt;pre>&lt;code>Nmap scan report for 192.168.178.7
+Host is up (0.073s latency).
+&lt;/code>&lt;/pre>&lt;p>Finally, I was able to set up a pi&amp;rsquo;s wifi by directly editing the microsd on
+my desktop, without needing to boot into the device. All in all, it was a
+very enlightening experience.&lt;/p>
+&lt;p>Now that I can ssh to it, I don&amp;rsquo;t expect to disassemble the cluster again
+again to attach the usb-serial cable (which I did two times =( ), to set up
+the kubernetes/hadoop tech stack.&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>"Open Terminal Here" using thunar in i3</title><link>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-22-opening_terminal_here/ -&lt;p>I have i3 and &lt;em>some&lt;/em> xfce4 packages installed in an Arch Linux installation.
 I mostly use i3 because I like how it, as a tiling manager, efficiently uses
 all of the monitor&amp;rsquo;s real state.&lt;/p>
 &lt;p>Something that I might forget in the future and was mildly annoying when I
