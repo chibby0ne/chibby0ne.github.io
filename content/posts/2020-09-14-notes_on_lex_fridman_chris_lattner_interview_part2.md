@@ -7,16 +7,16 @@ categories: lifelessons
 ---
 
 After watching the 2 hour+ interview of Chris Lattner in the Lex Fridman
-podcast I just *had* to write down some of the gems I heard from Chris
+podcast I just knew I *had* to write down some of the gems I heard from Chris
 Lattner.
 
 * ***“Turns out if you ask a lot of dumb questions, you learn pretty quickly”***
 
 * ***“In a way, types are like assertions which are checked at compile time”***
 
-* ***“Just making a hello world, won't get you get used to the language. Your mind
-  need time and practice. Is the same as if you change diet, you need time for
-  your metabolism to adapt”***
+* ***“Just making a hello world, won't get you get used to the language. Your
+  mind needs time and practice. It's the same as if you change diet, you need
+  time for your metabolism to adapt”***
 
 * ***“What I mean by messed up: very rarely used for good, often used for bugs”***
 
@@ -35,5 +35,5 @@ an awesome medium through which I learn form other people and I find it
 particularly engrossing since it allows more nuance in the dialogue.
 
 I 1000% recommend [this episode](https://www.youtube.com/watch?v=nWTvXbQHwWs)
-and the podcast itself, and will probably write down some more notes for
+and the whole podcast itself, and will probably write down some more notes of
 future episodes.
