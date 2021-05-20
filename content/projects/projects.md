@@ -1,6 +1,7 @@
 ---
 title: Projects
 layout: page
+comment: false
 ---
 
 These are some projects are worked on:

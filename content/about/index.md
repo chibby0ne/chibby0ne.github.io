@@ -1,5 +1,6 @@
 ---
 title: About me
+comment: false
 ---
 
 {{< about "antonio_profile.jpg" >}}
