@@ -1,4 +1,502 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Sun, 31 Jan 2021 23:46:55 +0100</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Things to backup before doing a factory reset of an Android Phone</title><link>https://www.antoniojgutierrez.com/posts/2021-01-31-steps_todo_before_factory_reset_android/</link><pubDate>Sun, 31 Jan 2021 23:46:55 +0100</pubDate><guid>https://www.antoniojgutierrez.com/posts/2021-01-31-steps_todo_before_factory_reset_android/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2021-01-31-steps_todo_before_factory_reset_android/ -&lt;p>There&amp;rsquo;s always something that I miss whenever I do a factory reset of my
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 14 May 2021 02:18:25 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Short and Long Options with Go flag standard package</title><link>https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/</link><pubDate>Fri, 14 May 2021 02:18:25 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/ -&lt;p>Recently I was browsing the awesome
+&lt;a href="https://github.com/FiloSottile/age">age&lt;/a> (which I encourage everyone to
+look at and use if you haven&amp;rsquo;t already), and noticed something that I had
+always mistakenly assumed wasn&amp;rsquo;t possible with the Go standard library.&lt;/p>
+&lt;blockquote>
+&lt;p>Is it possible to have short &lt;em>and&lt;/em> long options using just the &lt;code>flag&lt;/code> package?&lt;/p>
+&lt;/blockquote>
+&lt;p>Apparently it is possible!&lt;/p>
+&lt;p>To give a little more context, the short options are those that start
+with a single dash (&lt;code>-&lt;/code>) and consist of a single letter, e.g: for most
+command line argument to set verbose mode you&amp;rsquo;d use: &lt;code>-v&lt;/code>.
+In contrast, the long options are those that start with double dash &lt;code>--&lt;/code> and
+consist of a word e.g: to use the same example of verbose mode that would be
+&lt;code>--verbose&lt;/code>.&lt;/p>
+&lt;p>In order to find this out let&amp;rsquo;s first write small program that uses the &lt;code>flag&lt;/code>
+package and discover how the invocation of them change the output:&lt;/p>
+&lt;p>First let&amp;rsquo;s create a directory where to put the program and initialize the
+go.mod:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ mkdir -p ~/go_experiments/using_flag
+$ &lt;span style="color:#658b00">cd&lt;/span> !$
+$ go mod init github.com/chibby0ne/&lt;span style="color:#8b008b;font-weight:bold">$(&lt;/span>basename &lt;span style="color:#8b008b;font-weight:bold">$(&lt;/span>&lt;span style="color:#658b00">pwd&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">))&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This creates a directory &lt;code>using_flag&lt;/code> inside a &lt;code>go_experiments&lt;/code>
+directory located in your home directory and initializes a go mod with the
+organization/user name &lt;code>chibby0ne&lt;/code> (my username) and repository name the same
+as the directory name (&lt;code>using_flag&lt;/code>). Of course you can use your Github
+username, but since this is just for experimentation it doesn&amp;rsquo;t really matter
+the organization/username or module name you choose.&lt;/p>
+&lt;ul>
+&lt;li>&lt;em>The &lt;code>!$&lt;/code> used in the second line is a shortcut to refer to the last argument of the last command. Pretty neat huh? You can check more about it in the &lt;a href="https://linux.die.net/man/1/bash">man pages of bash looking into history expansion&lt;/a>&lt;/em>&lt;/li>
+&lt;/ul>
+&lt;p>Now copy the following code in and write it to a &lt;code>main.go&lt;/code> file, and build it
+with &lt;code>go build&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8b008b;font-weight:bold">package&lt;/span> main
+&lt;span style="color:#8b008b;font-weight:bold">import&lt;/span> (
+&lt;span style="color:#cd5555">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;span style="color:#cd5555">&amp;#34;flag&amp;#34;&lt;/span>
+)
+&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> &lt;span style="color:#008b45">main&lt;/span>() {
+&lt;span style="color:#8b008b;font-weight:bold">var&lt;/span> verbose &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;verbose, &lt;span style="color:#cd5555">&amp;#34;verbose&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;verbose output&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">Parse&lt;/span>()
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> verbose {
+fmt.&lt;span style="color:#008b45">Println&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;verbose is on&amp;#34;&lt;/span>)
+}
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>This program should write: &lt;code>verbose is on&lt;/code> to stdout whenever the &lt;code>verbose&lt;/code> flag
+is set, otherwise it shouldn&amp;rsquo;t print anything.&lt;/p>
+&lt;p>Let&amp;rsquo;s see the output with only no flag:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ ./using_flag
+$
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>No output as expected.&lt;/p>
+&lt;p>Let&amp;rsquo;s see the output with only one dash (as usually done):&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ ./using_flag -verbose
+verbose is on
+$
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now let&amp;rsquo;s see the output with &lt;em>two&lt;/em> dashes:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ ./using_flag --verbose
+verbose is on
+$
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As you can see the &lt;code>flag&lt;/code> package allows this usage with double dash or long
+option format but its usage is not &lt;em>&amp;ldquo;well documented&amp;rdquo;&lt;/em> in the package
+documentation.&lt;/p>
+&lt;p>Why is this the case?&lt;/p>
+&lt;p>Let&amp;rsquo;s dig into what happens when we set a &lt;code>BoolVar&lt;/code> (which is the case for any
+XVar where &lt;em>X&lt;/em> is any type). All the source code shown corresponds to &lt;strong>go version
+go1.16.4 linux/amd64&lt;/strong>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// BoolVar defines a bool flag with specified name, default value, and usage string.
+&lt;/span>&lt;span style="color:#228b22">// The argument p points to a bool variable in which to store the value of the flag.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> &lt;span style="color:#008b45">BoolVar&lt;/span>(p *&lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>, name &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>, value &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>, usage &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>) {
+CommandLine.&lt;span style="color:#008b45">Var&lt;/span>(&lt;span style="color:#008b45">newBoolValue&lt;/span>(value, p), name, usage)
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Let&amp;rsquo;s decompose the magic out of this one liner:&lt;/p>
+&lt;ol>
+&lt;li>What does &lt;code>newBoolValue&lt;/code> do?&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// -- bool Value
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">type&lt;/span> boolValue &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> &lt;span style="color:#008b45">newBoolValue&lt;/span>(val &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>, p *&lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>) *boolValue {
+*p = val
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> (*boolValue)(p)
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>newBoolValue&lt;/code> is an unexported (private in other languages terminology)
+function that creates a &lt;code>boolValue&lt;/code> which is an type alias for &lt;code>bool&lt;/code>. The pointer to
+&lt;code>bool&lt;/code> passed (&lt;code>p&lt;/code> in &lt;code>BoolVar&lt;/code> and in &lt;code>newBoolValue&lt;/code> functions) is assigned to
+the default value (&lt;code>value&lt;/code> in &lt;code>BoolVar&lt;/code> function and &lt;code>val&lt;/code> in &lt;code>newBoolValue&lt;/code>
+function).
+Then the pointer to &lt;code>bool&lt;/code> is casted to a pointer to &lt;code>boolValue&lt;/code> and
+returned.&lt;/p>
+&lt;p>You might be wondering: &lt;em>Why create this internal &lt;code>boolValue&lt;/code> for simply
+storing the &lt;code>bool&lt;/code>?&lt;/em>&lt;/p>
+&lt;p>Because &lt;code>bool&lt;/code> needs to be augmented with methods used by the flags package,
+such as &lt;code>Get()&lt;/code>, &lt;code>Set()&lt;/code> and &lt;code>String()&lt;/code>, these methods satisfy the interfaces
+used through the package which are &lt;code>Getter&lt;/code> and &lt;code>Value&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8b008b;font-weight:bold">type&lt;/span> Getter &lt;span style="color:#8b008b;font-weight:bold">interface&lt;/span> {
+Value
+&lt;span style="color:#008b45">Get&lt;/span>() &lt;span style="color:#8b008b;font-weight:bold">interface&lt;/span>{}
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8b008b;font-weight:bold">type&lt;/span> Value &lt;span style="color:#8b008b;font-weight:bold">interface&lt;/span> {
+&lt;span style="color:#008b45">String&lt;/span>() &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>
+&lt;span style="color:#008b45">Set&lt;/span>(&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>) &lt;span style="color:#00688b;font-weight:bold">error&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>According to documentation: &lt;code>Value&lt;/code> is the interface to the dynamic value
+stored in a flag. &lt;code>Getter&lt;/code> is an interface that allows the contents of
+&lt;code>Value&lt;/code> to be retrieved.&lt;/p>
+&lt;p>You can read more of the &lt;a href="https://golang.org/pkg/flag/#Getter">Getter&lt;/a> and the
+&lt;a href="https://golang.org/pkg/flag/#Value">Value&lt;/a> interface in the documentation,
+but for now let&amp;rsquo;s continue with our dive.&lt;/p>
+&lt;ol start="2">
+&lt;li>What is &lt;code>CommandLine&lt;/code> and what does its method &lt;code>Var&lt;/code> do?&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// CommandLine is the default set of command-line flags, parsed from os.Args.
+&lt;/span>&lt;span style="color:#228b22">// The top-level functions such as BoolVar, Arg, and so on are wrappers for the
+&lt;/span>&lt;span style="color:#228b22">// methods of CommandLine.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">var&lt;/span> CommandLine = &lt;span style="color:#008b45">NewFlagSet&lt;/span>(os.Args[&lt;span style="color:#b452cd">0&lt;/span>], ExitOnError)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As it&amp;rsquo;s very well described in the godoc, &lt;code>CommandLine&lt;/code> is the default flag
+set of command line flags for the given executable, (The name used to invoke
+the program is always given by &lt;code>os.Args[0]&lt;/code>)&lt;/p>
+&lt;p>And the &lt;code>Var&lt;/code> method:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// Var defines a flag with the specified name and usage string. The type and
+&lt;/span>&lt;span style="color:#228b22">// value of the flag are represented by the first argument, of type Value, which
+&lt;/span>&lt;span style="color:#228b22">// typically holds a user-defined implementation of Value. For instance, the
+&lt;/span>&lt;span style="color:#228b22">// caller could create a flag that turns a comma-separated string into a slice
+&lt;/span>&lt;span style="color:#228b22">// of strings by giving the slice the methods of Value; in particular, Set would
+&lt;/span>&lt;span style="color:#228b22">// decompose the comma-separated string into the slice.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> (f *FlagSet) &lt;span style="color:#008b45">Var&lt;/span>(value Value, name &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>, usage &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>) {
+&lt;span style="color:#228b22">// Remember the default value as a string; it won&amp;#39;t change.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> flag := &amp;amp;Flag{name, usage, value, value.&lt;span style="color:#008b45">String&lt;/span>()}
+_, alreadythere := f.formal[name]
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> alreadythere {
+&lt;span style="color:#8b008b;font-weight:bold">var&lt;/span> msg &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> f.name == &lt;span style="color:#cd5555">&amp;#34;&amp;#34;&lt;/span> {
+msg = fmt.&lt;span style="color:#008b45">Sprintf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;flag redefined: %s&amp;#34;&lt;/span>, name)
+} &lt;span style="color:#8b008b;font-weight:bold">else&lt;/span> {
+msg = fmt.&lt;span style="color:#008b45">Sprintf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;%s flag redefined: %s&amp;#34;&lt;/span>, f.name, name)
+}
+fmt.&lt;span style="color:#008b45">Fprintln&lt;/span>(f.&lt;span style="color:#008b45">Output&lt;/span>(), msg)
+&lt;span style="color:#658b00">panic&lt;/span>(msg) &lt;span style="color:#228b22">// Happens only if flags are declared with identical names
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> }
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> f.formal == &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+f.formal = &lt;span style="color:#658b00">make&lt;/span>(&lt;span style="color:#8b008b;font-weight:bold">map&lt;/span>[&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>]*Flag)
+}
+f.formal[name] = flag
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>There&amp;rsquo;s a lot going on in there but let&amp;rsquo;s go step by step.&lt;/p>
+&lt;p>The godoc mentions that &lt;code>Var&lt;/code>'s first argument usually holds a user-defined
+implementation of &lt;code>Value&lt;/code> and it could have a custom &lt;code>Set()&lt;/code> method that
+converts its arguments into a slice or some other type aggregate type. In our
+case that&amp;rsquo;s not the case but since it&amp;rsquo;s part of this method documentation
+which is shown in the godoc it&amp;rsquo;s good to be as general as possible.&lt;/p>
+&lt;p>Looking at the code we see that:&lt;/p>
+&lt;ol>
+&lt;li>A &lt;code>Flag&lt;/code> is created.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">flag := &amp;amp;Flag{name, usage, value, value.&lt;span style="color:#008b45">String&lt;/span>()}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And a &lt;code>Flag&lt;/code> is:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// A Flag represents the state of a flag.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">type&lt;/span> Flag &lt;span style="color:#8b008b;font-weight:bold">struct&lt;/span> {
+Name &lt;span style="color:#00688b;font-weight:bold">string&lt;/span> &lt;span style="color:#228b22">// name as it appears on command line
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> Usage &lt;span style="color:#00688b;font-weight:bold">string&lt;/span> &lt;span style="color:#228b22">// help message
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> Value Value &lt;span style="color:#228b22">// value as set
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> DefValue &lt;span style="color:#00688b;font-weight:bold">string&lt;/span> &lt;span style="color:#228b22">// default value (as text); for usage message
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>It&amp;rsquo;s simply a struct that aggregates the name, usage, value and default value.&lt;/p>
+&lt;ol start="2">
+&lt;li>A check is made on a unexported map (&lt;code>f.formal&lt;/code>) which is part of the
+&lt;code>FlagSet&lt;/code> (in this case of &lt;code>CommandLine&lt;/code>).&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">_, alreadythere := f.formal[name]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>FlagSet&lt;/code> structure has several unexported fields of which the &lt;code>Var&lt;/code>
+function uses &lt;code>name&lt;/code> (a string) and &lt;code>formal&lt;/code> (a map of type &lt;code>[string]*Flag&lt;/code>)&lt;/p>
+&lt;p>As can be seen here:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// A FlagSet represents a set of defined flags. The zero value of a FlagSet
+&lt;/span>&lt;span style="color:#228b22">// has no name and has ContinueOnError error handling.
+&lt;/span>&lt;span style="color:#228b22">//
+&lt;/span>&lt;span style="color:#228b22">// Flag names must be unique within a FlagSet. An attempt to define a flag whose
+&lt;/span>&lt;span style="color:#228b22">// name is already in use will cause a panic.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">type&lt;/span> FlagSet &lt;span style="color:#8b008b;font-weight:bold">struct&lt;/span> {
+&lt;span style="color:#228b22">// Usage is the function called when an error occurs while parsing flags.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#228b22">// The field is a function (not a method) that may be changed to point to
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#228b22">// a custom error handler. What happens after Usage is called depends
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#228b22">// on the ErrorHandling setting; for the command line, this defaults
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#228b22">// to ExitOnError, which exits the program after calling Usage.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> Usage &lt;span style="color:#8b008b;font-weight:bold">func&lt;/span>()
+name &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>
+parsed &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>
+actual &lt;span style="color:#8b008b;font-weight:bold">map&lt;/span>[&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>]*Flag
+formal &lt;span style="color:#8b008b;font-weight:bold">map&lt;/span>[&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>]*Flag
+args []&lt;span style="color:#00688b;font-weight:bold">string&lt;/span> &lt;span style="color:#228b22">// arguments after flags
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> errorHandling ErrorHandling
+output io.Writer &lt;span style="color:#228b22">// nil means stderr; use Output() accessor
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The check is made as can be seen to see if the flag is redefined, returning a
+different error depending on whether the flagSet has an empty name or not.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go"> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> alreadythere {
+&lt;span style="color:#8b008b;font-weight:bold">var&lt;/span> msg &lt;span style="color:#00688b;font-weight:bold">string&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> f.name == &lt;span style="color:#cd5555">&amp;#34;&amp;#34;&lt;/span> {
+msg = fmt.&lt;span style="color:#008b45">Sprintf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;flag redefined: %s&amp;#34;&lt;/span>, name)
+} &lt;span style="color:#8b008b;font-weight:bold">else&lt;/span> {
+msg = fmt.&lt;span style="color:#008b45">Sprintf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;%s flag redefined: %s&amp;#34;&lt;/span>, f.name, name)
+}
+fmt.&lt;span style="color:#008b45">Fprintln&lt;/span>(f.&lt;span style="color:#008b45">Output&lt;/span>(), msg)
+&lt;span style="color:#658b00">panic&lt;/span>(msg) &lt;span style="color:#228b22">// Happens only if flags are declared with identical names
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> }
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>If the map is not yet created (nil) then a maps is created.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go"> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> f.formal == &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+f.formal = &lt;span style="color:#658b00">make&lt;/span>(&lt;span style="color:#8b008b;font-weight:bold">map&lt;/span>[&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>]*Flag)
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>Add an entry in the map with the name of the flag as key and the pointer to
+the flag itself as value.&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">f.formal[name] = flag
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now the next piece of the puzzle comes in the next line of our program:
+&lt;code>flag.Parse()&lt;/code>.&lt;/p>
+&lt;p>Diving deep again:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// Parse parses the command-line flags from os.Args[1:]. Must be called
+&lt;/span>&lt;span style="color:#228b22">// after all flags are defined and before flags are accessed by the program.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> &lt;span style="color:#008b45">Parse&lt;/span>() {
+&lt;span style="color:#228b22">// Ignore errors; CommandLine is set for ExitOnError.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> CommandLine.&lt;span style="color:#008b45">Parse&lt;/span>(os.Args[&lt;span style="color:#b452cd">1&lt;/span>:])
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can see that it calls the &lt;code>Parse&lt;/code> method of the &lt;code>*FlagSet&lt;/code> &lt;code>CommandLine&lt;/code>
+with all the arguments passed to the executable.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// Parse parses flag definitions from the argument list, which should not
+&lt;/span>&lt;span style="color:#228b22">// include the command name. Must be called after all flags in the FlagSet
+&lt;/span>&lt;span style="color:#228b22">// are defined and before flags are accessed by the program.
+&lt;/span>&lt;span style="color:#228b22">// The return value will be ErrHelp if -help or -h were set but not defined.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> (f *FlagSet) &lt;span style="color:#008b45">Parse&lt;/span>(arguments []&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>) &lt;span style="color:#00688b;font-weight:bold">error&lt;/span> {
+f.parsed = &lt;span style="color:#8b008b;font-weight:bold">true&lt;/span>
+f.args = arguments
+&lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> {
+seen, err := f.&lt;span style="color:#008b45">parseOne&lt;/span>()
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> seen {
+&lt;span style="color:#8b008b;font-weight:bold">continue&lt;/span>
+}
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> err == &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">break&lt;/span>
+}
+&lt;span style="color:#8b008b;font-weight:bold">switch&lt;/span> f.errorHandling {
+&lt;span style="color:#8b008b;font-weight:bold">case&lt;/span> ContinueOnError:
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> err
+&lt;span style="color:#8b008b;font-weight:bold">case&lt;/span> ExitOnError:
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> err == ErrHelp {
+os.&lt;span style="color:#008b45">Exit&lt;/span>(&lt;span style="color:#b452cd">0&lt;/span>)
+}
+os.&lt;span style="color:#008b45">Exit&lt;/span>(&lt;span style="color:#b452cd">2&lt;/span>)
+&lt;span style="color:#8b008b;font-weight:bold">case&lt;/span> PanicOnError:
+&lt;span style="color:#658b00">panic&lt;/span>(err)
+}
+}
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can summarize this function as parsing each flag until all flags are parsed
+and either errors/panics in case of an error or returns nil in case
+there wasn&amp;rsquo;t any.&lt;/p>
+&lt;p>More specifically the loop ends if &lt;code>err&lt;/code> returned from &lt;code>f.parseOne()&lt;/code> is
+nil, and continues if the &lt;code>seen&lt;/code> returned by &lt;code>f.parseOne()&lt;/code> is &lt;code>true&lt;/code>.&lt;/p>
+&lt;p>Do note, that even though arguments passed are being assigned to &lt;code>f.args&lt;/code>, the
+for loop doesn&amp;rsquo;t explicitly iterate over them, instead it an infinite loops,
+and &lt;code>f.parseOne()&lt;/code> handles parsing and shifting the arguments passed.&lt;/p>
+&lt;p>As we can see the real key to understating the &lt;code>Parse&lt;/code> method is &lt;code>f.parseOne()&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#228b22">// parseOne parses one flag. It reports whether a flag was seen.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span>&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> (f *FlagSet) &lt;span style="color:#008b45">parseOne&lt;/span>() (&lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>, &lt;span style="color:#00688b;font-weight:bold">error&lt;/span>) {
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(f.args) == &lt;span style="color:#b452cd">0&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+s := f.args[&lt;span style="color:#b452cd">0&lt;/span>]
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(s) &amp;lt; &lt;span style="color:#b452cd">2&lt;/span> || s[&lt;span style="color:#b452cd">0&lt;/span>] != &lt;span style="color:#cd5555">&amp;#39;-&amp;#39;&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+numMinuses := &lt;span style="color:#b452cd">1&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> s[&lt;span style="color:#b452cd">1&lt;/span>] == &lt;span style="color:#cd5555">&amp;#39;-&amp;#39;&lt;/span> {
+numMinuses++
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(s) == &lt;span style="color:#b452cd">2&lt;/span> { &lt;span style="color:#228b22">// &amp;#34;--&amp;#34; terminates the flags
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> f.args = f.args[&lt;span style="color:#b452cd">1&lt;/span>:]
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+}
+name := s[numMinuses:]
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(name) == &lt;span style="color:#b452cd">0&lt;/span> || name[&lt;span style="color:#b452cd">0&lt;/span>] == &lt;span style="color:#cd5555">&amp;#39;-&amp;#39;&lt;/span> || name[&lt;span style="color:#b452cd">0&lt;/span>] == &lt;span style="color:#cd5555">&amp;#39;=&amp;#39;&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, f.&lt;span style="color:#008b45">failf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;bad flag syntax: %s&amp;#34;&lt;/span>, s)
+}
+&lt;span style="color:#228b22">// it&amp;#39;s a flag. does it have an argument?
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> f.args = f.args[&lt;span style="color:#b452cd">1&lt;/span>:]
+hasValue := &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>
+value := &lt;span style="color:#cd5555">&amp;#34;&amp;#34;&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> i := &lt;span style="color:#b452cd">1&lt;/span>; i &amp;lt; &lt;span style="color:#658b00">len&lt;/span>(name); i++ { &lt;span style="color:#228b22">// equals cannot be first
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> name[i] == &lt;span style="color:#cd5555">&amp;#39;=&amp;#39;&lt;/span> {
+value = name[i+&lt;span style="color:#b452cd">1&lt;/span>:]
+hasValue = &lt;span style="color:#8b008b;font-weight:bold">true&lt;/span>
+name = name[&lt;span style="color:#b452cd">0&lt;/span>:i]
+&lt;span style="color:#8b008b;font-weight:bold">break&lt;/span>
+}
+}
+m := f.formal
+flag, alreadythere := m[name] &lt;span style="color:#228b22">// BUG
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> !alreadythere {
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> name == &lt;span style="color:#cd5555">&amp;#34;help&amp;#34;&lt;/span> || name == &lt;span style="color:#cd5555">&amp;#34;h&amp;#34;&lt;/span> { &lt;span style="color:#228b22">// special case for nice help message.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> f.&lt;span style="color:#008b45">usage&lt;/span>()
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, ErrHelp
+}
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, f.&lt;span style="color:#008b45">failf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;flag provided but not defined: -%s&amp;#34;&lt;/span>, name)
+}
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> fv, ok := flag.Value.(boolFlag); ok &amp;amp;&amp;amp; fv.&lt;span style="color:#008b45">IsBoolFlag&lt;/span>() { &lt;span style="color:#228b22">// special case: doesn&amp;#39;t need an arg
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> hasValue {
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> err := fv.&lt;span style="color:#008b45">Set&lt;/span>(value); err != &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, f.&lt;span style="color:#008b45">failf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;invalid boolean value %q for -%s: %v&amp;#34;&lt;/span>, value, name, err)
+}
+} &lt;span style="color:#8b008b;font-weight:bold">else&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> err := fv.&lt;span style="color:#008b45">Set&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;true&amp;#34;&lt;/span>); err != &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, f.&lt;span style="color:#008b45">failf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;invalid boolean flag %s: %v&amp;#34;&lt;/span>, name, err)
+}
+}
+} &lt;span style="color:#8b008b;font-weight:bold">else&lt;/span> {
+&lt;span style="color:#228b22">// It must have a value, which might be the next argument.
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> !hasValue &amp;amp;&amp;amp; &lt;span style="color:#658b00">len&lt;/span>(f.args) &amp;gt; &lt;span style="color:#b452cd">0&lt;/span> {
+&lt;span style="color:#228b22">// value is the next arg
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> hasValue = &lt;span style="color:#8b008b;font-weight:bold">true&lt;/span>
+value, f.args = f.args[&lt;span style="color:#b452cd">0&lt;/span>], f.args[&lt;span style="color:#b452cd">1&lt;/span>:]
+}
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> !hasValue {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, f.&lt;span style="color:#008b45">failf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;flag needs an argument: -%s&amp;#34;&lt;/span>, name)
+}
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> err := flag.Value.&lt;span style="color:#008b45">Set&lt;/span>(value); err != &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, f.&lt;span style="color:#008b45">failf&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;invalid value %q for flag -%s: %v&amp;#34;&lt;/span>, value, name, err)
+}
+}
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> f.actual == &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span> {
+f.actual = &lt;span style="color:#658b00">make&lt;/span>(&lt;span style="color:#8b008b;font-weight:bold">map&lt;/span>[&lt;span style="color:#00688b;font-weight:bold">string&lt;/span>]*Flag)
+}
+f.actual[name] = flag
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">true&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Whoa! That&amp;rsquo;s a lot to unpack. Fortunately we don&amp;rsquo;t need to analyze the whole
+function to get to the single and double dashes logic, but let&amp;rsquo;s take it
+piecemeal:&lt;/p>
+&lt;ol>
+&lt;li>Check if there are no arguments:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go"> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(f.args) == &lt;span style="color:#b452cd">0&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So if there are no arguments it simply ends parsing.&lt;/p>
+&lt;ol start="2">
+&lt;li>Getting the first command line argument (the actual option/flag name)&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">s := f.args[&lt;span style="color:#b452cd">0&lt;/span>]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Since &lt;code>f.args&lt;/code> was all the command line arguments with whom the executable was
+called (this is simply assigning to &lt;code>s&lt;/code> the first command line argument).
+Later we will see that the &lt;code>f.args&lt;/code> slice gets updated in this function, so
+that it we advance the command line arguments seen.&lt;/p>
+&lt;p>In our example program, this would make:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">s := &lt;span style="color:#cd5555">&amp;#34;-verbose&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>&lt;strong>The actual explanation of why the short and long options work&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go"> &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(s) &amp;lt; &lt;span style="color:#b452cd">2&lt;/span> || s[&lt;span style="color:#b452cd">0&lt;/span>] != &lt;span style="color:#cd5555">&amp;#39;-&amp;#39;&lt;/span> {
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+numMinuses := &lt;span style="color:#b452cd">1&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> s[&lt;span style="color:#b452cd">1&lt;/span>] == &lt;span style="color:#cd5555">&amp;#39;-&amp;#39;&lt;/span> {
+numMinuses++
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> &lt;span style="color:#658b00">len&lt;/span>(s) == &lt;span style="color:#b452cd">2&lt;/span> { &lt;span style="color:#228b22">// &amp;#34;--&amp;#34; terminates the flags
+&lt;/span>&lt;span style="color:#228b22">&lt;/span> f.args = f.args[&lt;span style="color:#b452cd">1&lt;/span>:]
+&lt;span style="color:#8b008b;font-weight:bold">return&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">nil&lt;/span>
+}
+}
+name := s[numMinuses:]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>To explain this part let&amp;rsquo;s continue with the flag in our example program &lt;code>s&lt;/code>,
+but let&amp;rsquo;s assume we have invoked it with 2 dashes:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">s := &lt;span style="color:#cd5555">&amp;#34;--verbose&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The first if returns if the length of &lt;code>s&lt;/code> is 1 or not if the first rune
+(character) is not a dash. None of these is our case.&lt;/p>
+&lt;p>Since we don&amp;rsquo;t enter the body of the if statement the first rune &lt;em>must&lt;/em> be a
+dash, or minus as it is called in the code, then the &lt;code>numMinuses&lt;/code> is set to 1.&lt;/p>
+&lt;p>The second if checks whether the second character of the string is a dash &lt;code>-&lt;/code>
+and if it is it increments the &lt;code>numMinuses&lt;/code> to 2. If it isn&amp;rsquo;t then the body of
+the if is skipped.&lt;/p>
+&lt;p>Then checks if s consist of just that: two dashes (&lt;code>--&lt;/code>), since the two dashes
+is the flags terminator as we can see the function returns also false, and nil
+as before.&lt;/p>
+&lt;p>After this the &lt;code>name := s[numMinuses:]&lt;/code> slices the string so as to only trim
+the dashes and leave only the name of the flag.&lt;/p>
+&lt;p>i.e: &lt;code>name := &amp;quot;verbose&amp;quot;&lt;/code>&lt;/p>
+&lt;p>And this is the reason why the standard library &lt;code>flag&lt;/code> package works for both
+single or double dashes.&lt;/p>
+&lt;p>Now if you&amp;rsquo;ve made it this far &lt;em>and&lt;/em> you&amp;rsquo;re also learning this was also news
+to you, then I&amp;rsquo;m afraid this wasn&amp;rsquo;t a big reveal and is actually expected.&lt;/p>
+&lt;p>&lt;em>&lt;strong>This is actually documented behavior&lt;/strong>&lt;/em>, the thing is that is not actually &lt;strong>well
+documented&lt;/strong>. From the
+&lt;a href="https://golang.org/pkg/flag/#hdr-Command_line_flag_syntax">docs&lt;/a>, we can see
+that it shows 3 examples with a single dash but the text below mentions that
+double dashes are also possible.&lt;/p>
+&lt;p>&lt;img src="../../img/screenshot_flag_pkg_go.png" alt="screenshot_flag_pkg_go">&lt;/p>
+&lt;p>So, yeah, RTFM am I right?&lt;/p>
+&lt;p>OK, great. But this still doesn&amp;rsquo;t answer the question: &lt;strong>Is it possible to
+have short/long options using just flag package?&lt;/strong>&lt;/p>
+&lt;p>Well with this newfound knowledge of how flags are made and kept in the
+&lt;code>*FlagSet&lt;/code> this should be now a bit more straightforward, but let&amp;rsquo;s check how it
+is done in
+&lt;a href="https://github.com/FiloSottile/age/blob/master/cmd/age/age.go#L97-L102">age&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go"> flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;decryptFlag, &lt;span style="color:#cd5555">&amp;#34;d&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;decrypt the input&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;decryptFlag, &lt;span style="color:#cd5555">&amp;#34;decrypt&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;decrypt the input&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;encryptFlag, &lt;span style="color:#cd5555">&amp;#34;e&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;encrypt the input&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;encryptFlag, &lt;span style="color:#cd5555">&amp;#34;encrypt&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;encrypt the input&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;passFlag, &lt;span style="color:#cd5555">&amp;#34;p&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;use a passphrase&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;passFlag, &lt;span style="color:#cd5555">&amp;#34;passphrase&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;use a passphrase&amp;#34;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As can be seen all that it&amp;rsquo;s needed is to assign to the same variable two
+flags: one with a single letter and one with a word. Of course this doesn&amp;rsquo;t
+prevent anyone from using the single dash with the word form or the double
+dash with the single letter, but if the ergonomics and restricting the usages
+are really important, you can always modify &lt;code>flag.Usage&lt;/code> so that these two
+cases are documented, &lt;a href="https://github.com/FiloSottile/age/blob/master/cmd/age/age.go#L35">as it is done with
+&lt;code>age&lt;/code>&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8b008b;font-weight:bold">const&lt;/span> usage = &lt;span style="color:#a61717;background-color:#e3d2d2">`&lt;/span>Usage:
+age [--encrypt] (-r RECIPIENT | -R PATH)... [--armor] [-o OUTPUT] [INPUT]
+age [--encrypt] --passphrase [--armor] [-o OUTPUT] [INPUT]
+age --decrypt [-i PATH]... [-o OUTPUT] [INPUT]
+Options:
+-e, --encrypt Encrypt the input to the output. Default &lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> omitted.
+-d, --decrypt Decrypt the input to the output.
+-o, --output OUTPUT Write the result to the file at path OUTPUT.
+-a, --armor Encrypt to a PEM encoded format.
+-p, --passphrase Encrypt with a passphrase.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>We can test it in our tiny example program by adding an extra line with &lt;code>&amp;quot;v&amp;quot;&lt;/code>
+as flag name such that it looks like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8b008b;font-weight:bold">package&lt;/span> main
+&lt;span style="color:#8b008b;font-weight:bold">import&lt;/span> (
+&lt;span style="color:#cd5555">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;span style="color:#cd5555">&amp;#34;flag&amp;#34;&lt;/span>
+)
+&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> &lt;span style="color:#008b45">main&lt;/span>() {
+&lt;span style="color:#8b008b;font-weight:bold">var&lt;/span> verbose &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;verbose, &lt;span style="color:#cd5555">&amp;#34;verbose&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;verbose output&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;verbose, &lt;span style="color:#cd5555">&amp;#34;v&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;verbose output&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">Parse&lt;/span>()
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> verbose {
+fmt.&lt;span style="color:#008b45">Println&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;verbose is on&amp;#34;&lt;/span>)
+}
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Don&amp;rsquo;t forget to build it after modifying it.&lt;/p>
+&lt;p>Invoking it with &lt;code>-v&lt;/code>, &lt;code>--v&lt;/code> and of course the other two cases works as well:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ ./using_flag -v
+verbose is on
+$ ./using_flag --verbose
+verbose is on
+$ ./using_flag --v
+verbose is on
+$ ./using_flag -verbose
+verbose is on
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>And of course invoking it with three (or more dashes) dashes results in a
+error:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ ./using_flag ---verbose
+bad flag syntax: ---verbose
+Usage of ./using_flag:
+-v verbose output
+-verbose
+verbose output
+$
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>For completion&amp;rsquo;s sake we&amp;rsquo;ll modify the &lt;code>flag.Usage&lt;/code> so that we have a neater
+error when we either print help or have an error parsing flags:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-go" data-lang="go">&lt;span style="color:#8b008b;font-weight:bold">package&lt;/span> main
+&lt;span style="color:#8b008b;font-weight:bold">import&lt;/span> (
+&lt;span style="color:#cd5555">&amp;#34;flag&amp;#34;&lt;/span>
+&lt;span style="color:#cd5555">&amp;#34;fmt&amp;#34;&lt;/span>
+)
+&lt;span style="color:#8b008b;font-weight:bold">const&lt;/span> usage = &lt;span style="color:#cd5555">`Usage of using_flag:
+&lt;/span>&lt;span style="color:#cd5555"> -v, --verbose verbose output
+&lt;/span>&lt;span style="color:#cd5555"> -h, --help prints help information
+&lt;/span>&lt;span style="color:#cd5555">`&lt;/span>
+&lt;span style="color:#8b008b;font-weight:bold">func&lt;/span> &lt;span style="color:#008b45">main&lt;/span>() {
+&lt;span style="color:#8b008b;font-weight:bold">var&lt;/span> verbose &lt;span style="color:#00688b;font-weight:bold">bool&lt;/span>
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;verbose, &lt;span style="color:#cd5555">&amp;#34;verbose&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;verbose output&amp;#34;&lt;/span>)
+flag.&lt;span style="color:#008b45">BoolVar&lt;/span>(&amp;amp;verbose, &lt;span style="color:#cd5555">&amp;#34;v&amp;#34;&lt;/span>, &lt;span style="color:#8b008b;font-weight:bold">false&lt;/span>, &lt;span style="color:#cd5555">&amp;#34;verbose output&amp;#34;&lt;/span>)
+flag.Usage = &lt;span style="color:#8b008b;font-weight:bold">func&lt;/span>() { fmt.&lt;span style="color:#008b45">Print&lt;/span>(usage) }
+flag.&lt;span style="color:#008b45">Parse&lt;/span>()
+&lt;span style="color:#8b008b;font-weight:bold">if&lt;/span> verbose {
+fmt.&lt;span style="color:#008b45">Println&lt;/span>(&lt;span style="color:#cd5555">&amp;#34;verbose is on&amp;#34;&lt;/span>)
+}
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>which outputs:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-sh" data-lang="sh">$ ./using_flag ---verbose
+bad flag syntax: ---verbose
+Usage of using_flag:
+-v, --verbose verbose output
+-h, --help prints &lt;span style="color:#658b00">help&lt;/span> information
+$
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I think the main reason people assume this isn&amp;rsquo;t possible is because the
+flag documentation doesn&amp;rsquo;t &lt;em>&lt;strong>show&lt;/strong>&lt;/em> that the options could be passed with
+&lt;em>single or double dash&lt;/em>. The fact that by far most people that want a CLI that
+handles flags cleaning use &lt;a href="https://www.github.com/spf13/cobra">spf13/cobra&lt;/a>
+doesn&amp;rsquo;t help either. Also it doesn&amp;rsquo;t help that is a high quality package with
+nice ergonomics.&lt;/p>
+&lt;p>But as you can see, it&amp;rsquo;s not essential to use in order to have regular
+Unix-style command line options.&lt;/p>
+&lt;p>That&amp;rsquo;s all folks. Happy hacking!&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Things to backup before doing a factory reset of an Android Phone</title><link>https://www.antoniojgutierrez.com/posts/2021-01-31-steps_todo_before_factory_reset_android/</link><pubDate>Sun, 31 Jan 2021 23:46:55 +0100</pubDate><guid>https://www.antoniojgutierrez.com/posts/2021-01-31-steps_todo_before_factory_reset_android/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2021-01-31-steps_todo_before_factory_reset_android/ -&lt;p>There&amp;rsquo;s always something that I miss whenever I do a factory reset of my
 personal phone, whether it&amp;rsquo;s the signal backup (which is now enabled by
 the usage of a PIN), or some new 2FA code. This post (as many of them are)
 are mental (and written) notes for future me to remember.&lt;/p>
@@ -543,96 +1041,4 @@ chrome-extension to the plugins section.&lt;/p>
 }
 }
 &lt;/code>&lt;/pre>&lt;p>That&amp;rsquo;s it! Now you can enjoy having the Chrome API completion in vim.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Automount SMB directory with systemd in Arch</title><link>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</link><pubDate>Mon, 09 Apr 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ -&lt;h1 id="problem-statement">Problem statement&lt;/h1>
-&lt;p>I wanted to mount a directory from a local desktop in my laptop regardless of
-the OS it might be running at the moment. Also, not just mount it. &lt;em>Automount&lt;/em>
-it either whenever I boot or on demand.&lt;/p>
-&lt;p>At the moment in my particular case, both laptop and desktop are running Arch
-Linux.&lt;/p>
-&lt;p>First let&amp;rsquo;s do a bit of a primer:&lt;/p>
-&lt;h2 id="smb-primer">SMB Primer&lt;/h2>
-&lt;p>&lt;em>SMB&lt;/em> is a network protocol (that also acts as a network/distributed file
-system) used for sharing file and print services between Windows clients. The
-original version was also known as &lt;em>CIFS&lt;/em>, and since then both names are used
-interchangeably.&lt;/p>
-&lt;p>Samba is a FOSS implementation of the SMB protocol that runs on *nix systems.&lt;/p>
-&lt;p>The other competitor to SMB is NFS, but the former is more Windows oriented as
-it was originally created for the Microsoft ecosystem, while the latter was
-created towards a more *nix friendly environment.&lt;/p>
-&lt;p>Using SMB is the traditionally way of sharing directories between Linux/Windows.&lt;/p>
-&lt;p>TL;DR: SMB for Windows/Linux. NFS for Linux/Linux.&lt;/p>
-&lt;h1 id="what-to-install">What to install&lt;/h1>
-&lt;p>You need the install &lt;code>cifs-utils&lt;/code> which provides user-space tools for mounting
-SMB/CIFS file systems (or shares as they are also called).&lt;/p>
-&lt;p>Basically, &lt;code>cifs-utils&lt;/code> add the possibility of selecting cifs as filesystem to
-&lt;code>mount&lt;/code>.&lt;/p>
-&lt;h2 id="credentials">Credentials&lt;/h2>
-&lt;p>We create a file containing the credentials used for that.
-Unfortunately there&amp;rsquo;s no other way that I&amp;rsquo;m aware of, of storing the
-credentials other than &lt;em>plaintext&lt;/em>.&lt;/p>
-&lt;p>The file should contain two entries as such:&lt;/p>
-&lt;pre>&lt;code>username=USERNAME
-password=PASSWORD
-&lt;/code>&lt;/pre>&lt;p>You should store it somewhere in /etc/samba/ and set its permissions to 600 so
-that only root has read/write access.&lt;/p>
-&lt;h2 id="mount-file">Mount file&lt;/h2>
-&lt;p>The mount file contains the information on how to mount the filesystem.&lt;/p>
-&lt;p>One important note is that &lt;strong>the filename should encode the mount point,
-otherwise systemd will fail at mounting it&lt;/strong>.&lt;/p>
-&lt;p>The filename should be of the pattern:
-&lt;code>directory1-directory2-directory3.mount&lt;/code>&lt;/p>
-&lt;p>Where the actual path where it is mounted is:&lt;/p>
-&lt;p>&lt;code>/directory1/directory2/directory3&lt;/code>&lt;/p>
-&lt;p>That is, the internal forward slashes of the path should be the minuses (&amp;quot;-&amp;quot;)
-in the filename.&lt;/p>
-&lt;p>Otherwise you will get an error like this&lt;/p>
-&lt;pre>&lt;code>$ systemctl start mntdir.mount
-$ systemctl status mntdir.mount
-...
-...
-mntdir.mount's Where= setting doesn't match unit name. Refusing
-&lt;/code>&lt;/pre>&lt;p>This file should contain something like this:&lt;/p>
-&lt;pre>&lt;code>[Unit]
-Description=DESCRIPTION
-Requires=systemd-networkd.service
-After=network-online.target
-Wants=network-online.target
-[Mount]
-What=PATH_IN_SMB_SERVER
-Where=PATH_TO_MOUNT_POINT
-Options=vers=2.1,credentials=CREDENTIALS_PATH,iocharset=utf8,rw,x-systemd.automount
-Type=cifs
-TimeoutSec=30
-[Install]
-WantedBy=multi-user.target
-&lt;/code>&lt;/pre>&lt;p>Replacing the upper case values with the relevant parameters in your case.&lt;/p>
-&lt;h2 id="automount-file">Automount file&lt;/h2>
-&lt;p>The automount file contains the information as to where and how to automount.
-This automount works on-demand, i.e: it mounts the filesystem when you
-navigate to that directory.&lt;/p>
-&lt;p>Just like the mount file: the name of the file should encode the mount
-location. i.e: it should have the same name as the &lt;code>.mount&lt;/code> file but with the
-file extension: &lt;code>.automount&lt;/code>&lt;/p>
-&lt;p>Its contents should be something like this:&lt;/p>
-&lt;pre>&lt;code>[Unit]
-Description=DESCRIPTION
-Requires=network-online.target
-[Automount]
-Where=PATH_TO_MOUNT_POINT
-TimeoutIdleSec=0
-[Install]
-WantedBy=multi-user.target
-&lt;/code>&lt;/pre>&lt;p>Replacing the upper case values with the relevant parameters in your case, but
-keeping in mind that the &lt;code>PATH_TO_MOUNT_POINT&lt;/code> should be the same as the one
-in the &lt;code>.mount&lt;/code> file.&lt;/p>
-&lt;p>This file should be enabled so that it runs at boot.&lt;/p>
-&lt;pre>&lt;code>systemctl enable mnt-dir.automount
-&lt;/code>&lt;/pre>&lt;p>Asumming the mount point is /mnt/dir (and therefore the filename is
-mnt-dir.automout).&lt;/p>
-&lt;h2 id="tips">Tips&lt;/h2>
-&lt;p>In my particulaar case no matter what &lt;code>Requires&lt;/code>, &lt;code>After&lt;/code> and/or &lt;code>Wants&lt;/code>
-service you select, enabling the &lt;code>.mount&lt;/code> file so that it runs automatically
-at boot, the system will fail to mount it.&lt;/p>
-&lt;p>Even more, I found that most guides and tutorials used the automount as the
-actual enabled unit, which mounts on demand and not on boot.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item></channel></rss>
+- https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item></channel></rss>

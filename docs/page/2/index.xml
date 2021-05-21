@@ -1,4 +1,96 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Sun, 31 Jan 2021 23:46:55 +0100</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Setting up a Raspberry Pi Cluster (Part 1)</title><link>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</link><pubDate>Wed, 28 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ -&lt;p>I recently decided to set up a raspberry pi cluster, with whom I could
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Bits and pieces</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Bits and pieces</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2020. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 14 May 2021 02:18:25 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Automount SMB directory with systemd in Arch</title><link>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</link><pubDate>Mon, 09 Apr 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ -&lt;h1 id="problem-statement">Problem statement&lt;/h1>
+&lt;p>I wanted to mount a directory from a local desktop in my laptop regardless of
+the OS it might be running at the moment. Also, not just mount it. &lt;em>Automount&lt;/em>
+it either whenever I boot or on demand.&lt;/p>
+&lt;p>At the moment in my particular case, both laptop and desktop are running Arch
+Linux.&lt;/p>
+&lt;p>First let&amp;rsquo;s do a bit of a primer:&lt;/p>
+&lt;h2 id="smb-primer">SMB Primer&lt;/h2>
+&lt;p>&lt;em>SMB&lt;/em> is a network protocol (that also acts as a network/distributed file
+system) used for sharing file and print services between Windows clients. The
+original version was also known as &lt;em>CIFS&lt;/em>, and since then both names are used
+interchangeably.&lt;/p>
+&lt;p>Samba is a FOSS implementation of the SMB protocol that runs on *nix systems.&lt;/p>
+&lt;p>The other competitor to SMB is NFS, but the former is more Windows oriented as
+it was originally created for the Microsoft ecosystem, while the latter was
+created towards a more *nix friendly environment.&lt;/p>
+&lt;p>Using SMB is the traditionally way of sharing directories between Linux/Windows.&lt;/p>
+&lt;p>TL;DR: SMB for Windows/Linux. NFS for Linux/Linux.&lt;/p>
+&lt;h1 id="what-to-install">What to install&lt;/h1>
+&lt;p>You need the install &lt;code>cifs-utils&lt;/code> which provides user-space tools for mounting
+SMB/CIFS file systems (or shares as they are also called).&lt;/p>
+&lt;p>Basically, &lt;code>cifs-utils&lt;/code> add the possibility of selecting cifs as filesystem to
+&lt;code>mount&lt;/code>.&lt;/p>
+&lt;h2 id="credentials">Credentials&lt;/h2>
+&lt;p>We create a file containing the credentials used for that.
+Unfortunately there&amp;rsquo;s no other way that I&amp;rsquo;m aware of, of storing the
+credentials other than &lt;em>plaintext&lt;/em>.&lt;/p>
+&lt;p>The file should contain two entries as such:&lt;/p>
+&lt;pre>&lt;code>username=USERNAME
+password=PASSWORD
+&lt;/code>&lt;/pre>&lt;p>You should store it somewhere in /etc/samba/ and set its permissions to 600 so
+that only root has read/write access.&lt;/p>
+&lt;h2 id="mount-file">Mount file&lt;/h2>
+&lt;p>The mount file contains the information on how to mount the filesystem.&lt;/p>
+&lt;p>One important note is that &lt;strong>the filename should encode the mount point,
+otherwise systemd will fail at mounting it&lt;/strong>.&lt;/p>
+&lt;p>The filename should be of the pattern:
+&lt;code>directory1-directory2-directory3.mount&lt;/code>&lt;/p>
+&lt;p>Where the actual path where it is mounted is:&lt;/p>
+&lt;p>&lt;code>/directory1/directory2/directory3&lt;/code>&lt;/p>
+&lt;p>That is, the internal forward slashes of the path should be the minuses (&amp;quot;-&amp;quot;)
+in the filename.&lt;/p>
+&lt;p>Otherwise you will get an error like this&lt;/p>
+&lt;pre>&lt;code>$ systemctl start mntdir.mount
+$ systemctl status mntdir.mount
+...
+...
+mntdir.mount's Where= setting doesn't match unit name. Refusing
+&lt;/code>&lt;/pre>&lt;p>This file should contain something like this:&lt;/p>
+&lt;pre>&lt;code>[Unit]
+Description=DESCRIPTION
+Requires=systemd-networkd.service
+After=network-online.target
+Wants=network-online.target
+[Mount]
+What=PATH_IN_SMB_SERVER
+Where=PATH_TO_MOUNT_POINT
+Options=vers=2.1,credentials=CREDENTIALS_PATH,iocharset=utf8,rw,x-systemd.automount
+Type=cifs
+TimeoutSec=30
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>Replacing the upper case values with the relevant parameters in your case.&lt;/p>
+&lt;h2 id="automount-file">Automount file&lt;/h2>
+&lt;p>The automount file contains the information as to where and how to automount.
+This automount works on-demand, i.e: it mounts the filesystem when you
+navigate to that directory.&lt;/p>
+&lt;p>Just like the mount file: the name of the file should encode the mount
+location. i.e: it should have the same name as the &lt;code>.mount&lt;/code> file but with the
+file extension: &lt;code>.automount&lt;/code>&lt;/p>
+&lt;p>Its contents should be something like this:&lt;/p>
+&lt;pre>&lt;code>[Unit]
+Description=DESCRIPTION
+Requires=network-online.target
+[Automount]
+Where=PATH_TO_MOUNT_POINT
+TimeoutIdleSec=0
+[Install]
+WantedBy=multi-user.target
+&lt;/code>&lt;/pre>&lt;p>Replacing the upper case values with the relevant parameters in your case, but
+keeping in mind that the &lt;code>PATH_TO_MOUNT_POINT&lt;/code> should be the same as the one
+in the &lt;code>.mount&lt;/code> file.&lt;/p>
+&lt;p>This file should be enabled so that it runs at boot.&lt;/p>
+&lt;pre>&lt;code>systemctl enable mnt-dir.automount
+&lt;/code>&lt;/pre>&lt;p>Asumming the mount point is /mnt/dir (and therefore the filename is
+mnt-dir.automout).&lt;/p>
+&lt;h2 id="tips">Tips&lt;/h2>
+&lt;p>In my particulaar case no matter what &lt;code>Requires&lt;/code>, &lt;code>After&lt;/code> and/or &lt;code>Wants&lt;/code>
+service you select, enabling the &lt;code>.mount&lt;/code> file so that it runs automatically
+at boot, the system will fail to mount it.&lt;/p>
+&lt;p>Even more, I found that most guides and tutorials used the automount as the
+actual enabled unit, which mounts on demand and not on boot.&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ - Antonio Gutierrez 2020. CC-BY-NC 4.0</description></item><item><title>Setting up a Raspberry Pi Cluster (Part 1)</title><link>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</link><pubDate>Wed, 28 Mar 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/</guid><description>Bits and pieces https://www.antoniojgutierrez.com/posts/2018-03-28-setting_up_rpi_cluster/ -&lt;p>I recently decided to set up a raspberry pi cluster, with whom I could
 experiment, learn and use cluster technologies like Kubernetes, Apache Hadoop,
 Spark, and even small programs using RPC and OpenMP.&lt;/p>
 &lt;p>In setting up the raspberry pi (a process which I think I&amp;rsquo;m fairly acquainted
