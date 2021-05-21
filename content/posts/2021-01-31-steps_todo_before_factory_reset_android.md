@@ -54,7 +54,7 @@ the famous apps like Google Authenticator, Authy, and others.
   red pill and going for a custom ROM.
 
 As you can see most everything is backed up by default to the cloud either
-associated to an Gmail account or the app itself maintain a state in the
+associated to an Gmail account or the apps themselves maintain state in the
 cloud, so that in both cases a simple sign in would restore your profile to
 its last state.
 
