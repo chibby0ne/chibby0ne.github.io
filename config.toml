@@ -1,8 +1,8 @@
 baseURL = "https://www.antoniojgutierrez.com/"
 DefaultContentLanguage = "en" # Theme's display language, supports: en, fr, zh, zh-hant
 languageCode = "en-us"
-title = "Bits and pieces"
-copyright = "Antonio Gutierrez 2020. CC-BY-NC 4.0"
+title = "Murmurations of Neurons"
+copyright = "Antonio Gutierrez 2015-2021. CC-BY-NC 4.0"
 theme = "diary"
 googleAnalytics = "UA-55399960-1"
 
@@ -19,7 +19,7 @@ googleAnalytics = "UA-55399960-1"
     tabWidth = 4
 
 [params]
-subtitle = "Antonio's blog"
+subtitle = "An exploration of ideas and thoughts on programming, computers, nature and life in general"
 disqusShortname = "antoniojgutierrez"
 github_username = "chibby0ne"
 enableReadingTime = true
@@ -27,8 +27,8 @@ enableReadingTime = true
 # Twitter Card and Open Graph settings
 enableOpenGraph = true
 enableTwitterCards = true
-title = "Bits and pieces" # will set 'og:site_name'
-description = "Antonio's Blog"  # will set 'og:description'
+title = "Murmurations of Neurons" # will set 'og:site_name'
+description = "An exploration of ideas and thoughts on programming, computers, nature and life in general"  # will set 'og:description'
 
 [taxonomies]
    tag = "tags"
