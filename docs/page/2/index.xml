@@ -1,4 +1,95 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 14 May 2021 02:18:25 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Automount SMB directory with systemd in Arch</title><link>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</link><pubDate>Mon, 09 Apr 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ -&lt;h1 id="problem-statement">Problem statement&lt;/h1>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 10 Jun 2022 01:17:07 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Log base 10 vs Log base e notation</title><link>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link><pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p>I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; notation.&lt;/p>
+&lt;p>Let&amp;rsquo;s go step by step:&lt;/p>
+&lt;p>Two of the most common logarithms are the logarithm of base $$e$$, also called
+natural logarithm which is written in two forms:&lt;/p>
+&lt;p>$$\ln{x} = \log_{e}{x}$$&lt;/p>
+&lt;p>and the logarithm of base 10 also called common logarithm or decimal
+logarithm:&lt;/p>
+&lt;p>$$ \log_{10}{x}$$&lt;/p>
+&lt;p>Additionally scientific calculators have a &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; and a &amp;ldquo;&lt;strong>ln&lt;/strong>&amp;rdquo; function,
+which apply the logarithm of base 10 and the logarithm of base $$e$$ respectively:&lt;/p>
+&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logarithm_keys.jpg" alt="log keys in calculator">&lt;/p>
+&lt;h5 id="by-waifer-x---100502-1150494uploaded-by-pieter-kuiper-cc-by-20-httpscommonswikimediaorgwindexphpcurid10715338">By Waifer X - 100502-1150494Uploaded by Pieter Kuiper, CC BY 2.0, &lt;a href="https://commons.wikimedia.org/w/index.php?curid=10715338">https://commons.wikimedia.org/w/index.php?curid=10715338&lt;/a>&lt;/h5>
+&lt;p>But something that I learned while checking for errors doing the derivative is that mathematicians and calculator designers
+have different things in mind when writing &amp;ldquo;&lt;strong>log&lt;/strong>&amp;quot;:&lt;/p>
+&lt;p>From Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Common_logarithm">Common Logarithm&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>On calculators it is usually &amp;ldquo;log&amp;rdquo;, but mathematicians usually mean natural logarithm (logarithm with base e ≈ 2.71828) rather than common logarithm when they write &amp;ldquo;log&amp;rdquo;. To mitigate this ambiguity the ISO 80000 specification recommends that $$log_{10}{x}$$ should be written $$lg{x}$$ and $$log_{e}{x}$$ should be $$ln{x}$$.&lt;/p>
+&lt;/blockquote>
+&lt;p>And from Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Natural_logarithm">Natural Logarithm&lt;/a>:&lt;/p>
+&lt;blockquote>
+&lt;p>The natural logarithm of x is generally written as $$ln x$$, $$log_{e} x$$, or sometimes, if the base $$e$$ is implicit, simply $$log x$$.&lt;/p>
+&lt;/blockquote>
+&lt;p>Therefore in the case of the negative log-likelihood function:&lt;/p>
+&lt;p>$$ L(\boldsymbol{y}) = - \log(\boldsymbol{y}) $$&lt;/p>
+&lt;p>Although it&amp;rsquo;s not implicit that it refers to a logarithm of base $$e$$, &lt;em>it is
+indeed the natural logarithm&lt;/em>, it&amp;rsquo;s just being used as mentioned in the given
+excerpt of common logarithm (i.e: mathematicians usually mean natural logarithm when they write &amp;ldquo;log&amp;rdquo;), and therefore its derivative is:&lt;/p>
+&lt;p>$$ \dfrac{\partial L_{\boldsymbol{y}}}{\partial \boldsymbol{y}} = -\dfrac{1}{\boldsymbol{y}} $$&lt;/p>
+&lt;p>Mathematicians be crazy!&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Using Javascript completion including adding Google Chrome API in vim</title><link>https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/</link><pubDate>Fri, 20 Apr 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ -&lt;p>&lt;a href="https://github.com/Valloric/YouCompleteMe">YouCompleteMe&lt;/a> is a very powerful code completion engine built
+for the vim editor. It has several completion engines for many languages
+including C/C++, Rust, Go, Python, Javascript among others. It contains two
+parts: a vim-plugin and a daemon.&lt;/p>
+&lt;p>A very simple explanation of how YouCompleteMe works is by starting a server
+whenever a file is opened whose filetype corresponds to one of the installed
+languages engines. After this, the file is analyzed by communicating with from
+vim using the vim plugin (client) to the daemon (server).
+&lt;em>The languages for which YouCompleteMe provides auto completion are selected
+are install time, therefore if you don&amp;rsquo;t explicitly install it selecting a
+language, autocompletion for that language will probably be disabled.&lt;/em>&lt;/p>
+&lt;p>For Javascript, &lt;a href="http://ternjs.net/">tern&lt;/a> is used for the code analysis. Tern itself
+requires a &lt;code>.tern-project&lt;/code> or a &lt;code>.tern-config&lt;/code> file describing the specific
+configuration in the root of the project or above or the home directory
+respectively. Tern then opens a server in a unused port that listens for POST
+requests from a client that asks questions about the code in the form of JSON.&lt;/p>
+&lt;p>When vim is started is runs tern in a separate process and starts the
+querying whenever possible as described before.&lt;/p>
+&lt;p>In addition, tern supports server plugins, which are normal Javascript
+programs that add extra functionality to the server. There are a few plugins
+that come with the distribution such as doc and nodejs.&lt;/p>
+&lt;p>Now what if I wanted to develop a Chrome Extension and wanted the
+autocompletion for the Chrome API in vim?&lt;/p>
+&lt;p>Well since tern supports this it would be only a matter of installing the tern
+plugin and adding the plugin to the &lt;code>.tern-project&lt;/code>.&lt;/p>
+&lt;p>First installing the tern Chrome Extension:
+I found this &lt;a href="https://www.npmjs.com/package/tern-chrome-extension">tern-chrome-extension&lt;/a> which worked
+pretty well.&lt;/p>
+&lt;p>And we can&amp;rsquo;t just install it in the project directory that would install it in
+the &lt;code>node modules&lt;/code> but vim(and tern) would be aware of it. We have to install it
+in &lt;code>node_modules&lt;/code> of the tern instance that&amp;rsquo;s run by vim.&lt;/p>
+&lt;p>To find it we run, with a vim instance reading a Javascript file:&lt;/p>
+&lt;pre>&lt;code>ps aux | grep tern
+&lt;/code>&lt;/pre>&lt;p>We find that the process is running as:&lt;/p>
+&lt;pre>&lt;code>/usr/bin/node /home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/node_modules/tern/bin/tern --port 46973 --host 127.0.0.1 --persistent --no-port-file
+&lt;/code>&lt;/pre>&lt;p>We want to navigate to this directory &lt;code>/home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/&lt;/code>, because the &lt;code>node_modules&lt;/code> is the place where we want it to be installed.&lt;/p>
+&lt;p>We run:&lt;/p>
+&lt;pre>&lt;code>npm install --prefix . tern-chrome-extension
+&lt;/code>&lt;/pre>&lt;p>And we make sure everything went ok by checking if there&amp;rsquo;s a directory with
+that name in &lt;code>node_modules&lt;/code> or in the &lt;code>package.json&lt;/code>&lt;/p>
+&lt;pre>&lt;code>$ cat package.json
+{
+&amp;quot;description&amp;quot;: &amp;quot;ycmd tern runtime area with required tern version and plugins&amp;quot;,
+&amp;quot;dependencies&amp;quot;: {
+&amp;quot;tern&amp;quot;: &amp;quot;0.21.0&amp;quot;,
+&amp;quot;tern-chrome-extension&amp;quot;: &amp;quot;^46.1.20160420&amp;quot;
+}
+}
+&lt;/code>&lt;/pre>&lt;p>Now all that&amp;rsquo;s needed to create/edit the &lt;code>.tern-project&lt;/code> file, and add the
+chrome-extension to the plugins section.&lt;/p>
+&lt;pre>&lt;code>$ cat .tern-project
+{
+&amp;quot;libs&amp;quot;: [
+&amp;quot;browser&amp;quot;,
+&amp;quot;ecma5&amp;quot;
+],
+&amp;quot;plugins&amp;quot;: {
+&amp;quot;node&amp;quot;: {},
+&amp;quot;chrome-extension&amp;quot;: {}
+}
+}
+&lt;/code>&lt;/pre>&lt;p>That&amp;rsquo;s it! Now you can enjoy having the Chrome API completion in vim.&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Automount SMB directory with systemd in Arch</title><link>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</link><pubDate>Mon, 09 Apr 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-04-09-automounting_systemd/ -&lt;h1 id="problem-statement">Problem statement&lt;/h1>
 &lt;p>I wanted to mount a directory from a local desktop in my laptop regardless of
 the OS it might be running at the moment. Also, not just mount it. &lt;em>Automount&lt;/em>
 it either whenever I boot or on demand.&lt;/p>
@@ -426,9 +517,4 @@ EndSection
 - https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Finally Looking OK</title><link>https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/</link><pubDate>Wed, 28 Jan 2015 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ -&lt;p>After several hours of googling, hacking, reading, and messing around with Firefox Inspector tool, things are starting to look a bit better. I&amp;rsquo;ve added a mini-bio and also a dummy first post, just trying things out.&lt;/p>
 &lt;p>I&amp;rsquo;ve been almost about to give up several times during the day but then again, as Benjamin Franklin said: &amp;ldquo;&lt;strong>Energy and Persistence conquer all things&lt;/strong>&amp;rdquo;.&lt;/p>
 &lt;p>That&amp;rsquo;s all for now, let&amp;rsquo;s see what else I come up with.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>First Post (yey!)</title><link>https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/</link><pubDate>Tue, 27 Jan 2015 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/ -&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus interdum ornare augue quis suscipit. Integer dui justo, finibus sit amet rutrum vitae, sagittis vitae nisi. Nam tortor dolor, volutpat vitae sapien nec, accumsan faucibus lorem. Mauris viverra arcu blandit ex feugiat tempor ac non metus. Pellentesque vel arcu bibendum, posuere diam et, rutrum dui. Nunc non porttitor purus. Aliquam sit amet dictum tellus. Nulla interdum tortor sed fermentum sodales. Etiam finibus felis eu nunc elementum vestibulum. Fusce urna nibh, vehicula ut sollicitudin sed, porttitor eu mi. Nulla nec nibh nec sapien molestie eleifend. Integer cursus sapien nec tincidunt volutpat. Nam sit amet tempus justo.&lt;/p>
-&lt;p>Mauris consectetur, mauris nec malesuada sagittis, magna ligula vestibulum massa, eget semper purus diam non leo. Aenean hendrerit interdum nisi, nec maximus neque pretium et. Mauris condimentum scelerisque augue porttitor ultrices. Maecenas hendrerit posuere nunc, at posuere arcu. Aenean quis fermentum ex. Fusce hendrerit augue et diam elementum, ut luctus lectus dapibus. Nulla gravida cursus augue, nec ullamcorper metus pharetra pharetra.&lt;/p>
-&lt;p>Donec ullamcorper elit porttitor elit vulputate, et pharetra sem blandit. Etiam eu laoreet eros, a cursus ex. In lacus augue, venenatis id venenatis non, suscipit at odio. Curabitur vitae lorem metus. Nullam varius rhoncus volutpat. Nulla ullamcorper erat quam, in convallis leo lacinia eget. Sed id condimentum purus. Aliquam ac mi orci. Quisque accumsan mattis vehicula. Aenean eu massa vel tellus mattis tempor. Nullam non lectus auctor, hendrerit ante eget, pulvinar erat. Nunc hendrerit elit ut suscipit feugiat. Ut metus sapien, convallis vestibulum eros vitae, pulvinar auctor est. Pellentesque finibus neque eget metus scelerisque porttitor. Aliquam auctor nunc nec fermentum euismod. Morbi nec metus ut nibh convallis hendrerit quis eget metus.&lt;/p>
-&lt;p>Duis euismod nisl non nisi vehicula convallis. Sed tempus pellentesque cursus. Nam pulvinar augue lorem, ut gravida quam eleifend ac. Vivamus pulvinar commodo leo, et posuere orci. Mauris non massa vitae mi porta rhoncus sit amet nec ex. Nullam placerat nulla sed libero laoreet, at sollicitudin massa aliquet. Morbi vulputate tellus tortor, eget vulputate elit dictum sit amet. Nunc at lacus euismod ante tincidunt malesuada a nec ex. Phasellus fringilla vestibulum arcu, nec elementum mi pretium in. Ut ullamcorper sapien nulla, in lobortis turpis auctor at.&lt;/p>
-&lt;p>Cras et bibendum turpis. Donec dolor ipsum, pharetra quis felis sed, fringilla mattis odio. Nulla commodo rhoncus congue. Morbi ultricies quis leo in eleifend. Quisque mollis dictum purus eu efficitur. Cras non lobortis purus. Nullam vulputate, lorem vel fringilla mattis, eros elit ultrices nibh, vitae pellentesque augue ante non odio. Suspendisse facilisis imperdiet arcu, sed tempus nunc mattis sed. Aenean placerat sapien felis, sit amet facilisis orci rhoncus ac. Nulla nec lectus euismod, suscipit neque et, pellentesque erat. Cras bibendum pulvinar ullamcorper.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2015-01-27-first_post/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>
+- https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>

@@ -1,4 +1,455 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 14 May 2021 02:18:25 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Short and Long Options with Go flag standard package</title><link>https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/</link><pubDate>Fri, 14 May 2021 02:18:25 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/ -&lt;p>Recently I was browsing the awesome
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 10 Jun 2022 01:17:07 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Set a custom machine name in Vagrant</title><link>https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/</link><pubDate>Fri, 10 Jun 2022 01:17:07 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/ -&lt;p>This is something took me a while to found out since it is documented but not
+as straight forward as &amp;ldquo;setting a custom machine name&amp;rdquo;, but instead is a kind
+of wanted side effect of using &lt;a href="https://www.vagrantup.com/docs/multi-machine">multi-machine
+setup&lt;/a>. But I&amp;rsquo;m getting ahead of
+myself. Let&amp;rsquo;s start with a quick review of what is Vagrant&lt;/p>
+&lt;h2 id="what-is-vagrant">What is Vagrant&lt;/h2>
+&lt;p>Vagrant is a virtual machine (VM) provisioning tool that allows us to enjoy
+&amp;ldquo;Development Environment as Code&amp;rdquo; by configuring and managing VMs. It can
+interface with so called &amp;ldquo;providers&amp;rdquo; such as Virtualbox, KVM, VMWare, Docker
+containers, etc.
+It does so by storing all the configuration in a &lt;code>Vagrantfile&lt;/code> whose syntax is
+regular is that of a regular ruby file where we specify the memory allocated,
+cores allocated, provider used, provisioning, etc&amp;hellip;&lt;/p>
+&lt;p>It uses a concept of &amp;ldquo;Box&amp;rdquo; which are the initial image to clone from and that
+are fetched from Vagrant Cloud. Anyone can push images, although the most
+downloaded ones are the ones coming from Hashicorp or known distros. You can
+think of Boxes kind of like the equivalent of the images used in the &lt;code>FROM&lt;/code>
+directives in a Dockerfile, and Vagrant Cloud as Docker Hub. In Docker, the
+images are then customized by copying files to it and provisioning by
+installing additional packages.&lt;/p>
+&lt;p>In the case of Vagrant machines, we don&amp;rsquo;t usually copy files as much as we
+mount a directory from our local machine into the VM.&lt;/p>
+&lt;p>It&amp;rsquo;s used by developers and operators to share reproducible virtual
+environments which are stored as code as part of the project&amp;rsquo;s repository.
+Pretty nifty!&lt;/p>
+&lt;h2 id="typical-vagrant-workflow">Typical Vagrant Workflow&lt;/h2>
+&lt;p>A typical workflow looks like this:&lt;/p>
+&lt;pre>&lt;code>$ mkdir -p ~/Projects/vagrant_experiments/archlinux; cd !$
+$ vagrant init arhclinux/archlinux
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+&lt;/code>&lt;/pre>&lt;p>This then creates this &lt;code>Vagrantfile&lt;/code> in the current working directory, with
+the contents:&lt;/p>
+&lt;pre>&lt;code>Vagrant.configure(&amp;quot;2&amp;quot;) do |config|
+config.vm.box = &amp;quot;archlinux/archlinux&amp;quot;
+end
+&lt;/code>&lt;/pre>&lt;p>As you can see the initial box of the VM an &lt;code>archlinux&lt;/code>.&lt;/p>
+&lt;p>If we run &lt;code>vagrant up&lt;/code> it starts and provisions the vagrant environment, and
+by will output something like this:&lt;/p>
+&lt;pre>&lt;code>$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==&amp;gt; default: Importing base box 'archlinux/archlinux'...
+==&amp;gt; default: Matching MAC address for NAT networking...
+==&amp;gt; default: Checking if box 'archlinux/archlinux' version '20210415.20050' is up to date...
+==&amp;gt; default: A newer version of the box 'archlinux/archlinux' for provider 'virtualbox' is
+==&amp;gt; default: available! You currently have version '20210415.20050'. The latest is version
+==&amp;gt; default: '20220615.61815'. Run `vagrant box update` to update.
+==&amp;gt; default: Setting the name of the VM: archlinux_default_1655671732047_63504
+==&amp;gt; default: Clearing any previously set network interfaces...
+==&amp;gt; default: Preparing network interfaces based on configuration...
+default: Adapter 1: nat
+==&amp;gt; default: Forwarding ports...
+default: 22 (guest) =&amp;gt; 2222 (host) (adapter 1)
+==&amp;gt; default: Booting VM...
+==&amp;gt; default: Waiting for machine to boot. This may take a few minutes...
+default: SSH address: 127.0.0.1:2222
+default: SSH username: vagrant
+default: SSH auth method: private key
+default:
+default: Vagrant insecure key detected. Vagrant will automatically replace
+default: this with a newly generated keypair for better security.
+default:
+default: Inserting generated public key within guest...
+default: Removing insecure key from the guest if it's present...
+default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==&amp;gt; default: Machine booted and ready!
+==&amp;gt; default: Checking for guest additions in VM...
+==&amp;gt; default: Mounting shared folders...
+default: /vagrant =&amp;gt; /home/chibby0ne/Projects/vagrant_experiments/archlinux
+&lt;/code>&lt;/pre>&lt;p>The output informs us that it created a VM using virtualbox, started the VM,
+started a SSH daemon on the VM and created a pair of ssh key which is used for
+ssh&amp;rsquo;ing to the VM, and finally that it mounted the local directory into
+&lt;code>/vagrant&lt;/code>.&lt;/p>
+&lt;p>It additionally mentioned that the VM name will be: &lt;code>archlinux_default_1655671732047_63504&lt;/code>&lt;/p>
+&lt;p>In this line:&lt;/p>
+&lt;pre>&lt;code>==&amp;gt; default: Setting the name of the VM: archlinux_default_1655671732047_63504
+&lt;/code>&lt;/pre>&lt;p>We can check all the environment and machines for the current user to see if
+that name appears:&lt;/p>
+&lt;pre>&lt;code>$ vagrant global-status
+id name provider state directory
+---------------------------------------------------------------------------------------------
+c9924b8 default virtualbox running /home/tesla/Projects/vagrant_experiments/archlinux
+The above shows information about all known Vagrant environments
+on this machine. This data is cached and may not be completely
+up-to-date (use &amp;quot;vagrant global-status --prune&amp;quot; to prune invalid
+entries). To interact with any of the machines, you can go to that
+directory and run Vagrant, or you can use the ID directly with
+Vagrant commands from any directory. For example:
+&amp;quot;vagrant destroy 1a2b3c4d&amp;quot;
+&lt;/code>&lt;/pre>&lt;p>So the name is actually &lt;code>default&lt;/code> according to Vagrant. So where is the
+&lt;code>archlinux_default_1655671732047_63504&lt;/code> it mentioned before?&lt;/p>
+&lt;p>Here&amp;rsquo;s the caveat: This command shows us the id and the name associated to
+that ID of the vagrant machines. The name shown was the one used by the
+provisioner to created the VM itself, in this case Virtualbox.&lt;/p>
+&lt;p>We can verify this by running:&lt;/p>
+&lt;pre>&lt;code>$ VBoxManage list vms
+&amp;quot;archlinux_default_1655671732047_63504&amp;quot; {1d8fc426-36bc-4035-a7a8-c76e1cf16128}
+&lt;/code>&lt;/pre>&lt;p>So the name of the VM in Virtualbox is
+&lt;code>archlinux_default_1655671732047_63504&lt;/code>, but the name of the machine is
+&lt;code>default&lt;/code>.&lt;/p>
+&lt;h2 id="so-how-do-we-set-the-machine-name">So how do we set the machine name?&lt;/h2>
+&lt;p>As hinted in the beginning in the case of Multi-Machines, this entails
+managing multiple guest machines per Vagrantfile. That&amp;rsquo;s the thing, &lt;strong>the
+simple default case in vagrant is to manage a single machine per Vagrantfile&lt;/strong>.
+You can see from the output of the &lt;code>global-status&lt;/code> command that it also
+associates a path to the machine, but by default they are all named &lt;code>default&lt;/code>.&lt;/p>
+&lt;p>To define a custom name we need to a another &amp;ldquo;define&amp;rdquo; section to the &lt;code>Vagrantfile&lt;/code>.&lt;/p>
+&lt;pre>&lt;code>Vagrant.configure(&amp;quot;2&amp;quot;) do |config|
+config.vm.define &amp;quot;arch&amp;quot; do |arch|
+arch.vm.box = &amp;quot;archlinux/archlinux&amp;quot;
+end
+&lt;/code>&lt;/pre>&lt;p>Here we define machine name as &amp;ldquo;arch&amp;rdquo; and try to run &lt;code>vagrant up&lt;/code>:&lt;/p>
+&lt;pre>&lt;code>Bringing machine 'arch' up with 'virtualbox' provider...
+==&amp;gt; arch: Importing base box 'archlinux/archlinux'...
+==&amp;gt; arch: Matching MAC address for NAT networking...
+==&amp;gt; arch: Checking if box 'archlinux/archlinux' version '20210415.20050' is up to date...
+==&amp;gt; arch: Setting the name of the VM: archlinux_arch_1655673970260_47411
+==&amp;gt; arch: Fixed port collision for 22 =&amp;gt; 2222. Now on port 2200.
+==&amp;gt; arch: Clearing any previously set network interfaces...
+==&amp;gt; arch: Preparing network interfaces based on configuration...
+arch: Adapter 1: nat
+==&amp;gt; arch: Forwarding ports...
+arch: 22 (guest) =&amp;gt; 2200 (host) (adapter 1)
+==&amp;gt; arch: Booting VM...
+==&amp;gt; arch: Waiting for machine to boot. This may take a few minutes...
+arch: SSH address: 127.0.0.1:2200
+arch: SSH username: vagrant
+arch: SSH auth method: private key
+arch: Inserting generated public key within guest...
+arch: Removing insecure key from the guest if it's present...
+arch: Key inserted! Disconnecting and reconnecting using new SSH key...
+==&amp;gt; arch: Machine booted and ready!
+==&amp;gt; arch: Checking for guest additions in VM...
+==&amp;gt; arch: Mounting shared folders...
+arch: /vagrant =&amp;gt; /home/tesla/Projects/vagrant_experiments/archlinux
+&lt;/code>&lt;/pre>&lt;p>So the first line told us that it was bringing machine &amp;ldquo;arch&amp;rdquo; up. That&amp;rsquo;s what
+we want: &lt;em>machine&lt;/em> name&lt;/p>
+&lt;p>And if we check the environments now we can see:&lt;/p>
+&lt;pre>&lt;code>$ vagrant global-status
+id name provider state directory
+---------------------------------------------------------------------------------------------
+c9924b8 default virtualbox running /home/tesla/Projects/vagrant_experiments/archlinux
+6201c41 arch virtualbox running /home/tesla/Projects/vagrant_experiments/archlinux
+The above shows information about all known Vagrant environments
+on this machine. This data is cached and may not be completely
+up-to-date (use &amp;quot;vagrant global-status --prune&amp;quot; to prune invalid
+entries). To interact with any of the machines, you can go to that
+directory and run Vagrant, or you can use the ID directly with
+Vagrant commands from any directory. For example:
+&amp;quot;vagrant destroy 1a2b3c4d&amp;quot;
+&lt;/code>&lt;/pre>&lt;p>We can see the &amp;ldquo;arch&amp;rdquo; machine now.&lt;/p>
+&lt;h2 id="reality-check">Reality check&lt;/h2>
+&lt;p>The reality of having custom-named machines, besides having a better and
+easier time at disambiguating which machine which is running from a &lt;code>vagrant status&lt;/code> point of view, is that it&amp;rsquo;s of little utility (outside of
+multi-machine setups, in which case I&amp;rsquo;d say it&amp;rsquo;s actually necessary), for two
+reasons:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>For a single Vagrantfile with a single machine defined you can only have
+running machine.&lt;/p>
+&lt;p>If we check the status of the directory after running the second &lt;code>vagrant up&lt;/code> with the &lt;code>arch&lt;/code> machine, we will see that &lt;code>arch&lt;/code> is running whilst the
+&lt;code>default&lt;/code> was halted.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;pre>&lt;code>$ vagrant status
+Current machine states:
+arch running (virtualbox)
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>As hinted before, vagrant will always disambiguate machines by directory.
+In order words, you cannot start or halt a machine from a directory where
+the Vagrantfile defines a different machine, i.e: you know which machine
+you&amp;rsquo;re interfacing with because of the directory you&amp;rsquo;re currently in.&lt;/li>
+&lt;/ul>
+&lt;p>That said it does add a bit of order and neatness to the environments, and
+doesn&amp;rsquo;t hurt at all since it&amp;rsquo;s just 2 extra lines to the Vagrantfile.&lt;/p>
+&lt;p>That&amp;rsquo;s it! Quick and hopefully somewhat useful tip!&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Defining installation location in build systems</title><link>https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/</link><pubDate>Sun, 23 May 2021 20:16:34 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/ -&lt;p>There&amp;rsquo;s always a way to change the default installation location in every
+build system, and fortunately it&amp;rsquo;s almost always the same naming convention
+used to change them.&lt;/p>
+&lt;p>The way to change the installation directory is usually through these
+variables: &lt;code>DESTDIR&lt;/code> and &lt;code>PREFIX&lt;/code>.&lt;/p>
+&lt;p>The exact purpose of each, is not exactly clear from the name, and since you&amp;rsquo;d
+only change set if you&amp;rsquo;re doing a custom installation building from source
+(which is not very common) it&amp;rsquo;s been a common source of confusion.&lt;/p>
+&lt;p>But as everything, once we read the manual and run an example, it&amp;rsquo;s clear what
+the distinction is between them and which one to use at any one time.&lt;/p>
+&lt;h2 id="autotools-gnu-build-system">Autotools (GNU Build System)&lt;/h2>
+&lt;p>To that end let&amp;rsquo;s illustrate with an example in Autotools. Autotools (or
+formally &lt;em>GNU Build System&lt;/em>) being the oldest and (in my opinion) the most
+cumbersome to use (slow, complicated, hard to debug):&lt;/p>
+&lt;p>Let&amp;rsquo;s take a simpler version of the example shown in the &lt;a href="https://www.gnu.org/software/automake/manual/html_node/Creating-amhello.html">documentation of
+autotools&lt;/a>:&lt;/p>
+&lt;p>In summary, we need to create 4 files (&lt;code>src/main.c&lt;/code>, &lt;code>src/Makefile.am&lt;/code>,
+&lt;code>Makefile.am&lt;/code>, &lt;code>configure.ac&lt;/code>) which you can create by executing the shell
+commands posted here, with the help of heredocs.&lt;/p>
+&lt;ol>
+&lt;li>Create the directory structure:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ mkdir ~/amhello/src
+$ &lt;span style="color:#658b00">cd&lt;/span> ~/amhello
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
+&lt;li>Source file&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cat &lt;span style="color:#cd5555">&amp;lt;&amp;lt;EOF &amp;gt; src/main.c
+&lt;/span>&lt;span style="color:#cd5555">#include &amp;lt;config.h&amp;gt;
+&lt;/span>&lt;span style="color:#cd5555">#include &amp;lt;stdio.h&amp;gt;
+&lt;/span>&lt;span style="color:#cd5555">
+&lt;/span>&lt;span style="color:#cd5555">int
+&lt;/span>&lt;span style="color:#cd5555">main (void)
+&lt;/span>&lt;span style="color:#cd5555">{
+&lt;/span>&lt;span style="color:#cd5555"> puts (&amp;#34;Hello World!&amp;#34;);
+&lt;/span>&lt;span style="color:#cd5555"> puts (&amp;#34;This is &amp;#34; PACKAGE_STRING &amp;#34;.&amp;#34;);
+&lt;/span>&lt;span style="color:#cd5555"> return 0;
+&lt;/span>&lt;span style="color:#cd5555">}
+&lt;/span>&lt;span style="color:#cd5555">EOF&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>Automake instruction to generate the binary:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cat &lt;span style="color:#cd5555">&amp;lt;&amp;lt;EOF &amp;gt; src/Makefile.am
+&lt;/span>&lt;span style="color:#cd5555">bin_PROGRAMS = hello
+&lt;/span>&lt;span style="color:#cd5555">hello_SOURCES = main.c
+&lt;/span>&lt;span style="color:#cd5555">EOF&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="3">
+&lt;li>Automake instruction for this directory:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ cat &lt;span style="color:#cd5555">&amp;lt;&amp;lt;EOF &amp;gt; Makefile.am
+&lt;/span>&lt;span style="color:#cd5555">SUBDIRS = src
+&lt;/span>&lt;span style="color:#cd5555">EOF&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="4">
+&lt;li>Autoconf instructions to create the &lt;code>configure&lt;/code> script:&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">cat &lt;span style="color:#cd5555">&amp;lt;&amp;lt;EOF &amp;gt; configure.ac
+&lt;/span>&lt;span style="color:#cd5555">AC_INIT([amhello], [1.0], [bug-automake@gnu.org])
+&lt;/span>&lt;span style="color:#cd5555">AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+&lt;/span>&lt;span style="color:#cd5555">AC_PROG_CC
+&lt;/span>&lt;span style="color:#cd5555">AC_CONFIG_HEADERS([config.h])
+&lt;/span>&lt;span style="color:#cd5555">AC_CONFIG_FILES([
+&lt;/span>&lt;span style="color:#cd5555"> Makefile
+&lt;/span>&lt;span style="color:#cd5555"> src/Makefile
+&lt;/span>&lt;span style="color:#cd5555">])
+&lt;/span>&lt;span style="color:#cd5555">AC_OUTPUT
+&lt;/span>&lt;span style="color:#cd5555">EOF&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Now let&amp;rsquo;s generate the &lt;code>GNU Build System&lt;/code> files:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ autoreconf --install
+configure.ac:3: installing &lt;span style="color:#cd5555">&amp;#39;./compile&amp;#39;&lt;/span>
+configure.ac:2: installing &lt;span style="color:#cd5555">&amp;#39;./install-sh&amp;#39;&lt;/span>
+configure.ac:2: installing &lt;span style="color:#cd5555">&amp;#39;./missing&amp;#39;&lt;/span>
+src/Makefile.am: installing &lt;span style="color:#cd5555">&amp;#39;./depcomp&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Your directory should now look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">.
+├── aclocal.m4
+├── autom4te.cache
+│   ├── output.0
+│   ├── output.1
+│   ├── output.2
+│   ├── requests
+│   ├── traces.0
+│   ├── traces.1
+│   └── traces.2
+├── compile
+├── config.h.in
+├── configure
+├── configure.ac
+├── depcomp
+├── install-sh
+├── Makefile.am
+├── Makefile.in
+├── missing
+└── src
+├── main.c
+├── Makefile.am
+└── Makefile.in
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The usual flow for Autotools based systems is: &lt;code>configure&lt;/code>, &lt;code>make&lt;/code>, &lt;code>make install&lt;/code>.&lt;/p>
+&lt;p>So let&amp;rsquo;s start with &lt;code>configure&lt;/code> which checks the host systems
+characteristics and creates the Makefiles needed to build the program.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ ./configure
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> a race-free mkdir -p... /usr/bin/mkdir -p
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> gawk... gawk
+checking whether make sets &lt;span style="color:#8b008b;font-weight:bold">$(&lt;/span>MAKE&lt;span style="color:#8b008b;font-weight:bold">)&lt;/span>... yes
+checking whether make supports nested variables... yes
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> gcc... gcc
+checking whether the C compiler works... yes
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> C compiler default output file name... a.out
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> suffix of executables...
+checking whether we are cross compiling... no
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> gcc option to &lt;span style="color:#658b00">enable&lt;/span> C11 features... none needed
+checking whether gcc understands -c and -o together... yes
+checking whether make supports the include directive... yes (GNU style)
+checking dependency style of gcc... gcc3
+checking that generated files are newer than configure... &lt;span style="color:#8b008b;font-weight:bold">done&lt;/span>
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>You can see from the output that it checks for compilers and features of the
+current host.&lt;/p>
+&lt;p>If there was any issue with the configuration of the build system with your
+host system, such as missing dependencies, &lt;code>configure&lt;/code> would have failed
+preventing you to continue to build the program. In our example this shouldn&amp;rsquo;t
+happen but when building from source this is the place where you would usually
+find the error messages informing of a missing/not found dependency.&lt;/p>
+&lt;p>After &lt;code>configure&lt;/code> succeeds we can build the program by executing &lt;code>make&lt;/code>, which
+builds the binary:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ make
+make all-recursive
+make[1]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+Making all in src
+make[2]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+gcc -DHAVE_CONFIG_H -I. -I.. -g -O2 -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.c
+mv -f .deps/main.Tpo .deps/main.Po
+gcc -g -O2 -o hello main.o
+make[2]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[2]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+make[2]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+make[1]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>At this point the binary &lt;code>hello&lt;/code> is in the &lt;code>src&lt;/code> directory, and all that is
+missing is installing this somewhere in the system. That&amp;rsquo;s what the &lt;code>make install&lt;/code> does, so let&amp;rsquo;s run it:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ make install
+Making install in src
+make[1]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[2]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+/usr/bin/mkdir -p &lt;span style="color:#cd5555">&amp;#39;/usr/local/bin&amp;#39;&lt;/span>
+/usr/bin/install -c hello &lt;span style="color:#cd5555">&amp;#39;/usr/local/bin&amp;#39;&lt;/span>
+/usr/bin/install: cannot create regular file &lt;span style="color:#cd5555">&amp;#39;/usr/local/bin/hello&amp;#39;&lt;/span>: Permission denied
+make[2]: *** [Makefile:283: install-binPROGRAMS] Error &lt;span style="color:#b452cd">1&lt;/span>
+make[2]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[1]: *** [Makefile:454: install-am] Error &lt;span style="color:#b452cd">2&lt;/span>
+make[1]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make: *** [Makefile:350: install-recursive] Error &lt;span style="color:#b452cd">1&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As we can see, by default &lt;code>make install&lt;/code> tries to install the binary in
+&lt;code>/usr/local/bin&lt;/code>, but fails because I invoked the command as a regular user
+and not with superuser rights, and therefore it fails to write to
+&lt;code>/usr/local/bin&lt;/code> due to &amp;ldquo;permission denied&amp;rdquo;. More generally, &lt;code>make install&lt;/code> by
+default install to &lt;code>/usr/local&lt;/code> and then to one of: &lt;code>doc/&lt;/code>, &lt;code>lib/&lt;/code> and/or
+&lt;code>bin&lt;/code> depending of whether it is installing documentation (e.g: man pages), a
+library, or a binary respectively.&lt;/p>
+&lt;p>Here&amp;rsquo;s where the &lt;code>DESTDIR&lt;/code> could be used, so let&amp;rsquo;s try to run make install
+with a directory in somewhere else:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ make install &lt;span style="color:#00688b">DESTDIR&lt;/span>=/tmp/installdir
+Making install in src
+make[1]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[2]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+/usr/bin/mkdir -p &lt;span style="color:#cd5555">&amp;#39;/tmp/installdir/usr/local/bin&amp;#39;&lt;/span>
+/usr/bin/install -c hello &lt;span style="color:#cd5555">&amp;#39;/tmp/installdir/usr/local/bin&amp;#39;&lt;/span>
+make[2]: Nothing to be &lt;span style="color:#8b008b;font-weight:bold">done&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> &lt;span style="color:#cd5555">&amp;#39;install-data-am&amp;#39;&lt;/span>.
+make[2]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[1]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[1]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+make[2]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+make[2]: Nothing to be &lt;span style="color:#8b008b;font-weight:bold">done&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> &lt;span style="color:#cd5555">&amp;#39;install-exec-am&amp;#39;&lt;/span>.
+make[2]: Nothing to be &lt;span style="color:#8b008b;font-weight:bold">done&lt;/span> &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> &lt;span style="color:#cd5555">&amp;#39;install-data-am&amp;#39;&lt;/span>.
+make[2]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+make[1]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Ah! So it installed the binary to the &lt;code>DESTDIR&lt;/code> given but not exactly there.
+When we list the files there we find:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">/tmp/installdir
+└── usr
+└── &lt;span style="color:#658b00">local&lt;/span>
+└── bin
+└── hello
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>So &lt;code>DESTDIR&lt;/code> changed the destination directory but it still created the
+&lt;code>/usr/local/bin&lt;/code> in which it tried to install by default!&lt;/p>
+&lt;p>Basically &lt;em>&lt;strong>DESTDIR gave us a way to check what and how something would be
+installed without actually installing it&lt;/strong>&lt;/em>! In fact if we look at &lt;a href="https://www.gnu.org/software/automake/manual/html_node/DESTDIR.html">the
+documentation&lt;/a>
+the documentation that&amp;rsquo;s pretty much what it says:&lt;/p>
+&lt;blockquote>
+&lt;p>The DESTDIR variable can be used to perform a staged installation. The
+package should be configured as if it was going to be installed in its final
+location (e.g., &amp;ndash;prefix /usr), but when running make install, the DESTDIR
+should be set to the absolute name of a directory into which the
+installation will be diverted. From this directory it is easy to review
+which files are being installed where, and finally copy them to their final
+location by some means.&lt;/p>
+&lt;/blockquote>
+&lt;p>This snippet also hints as to what prefix does! *Prefix describes the
+beginning (or prefix) of the absolute path used as installation directory!
+Another difference is &lt;strong>that prefix is set when running the &lt;code>configure&lt;/code> script&lt;/strong>.&lt;/p>
+&lt;p>To illustrate that let&amp;rsquo;s set prefix to &lt;code>boo&lt;/code> by rerunning &lt;code>./configure&lt;/code>,
+&lt;code>make&lt;/code> and &lt;code>make install&lt;/code>. We don&amp;rsquo;t need to clean the directory before we do
+so:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ ./configure --prefix=boo
+configure: error: expected an absolute directory name &lt;span style="color:#8b008b;font-weight:bold">for&lt;/span> --prefix: boo
+&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>You can see there&amp;rsquo;s a bit of inconsistency in between setting these
+variables. That&amp;rsquo;s because configure is a script and the script handles options
+the regular Unix way with double dash. Whilst Makefiles use variables which
+are usually uppercase and don&amp;rsquo;t use the double dash.&lt;/p>
+&lt;/blockquote>
+&lt;p>As mentioned before, &lt;strong>prefix is an absolute path&lt;/strong> therefore the first
+character &lt;strong>must be a forward slash (/)&lt;/strong>.&lt;/p>
+&lt;p>For the sake of brevity I will omit the output of the commands except when
+needed:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ ./configure --prefix=boo
+$ make
+$ make install
+Making install in src
+make[1]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[2]: Entering directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+/usr/bin/mkdir -p &lt;span style="color:#cd5555">&amp;#39;/boo/bin&amp;#39;&lt;/span>
+/usr/bin/mkdir: cannot create directory ‘/boo’: Permission denied
+make[2]: *** [Makefile:283: install-binPROGRAMS] Error &lt;span style="color:#b452cd">1&lt;/span>
+make[2]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make[1]: *** [Makefile:454: install-am] Error &lt;span style="color:#b452cd">2&lt;/span>
+make[1]: Leaving directory &lt;span style="color:#cd5555">&amp;#39;/home/chimp/experiments_in_building_stuff/amhello/src&amp;#39;&lt;/span>
+make: *** [Makefile:350: install-recursive] Error &lt;span style="color:#b452cd">1&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As can be seen, make tried to install the binary in &lt;code>/boo/bin&lt;/code> so the prefix
+is indeed the beginning of the install path.&lt;/p>
+&lt;h2 id="cmake">CMake&lt;/h2>
+&lt;p>&lt;code>DESTDIR&lt;/code> is a CMake environment variable, therefore its initial value comes
+from the environment of the calling process. Documentation can be seen
+&lt;a href="https://cmake.org/cmake/help/latest/envvar/DESTDIR.html">here&lt;/a>&lt;/p>
+&lt;p>It can be set by either exporting it or setting it in the same line cmake is
+invoked:&lt;/p>
+&lt;p>// Some example here of using destdir and its output&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;/code>&lt;/pre>&lt;/div>&lt;p>On the other hand the prefix can be set by setting the variable
+&lt;code>CMAKE_INSTALL_PREFIX&lt;/code>.&lt;/p>
+&lt;p>// Some example here of using &lt;code>CMAKE_INSTALL_PREFIX&lt;/code> and its output&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;/code>&lt;/pre>&lt;/div>&lt;p>NOTE: &lt;code>CMAKE_INSTALL_PREFIX&lt;/code> is also added to &lt;code>CMAKE_SYSTEM_PREFIX_PATH&lt;/code>
+which is used in calls to &lt;code>find_package&lt;/code>, &lt;code>find_program&lt;/code>, &lt;code>find_library&lt;/code> and
+others. Check the
+&lt;a href="https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html">documentation&lt;/a>
+for more information.&lt;/p>
+&lt;h2 id="meson">Meson&lt;/h2>
+&lt;p>Meson uses &lt;code>DESTDIR&lt;/code> and &lt;code>MESON_INSTALL_PREFIX&lt;/code> as environment variables which
+can be set in order to customize the installation directory.&lt;/p>
+&lt;p>An additional caveat, is that to be able to install something using meson, the
+target first needs to be defined as installable, like so:&lt;/p>
+&lt;p>// Some example here of using &lt;code>DESTDIR&lt;/code> and its output&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">executable(&lt;span style="color:#cd5555">&amp;#39;prog&amp;#39;&lt;/span>, &lt;span style="color:#cd5555">&amp;#39;prog.c&amp;#39;&lt;/span>, install : &lt;span style="color:#658b00">true&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>// Some example here of using &lt;code>MESON_INSTALL_PREFIX&lt;/code> and its output&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">&lt;/code>&lt;/pre>&lt;/div>&lt;p>In addition to that, meson allows a further fine grained customization of
+the installation directory for a given target by setting the &lt;code>install_dir&lt;/code>,
+which would be equivalent to &lt;code>DESTDIR&lt;/code>.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">executable(&lt;span style="color:#cd5555">&amp;#39;prog&amp;#39;&lt;/span>, &lt;span style="color:#cd5555">&amp;#39;prog.c&amp;#39;&lt;/span>, install : true, install_dir : &lt;span style="color:#cd5555">&amp;#39;my/special/dir&amp;#39;&lt;/span>)
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://mesonbuild.com/Installing.html#installing">Installing&lt;/a>
+&lt;a href="https://mesonbuild.com/Installing.html#destdir-support">DESTDIR&lt;/a>&lt;/p>
+&lt;h2 id="summary">Summary&lt;/h2>
+&lt;p>For changing the installation directory directories in common for a given
+software package&amp;rsquo;s files (i.e: documentation, libraries, sources, binaries,
+etc..), use &lt;code>PREFIX&lt;/code>.&lt;/p>
+&lt;p>For changing where the installation directory is use &lt;code>DESTDIR&lt;/code>.&lt;/p>
+&lt;p>Hope this helps!&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Short and Long Options with Go flag standard package</title><link>https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/</link><pubDate>Fri, 14 May 2021 02:18:25 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/ -&lt;p>Recently I was browsing the awesome
 &lt;a href="https://github.com/FiloSottile/age">age&lt;/a> (which I encourage everyone to
 look at and use if you haven&amp;rsquo;t already), and noticed something that I had
 always mistakenly assumed wasn&amp;rsquo;t possible with the Go standard library.&lt;/p>
@@ -950,95 +1401,4 @@ GPU acceleration.&lt;/p>
 &lt;p>Simple enough if you know where to look. But even if digging up took some
 time, is time well spent considering the speedup achieved with GPU
 acceleration when using Tensorflow.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Log base 10 vs Log base e notation</title><link>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link><pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p>I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; notation.&lt;/p>
-&lt;p>Let&amp;rsquo;s go step by step:&lt;/p>
-&lt;p>Two of the most common logarithms are the logarithm of base $$e$$, also called
-natural logarithm which is written in two forms:&lt;/p>
-&lt;p>$$\ln{x} = \log_{e}{x}$$&lt;/p>
-&lt;p>and the logarithm of base 10 also called common logarithm or decimal
-logarithm:&lt;/p>
-&lt;p>$$ \log_{10}{x}$$&lt;/p>
-&lt;p>Additionally scientific calculators have a &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; and a &amp;ldquo;&lt;strong>ln&lt;/strong>&amp;rdquo; function,
-which apply the logarithm of base 10 and the logarithm of base $$e$$ respectively:&lt;/p>
-&lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logarithm_keys.jpg" alt="log keys in calculator">&lt;/p>
-&lt;h5 id="by-waifer-x---100502-1150494uploaded-by-pieter-kuiper-cc-by-20-httpscommonswikimediaorgwindexphpcurid10715338">By Waifer X - 100502-1150494Uploaded by Pieter Kuiper, CC BY 2.0, &lt;a href="https://commons.wikimedia.org/w/index.php?curid=10715338">https://commons.wikimedia.org/w/index.php?curid=10715338&lt;/a>&lt;/h5>
-&lt;p>But something that I learned while checking for errors doing the derivative is that mathematicians and calculator designers
-have different things in mind when writing &amp;ldquo;&lt;strong>log&lt;/strong>&amp;quot;:&lt;/p>
-&lt;p>From Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Common_logarithm">Common Logarithm&lt;/a>:&lt;/p>
-&lt;blockquote>
-&lt;p>On calculators it is usually &amp;ldquo;log&amp;rdquo;, but mathematicians usually mean natural logarithm (logarithm with base e ≈ 2.71828) rather than common logarithm when they write &amp;ldquo;log&amp;rdquo;. To mitigate this ambiguity the ISO 80000 specification recommends that $$log_{10}{x}$$ should be written $$lg{x}$$ and $$log_{e}{x}$$ should be $$ln{x}$$.&lt;/p>
-&lt;/blockquote>
-&lt;p>And from Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Natural_logarithm">Natural Logarithm&lt;/a>:&lt;/p>
-&lt;blockquote>
-&lt;p>The natural logarithm of x is generally written as $$ln x$$, $$log_{e} x$$, or sometimes, if the base $$e$$ is implicit, simply $$log x$$.&lt;/p>
-&lt;/blockquote>
-&lt;p>Therefore in the case of the negative log-likelihood function:&lt;/p>
-&lt;p>$$ L(\boldsymbol{y}) = - \log(\boldsymbol{y}) $$&lt;/p>
-&lt;p>Although it&amp;rsquo;s not implicit that it refers to a logarithm of base $$e$$, &lt;em>it is
-indeed the natural logarithm&lt;/em>, it&amp;rsquo;s just being used as mentioned in the given
-excerpt of common logarithm (i.e: mathematicians usually mean natural logarithm when they write &amp;ldquo;log&amp;rdquo;), and therefore its derivative is:&lt;/p>
-&lt;p>$$ \dfrac{\partial L_{\boldsymbol{y}}}{\partial \boldsymbol{y}} = -\dfrac{1}{\boldsymbol{y}} $$&lt;/p>
-&lt;p>Mathematicians be crazy!&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Using Javascript completion including adding Google Chrome API in vim</title><link>https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/</link><pubDate>Fri, 20 Apr 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ -&lt;p>&lt;a href="https://github.com/Valloric/YouCompleteMe">YouCompleteMe&lt;/a> is a very powerful code completion engine built
-for the vim editor. It has several completion engines for many languages
-including C/C++, Rust, Go, Python, Javascript among others. It contains two
-parts: a vim-plugin and a daemon.&lt;/p>
-&lt;p>A very simple explanation of how YouCompleteMe works is by starting a server
-whenever a file is opened whose filetype corresponds to one of the installed
-languages engines. After this, the file is analyzed by communicating with from
-vim using the vim plugin (client) to the daemon (server).
-&lt;em>The languages for which YouCompleteMe provides auto completion are selected
-are install time, therefore if you don&amp;rsquo;t explicitly install it selecting a
-language, autocompletion for that language will probably be disabled.&lt;/em>&lt;/p>
-&lt;p>For Javascript, &lt;a href="http://ternjs.net/">tern&lt;/a> is used for the code analysis. Tern itself
-requires a &lt;code>.tern-project&lt;/code> or a &lt;code>.tern-config&lt;/code> file describing the specific
-configuration in the root of the project or above or the home directory
-respectively. Tern then opens a server in a unused port that listens for POST
-requests from a client that asks questions about the code in the form of JSON.&lt;/p>
-&lt;p>When vim is started is runs tern in a separate process and starts the
-querying whenever possible as described before.&lt;/p>
-&lt;p>In addition, tern supports server plugins, which are normal Javascript
-programs that add extra functionality to the server. There are a few plugins
-that come with the distribution such as doc and nodejs.&lt;/p>
-&lt;p>Now what if I wanted to develop a Chrome Extension and wanted the
-autocompletion for the Chrome API in vim?&lt;/p>
-&lt;p>Well since tern supports this it would be only a matter of installing the tern
-plugin and adding the plugin to the &lt;code>.tern-project&lt;/code>.&lt;/p>
-&lt;p>First installing the tern Chrome Extension:
-I found this &lt;a href="https://www.npmjs.com/package/tern-chrome-extension">tern-chrome-extension&lt;/a> which worked
-pretty well.&lt;/p>
-&lt;p>And we can&amp;rsquo;t just install it in the project directory that would install it in
-the &lt;code>node modules&lt;/code> but vim(and tern) would be aware of it. We have to install it
-in &lt;code>node_modules&lt;/code> of the tern instance that&amp;rsquo;s run by vim.&lt;/p>
-&lt;p>To find it we run, with a vim instance reading a Javascript file:&lt;/p>
-&lt;pre>&lt;code>ps aux | grep tern
-&lt;/code>&lt;/pre>&lt;p>We find that the process is running as:&lt;/p>
-&lt;pre>&lt;code>/usr/bin/node /home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/node_modules/tern/bin/tern --port 46973 --host 127.0.0.1 --persistent --no-port-file
-&lt;/code>&lt;/pre>&lt;p>We want to navigate to this directory &lt;code>/home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/&lt;/code>, because the &lt;code>node_modules&lt;/code> is the place where we want it to be installed.&lt;/p>
-&lt;p>We run:&lt;/p>
-&lt;pre>&lt;code>npm install --prefix . tern-chrome-extension
-&lt;/code>&lt;/pre>&lt;p>And we make sure everything went ok by checking if there&amp;rsquo;s a directory with
-that name in &lt;code>node_modules&lt;/code> or in the &lt;code>package.json&lt;/code>&lt;/p>
-&lt;pre>&lt;code>$ cat package.json
-{
-&amp;quot;description&amp;quot;: &amp;quot;ycmd tern runtime area with required tern version and plugins&amp;quot;,
-&amp;quot;dependencies&amp;quot;: {
-&amp;quot;tern&amp;quot;: &amp;quot;0.21.0&amp;quot;,
-&amp;quot;tern-chrome-extension&amp;quot;: &amp;quot;^46.1.20160420&amp;quot;
-}
-}
-&lt;/code>&lt;/pre>&lt;p>Now all that&amp;rsquo;s needed to create/edit the &lt;code>.tern-project&lt;/code> file, and add the
-chrome-extension to the plugins section.&lt;/p>
-&lt;pre>&lt;code>$ cat .tern-project
-{
-&amp;quot;libs&amp;quot;: [
-&amp;quot;browser&amp;quot;,
-&amp;quot;ecma5&amp;quot;
-],
-&amp;quot;plugins&amp;quot;: {
-&amp;quot;node&amp;quot;: {},
-&amp;quot;chrome-extension&amp;quot;: {}
-}
-}
-&lt;/code>&lt;/pre>&lt;p>That&amp;rsquo;s it! Now you can enjoy having the Chrome API completion in vim.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-04-20-vim-ycm-tern-chrome-extension/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>
+- https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>
