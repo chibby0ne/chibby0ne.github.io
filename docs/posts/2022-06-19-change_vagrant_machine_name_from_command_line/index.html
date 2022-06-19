@@ -94,7 +94,7 @@ ssh&rsquo;ing to the VM, and finally that it mounted the local directory into
 that name appears:</p><pre><code>$ vagrant global-status
 id       name         provider   state    directory
 ---------------------------------------------------------------------------------------------
-c9924b8  default      virtualbox running  /home/tesla/Projects/vagrant_experiments/archlinux
+c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
@@ -140,13 +140,13 @@ end
 ==&gt; arch: Machine booted and ready!
 ==&gt; arch: Checking for guest additions in VM...
 ==&gt; arch: Mounting shared folders...
-    arch: /vagrant =&gt; /home/tesla/Projects/vagrant_experiments/archlinux
+    arch: /vagrant =&gt; /home/chibby0ne/Projects/vagrant_experiments/archlinux
 </code></pre><p>So the first line told us that it was bringing machine &ldquo;arch&rdquo; up. That&rsquo;s what
 we want: <em>machine</em> name</p><p>And if we check the environments now we can see:</p><pre><code>$ vagrant global-status
 id       name         provider   state    directory
 ---------------------------------------------------------------------------------------------
-c9924b8  default      virtualbox running  /home/tesla/Projects/vagrant_experiments/archlinux
-6201c41  arch         virtualbox running  /home/tesla/Projects/vagrant_experiments/archlinux
+c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
+6201c41  arch         virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely

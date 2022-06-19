@@ -81,7 +81,7 @@ that name appears:&lt;/p>
 &lt;pre>&lt;code>$ vagrant global-status
 id name provider state directory
 ---------------------------------------------------------------------------------------------
-c9924b8 default virtualbox running /home/tesla/Projects/vagrant_experiments/archlinux
+c9924b8 default virtualbox running /home/chibby0ne/Projects/vagrant_experiments/archlinux
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
 up-to-date (use &amp;quot;vagrant global-status --prune&amp;quot; to prune invalid
@@ -134,15 +134,15 @@ arch: Key inserted! Disconnecting and reconnecting using new SSH key...
 ==&amp;gt; arch: Machine booted and ready!
 ==&amp;gt; arch: Checking for guest additions in VM...
 ==&amp;gt; arch: Mounting shared folders...
-arch: /vagrant =&amp;gt; /home/tesla/Projects/vagrant_experiments/archlinux
+arch: /vagrant =&amp;gt; /home/chibby0ne/Projects/vagrant_experiments/archlinux
 &lt;/code>&lt;/pre>&lt;p>So the first line told us that it was bringing machine &amp;ldquo;arch&amp;rdquo; up. That&amp;rsquo;s what
 we want: &lt;em>machine&lt;/em> name&lt;/p>
 &lt;p>And if we check the environments now we can see:&lt;/p>
 &lt;pre>&lt;code>$ vagrant global-status
 id name provider state directory
 ---------------------------------------------------------------------------------------------
-c9924b8 default virtualbox running /home/tesla/Projects/vagrant_experiments/archlinux
-6201c41 arch virtualbox running /home/tesla/Projects/vagrant_experiments/archlinux
+c9924b8 default virtualbox running /home/chibby0ne/Projects/vagrant_experiments/archlinux
+6201c41 arch virtualbox running /home/chibby0ne/Projects/vagrant_experiments/archlinux
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
 up-to-date (use &amp;quot;vagrant global-status --prune&amp;quot; to prune invalid
