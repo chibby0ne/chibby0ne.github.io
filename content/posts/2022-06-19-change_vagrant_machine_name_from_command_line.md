@@ -122,7 +122,7 @@ that name appears:
 $ vagrant global-status
 id       name         provider   state    directory
 ---------------------------------------------------------------------------------------------
-c9924b8  default      virtualbox running  /home/tesla/Projects/vagrant_experiments/archlinux
+c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
@@ -193,7 +193,7 @@ Bringing machine 'arch' up with 'virtualbox' provider...
 ==> arch: Machine booted and ready!
 ==> arch: Checking for guest additions in VM...
 ==> arch: Mounting shared folders...
-    arch: /vagrant => /home/tesla/Projects/vagrant_experiments/archlinux
+    arch: /vagrant => /home/chibby0ne/Projects/vagrant_experiments/archlinux
 ```
 
 So the first line told us that it was bringing machine "arch" up. That's what
@@ -205,8 +205,8 @@ And if we check the environments now we can see:
 $ vagrant global-status
 id       name         provider   state    directory
 ---------------------------------------------------------------------------------------------
-c9924b8  default      virtualbox running  /home/tesla/Projects/vagrant_experiments/archlinux
-6201c41  arch         virtualbox running  /home/tesla/Projects/vagrant_experiments/archlinux
+c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
+6201c41  arch         virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
