@@ -1,4 +1,32 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 10 Jun 2022 01:17:07 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Log base 10 vs Log base e notation</title><link>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link><pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p>I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; notation.&lt;/p>
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 20 Jun 2022 00:28:23 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Installing Tensorflow with GPU acceleration in Arch</title><link>https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</link><pubDate>Fri, 11 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ -&lt;p>I recently started doing the &lt;a href="https://www.fast.ai">fast.ai&lt;/a> course where you follow a top-down
+approach into the world of machine learning.&lt;/p>
+&lt;p>The first thing you need to do is have access to a Nvidia GPU, and in the
+first video lesson they show the setup of a cloud instance that runs
+Tensorflow using either &lt;a href="https://www.crestle.com">crestle&lt;/a> or
+&lt;a href="https://www.paperspace.com">paperspace&lt;/a>.&lt;/p>
+&lt;p>But since either of them are paid by the hour, and considering I already have
+Nvidia GPU in my desktop (albeit not as powerful as the ones offered in the
+aforementioned services, just an GTX 1070), I thought of going in a tangent
+and setting it up myself.&lt;/p>
+&lt;p>The first thing to do is install Tensorflow.&lt;/p>
+&lt;p>I already had CUDA installed, so I proceeded to install Tensorflow.&lt;/p>
+&lt;p>There was a problem: the CUDA version was too bleeding edge for the Tensroflow
+version. Tensorflow 1.9 requires CUDA 9.0 and the latest CUDA in Arch
+repositories was 9.1.&lt;/p>
+&lt;p>I thought of compiling Tensorflow myself, since that would make it work with
+9.1. But that would take a long time and probably space as well.&lt;/p>
+&lt;p>Instead I opted out for a docker image which required &lt;a href="https://aur.archlinux.org/packages/nvidia-docker/">nvidia-docker&lt;/a> from AUR,
+and rebooting the docker-service. Then I followed the instructions found in
+the &lt;a href="https://github.com/NVIDIA/nvidia-docker">github repository&lt;/a> to run the
+image after it pulled it. Afterwards, I started a Jupyter Notebook that
+required a token to login, which was specified in the output of the jupyter
+command line prompt.&lt;/p>
+&lt;p>Once inside the jupyter notebook, I was finally able to run Tensroflow with
+GPU acceleration.&lt;/p>
+&lt;p>Simple enough if you know where to look. But even if digging up took some
+time, is time well spent considering the speedup achieved with GPU
+acceleration when using Tensorflow.&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Log base 10 vs Log base e notation</title><link>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link><pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p>I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; notation.&lt;/p>
 &lt;p>Let&amp;rsquo;s go step by step:&lt;/p>
 &lt;p>Two of the most common logarithms are the logarithm of base $e$, also called
 natural logarithm which is written in two forms:&lt;/p>
@@ -514,7 +542,4 @@ EndSection
 &lt;p>That we are not the paramounts of logic and reason as we would like to be is a shocking discovery by itself, but reading the examples the author gives of people suffering from memory disorders, addictions, and uncontrolled behaviours is eye opening to say the least.&lt;/p>
 &lt;p>I&amp;rsquo;m not sure this is the best place to make book reviews but I still want to say it somewhere besides the normal &lt;a href="http://www.goodreads.com">Goodreads&lt;/a> review.&lt;/p>
 &lt;p>That&amp;rsquo;s all for now!&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Finally Looking OK</title><link>https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/</link><pubDate>Wed, 28 Jan 2015 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ -&lt;p>After several hours of googling, hacking, reading, and messing around with Firefox Inspector tool, things are starting to look a bit better. I&amp;rsquo;ve added a mini-bio and also a dummy first post, just trying things out.&lt;/p>
-&lt;p>I&amp;rsquo;ve been almost about to give up several times during the day but then again, as Benjamin Franklin said: &amp;ldquo;&lt;strong>Energy and Persistence conquer all things&lt;/strong>&amp;rdquo;.&lt;/p>
-&lt;p>That&amp;rsquo;s all for now, let&amp;rsquo;s see what else I come up with.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2015-01-28-finally_looking_ok/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>
+- https://www.antoniojgutierrez.com/posts/2015-02-20-power_of_habit/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>

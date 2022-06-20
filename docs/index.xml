@@ -1,4 +1,36 @@
-<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 10 Jun 2022 01:17:07 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Set a custom machine name in Vagrant</title><link>https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/</link><pubDate>Fri, 10 Jun 2022 01:17:07 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/ -&lt;p>This is something took me a while to found out since it is documented but not
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Mon, 20 Jun 2022 00:28:23 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>What is xmalloc?</title><link>https://www.antoniojgutierrez.com/posts/2022-06-08-what_is_xmalloc/</link><pubDate>Mon, 20 Jun 2022 00:28:23 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2022-06-08-what_is_xmalloc/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2022-06-08-what_is_xmalloc/ -&lt;h2 id="what-is-it-what-does-it-do">What is it? What does it do?&lt;/h2>
+&lt;p>xmalloc is a non-standard function that wraps &lt;code>malloc&lt;/code> and &lt;em>&lt;strong>terminates the
+program if malloc fails to the allocate&lt;/strong>&lt;/em> the requested memory.&lt;/p>
+&lt;p>I was running some of the examples in &lt;a href="https://jvns.ca/blog/2017/07/05/linux-tracing-systems/">bork&amp;rsquo;s linux tracing
+post&lt;/a>, and noticed
+that when running the uprobe example:&lt;/p>
+&lt;pre>&lt;code>sudo ./bin/uprobe 'r:bash:readline +0($retval):string'
+&lt;/code>&lt;/pre>&lt;p>it returned an error:&lt;/p>
+&lt;pre>&lt;code>ERROR: missing symbol &amp;quot;malloc&amp;quot; in /usr/bin/bash
+&lt;/code>&lt;/pre>&lt;p>which was odd but perhaps that version of bash used by bork was indeed using
+&lt;code>malloc&lt;/code> and current versions of bash used a different &lt;strong>flavor&lt;/strong> of it, like
+&lt;code>calloc&lt;/code>, &lt;code>realloc&lt;/code>, etc&amp;hellip;&lt;/p>
+&lt;p>So I queried the binary for the string &lt;code>malloc&lt;/code> and grepped the output:&lt;/p>
+&lt;pre>&lt;code>strings /bin/bash | grep malloc
+&lt;/code>&lt;/pre>&lt;p>And got:&lt;/p>
+&lt;pre>&lt;code>xmalloc
+malloc_trace_at_exit
+xmalloc
+&lt;/code>&lt;/pre>&lt;h2 id="down-the-rabbithole">Down the rabbithole&lt;/h2>
+&lt;p>Which led me to this article on the &lt;a href="https://www.gnu.org/software/libc/manual/html_node/Malloc-Examples.html">xmalloc
+convention&lt;/a>.&lt;/p>
+&lt;p>In addition there&amp;rsquo;s a quite interesting discussion on the usage of &lt;code>xmalloc&lt;/code> vs
+&lt;code>malloc&lt;/code> in &lt;a href="https://stackoverflow.com/a/7590738">SO&lt;/a>&lt;/p>
+&lt;h2 id="when-to-use-it">When to use it?&lt;/h2>
+&lt;p>The gist of it is that if you&amp;rsquo;re writing library code, you shouldn&amp;rsquo;t use
+&lt;code>xmalloc&lt;/code> since applications depending on that library might lose work or
+information since they cannot gracefully shutdown.&lt;/p>
+&lt;p>Though there are cases where it&amp;rsquo;s not necessary (and &amp;ldquo;pollutes the codebase&amp;rdquo;)
+to check for the return code of malloc for example writing a user-end
+application, and considering the kernel&amp;rsquo;s memory overcommitment behavior being
+as it, xmalloc could be an alright choice.&lt;/p>
+&lt;p>TIL!&lt;/p>
+- https://www.antoniojgutierrez.com/posts/2022-06-08-what_is_xmalloc/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Set a custom machine name in Vagrant</title><link>https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/</link><pubDate>Fri, 10 Jun 2022 01:17:07 +0200</pubDate><guid>https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/ -&lt;p>This is something took me a while to found out since it is documented but not
 as straight forward as &amp;ldquo;setting a custom machine name&amp;rdquo;, but instead is a kind
 of wanted side effect of using &lt;a href="https://www.vagrantup.com/docs/multi-machine">multi-machine
 setup&lt;/a>. But I&amp;rsquo;m getting ahead of
@@ -1373,32 +1405,4 @@ anymore.&lt;/p>
 unencrypted in the &lt;code>~/.docker/config.json&lt;/code> file.&lt;/p>
 &lt;/li>
 &lt;/ol>
-- https://www.antoniojgutierrez.com/posts/2018-08-11-docker_login_password_store/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item><item><title>Installing Tensorflow with GPU acceleration in Arch</title><link>https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</link><pubDate>Fri, 11 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ -&lt;p>I recently started doing the &lt;a href="https://www.fast.ai">fast.ai&lt;/a> course where you follow a top-down
-approach into the world of machine learning.&lt;/p>
-&lt;p>The first thing you need to do is have access to a Nvidia GPU, and in the
-first video lesson they show the setup of a cloud instance that runs
-Tensorflow using either &lt;a href="https://www.crestle.com">crestle&lt;/a> or
-&lt;a href="https://www.paperspace.com">paperspace&lt;/a>.&lt;/p>
-&lt;p>But since either of them are paid by the hour, and considering I already have
-Nvidia GPU in my desktop (albeit not as powerful as the ones offered in the
-aforementioned services, just an GTX 1070), I thought of going in a tangent
-and setting it up myself.&lt;/p>
-&lt;p>The first thing to do is install Tensorflow.&lt;/p>
-&lt;p>I already had CUDA installed, so I proceeded to install Tensorflow.&lt;/p>
-&lt;p>There was a problem: the CUDA version was too bleeding edge for the Tensroflow
-version. Tensorflow 1.9 requires CUDA 9.0 and the latest CUDA in Arch
-repositories was 9.1.&lt;/p>
-&lt;p>I thought of compiling Tensorflow myself, since that would make it work with
-9.1. But that would take a long time and probably space as well.&lt;/p>
-&lt;p>Instead I opted out for a docker image which required &lt;a href="https://aur.archlinux.org/packages/nvidia-docker/">nvidia-docker&lt;/a> from AUR,
-and rebooting the docker-service. Then I followed the instructions found in
-the &lt;a href="https://github.com/NVIDIA/nvidia-docker">github repository&lt;/a> to run the
-image after it pulled it. Afterwards, I started a Jupyter Notebook that
-required a token to login, which was specified in the output of the jupyter
-command line prompt.&lt;/p>
-&lt;p>Once inside the jupyter notebook, I was finally able to run Tensroflow with
-GPU acceleration.&lt;/p>
-&lt;p>Simple enough if you know where to look. But even if digging up took some
-time, is time well spent considering the speedup achieved with GPU
-acceleration when using Tensorflow.&lt;/p>
-- https://www.antoniojgutierrez.com/posts/2018-05-11-installing_tensorflow_with_gpu_in_arch/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>
+- https://www.antoniojgutierrez.com/posts/2018-08-11-docker_login_password_store/ - Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</description></item></channel></rss>
