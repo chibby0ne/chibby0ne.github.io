@@ -1,28 +1,28 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Murmurations of Neurons</title><link>https://www.antoniojgutierrez.com/</link><description>Recent content on Murmurations of Neurons</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</copyright><lastBuildDate>Fri, 10 Jun 2022 01:17:07 +0200</lastBuildDate><atom:link href="https://www.antoniojgutierrez.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Log base 10 vs Log base e notation</title><link>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</link><pubDate>Mon, 07 May 2018 00:00:00 +0000</pubDate><guid>https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/</guid><description>Murmurations of Neurons https://www.antoniojgutierrez.com/posts/2018-05-07-log_base_10_vs_log_base_e_notation/ -&lt;p>I wrote this post after struggling for a few hours with the derivation of the negative log-likelihood function , and finding out that the derivative didn&amp;rsquo;t match what was expected, only to find out that it was indeed matching and that instead, there&amp;rsquo;s a discrepancy on the semantics of the &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; notation.&lt;/p>
 &lt;p>Let&amp;rsquo;s go step by step:&lt;/p>
-&lt;p>Two of the most common logarithms are the logarithm of base $$e$$, also called
+&lt;p>Two of the most common logarithms are the logarithm of base $e$, also called
 natural logarithm which is written in two forms:&lt;/p>
 &lt;p>$$\ln{x} = \log_{e}{x}$$&lt;/p>
 &lt;p>and the logarithm of base 10 also called common logarithm or decimal
 logarithm:&lt;/p>
-&lt;p>$$ \log_{10}{x}$$&lt;/p>
+&lt;p>$$\log_{10}{x}$$&lt;/p>
 &lt;p>Additionally scientific calculators have a &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo; and a &amp;ldquo;&lt;strong>ln&lt;/strong>&amp;rdquo; function,
-which apply the logarithm of base 10 and the logarithm of base $$e$$ respectively:&lt;/p>
+which apply the logarithm of base 10 and the logarithm of base $e$ respectively:&lt;/p>
 &lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logarithm_keys.jpg" alt="log keys in calculator">&lt;/p>
-&lt;h5 id="by-waifer-x---100502-1150494uploaded-by-pieter-kuiper-cc-by-20-httpscommonswikimediaorgwindexphpcurid10715338">By Waifer X - 100502-1150494Uploaded by Pieter Kuiper, CC BY 2.0, &lt;a href="https://commons.wikimedia.org/w/index.php?curid=10715338">https://commons.wikimedia.org/w/index.php?curid=10715338&lt;/a>&lt;/h5>
+&lt;p>By Waifer X - 100502-1150494Uploaded by Pieter Kuiper, CC BY 2.0, &lt;a href="https://commons.wikimedia.org/w/index.php?curid=10715338">link&lt;/a>&lt;/p>
 &lt;p>But something that I learned while checking for errors doing the derivative is that mathematicians and calculator designers
 have different things in mind when writing &amp;ldquo;&lt;strong>log&lt;/strong>&amp;quot;:&lt;/p>
 &lt;p>From Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Common_logarithm">Common Logarithm&lt;/a>:&lt;/p>
 &lt;blockquote>
-&lt;p>On calculators it is usually &amp;ldquo;log&amp;rdquo;, but mathematicians usually mean natural logarithm (logarithm with base e ≈ 2.71828) rather than common logarithm when they write &amp;ldquo;log&amp;rdquo;. To mitigate this ambiguity the ISO 80000 specification recommends that $$log_{10}{x}$$ should be written $$lg{x}$$ and $$log_{e}{x}$$ should be $$ln{x}$$.&lt;/p>
+&lt;p>On calculators it is usually &amp;ldquo;log&amp;rdquo;, but mathematicians usually mean natural logarithm (logarithm with base e ≈ 2.71828) rather than common logarithm when they write &amp;ldquo;log&amp;rdquo;. To mitigate this ambiguity the ISO 80000 specification recommends that $log_{10}{x}$ should be written $lg{x}$ and $log_{e}{x}$ should be $ln{x}$.&lt;/p>
 &lt;/blockquote>
 &lt;p>And from Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Natural_logarithm">Natural Logarithm&lt;/a>:&lt;/p>
 &lt;blockquote>
-&lt;p>The natural logarithm of x is generally written as $$ln x$$, $$log_{e} x$$, or sometimes, if the base $$e$$ is implicit, simply $$log x$$.&lt;/p>
+&lt;p>The natural logarithm of x is generally written as $ln x$, $log_{e} x$, or sometimes, if the base $e$ is implicit, simply $log x$.&lt;/p>
 &lt;/blockquote>
 &lt;p>Therefore in the case of the negative log-likelihood function:&lt;/p>
 &lt;p>$$ L(\boldsymbol{y}) = - \log(\boldsymbol{y}) $$&lt;/p>
-&lt;p>Although it&amp;rsquo;s not implicit that it refers to a logarithm of base $$e$$, &lt;em>it is
+&lt;p>Although it&amp;rsquo;s not implicit that it refers to a logarithm of base $e$, &lt;em>it is
 indeed the natural logarithm&lt;/em>, it&amp;rsquo;s just being used as mentioned in the given
 excerpt of common logarithm (i.e: mathematicians usually mean natural logarithm when they write &amp;ldquo;log&amp;rdquo;), and therefore its derivative is:&lt;/p>
 &lt;p>$$ \dfrac{\partial L_{\boldsymbol{y}}}{\partial \boldsymbol{y}} = -\dfrac{1}{\boldsymbol{y}} $$&lt;/p>
