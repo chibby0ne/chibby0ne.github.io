@@ -1,5 +1,5 @@
 .PHONY: all
-all: server_v2 client_v2
+all: server_v2 client_v2 clean compilation_database
 
 .PHONY: server_v2
 server_v2:

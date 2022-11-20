@@ -1,7 +1,5 @@
-
-
 .PHONY: all
-all: server client server_v2 client_v2
+all: server client server_v2 client_v2 clean compilation_database
 
 .PHONY: server
 server:
@@ -22,3 +20,6 @@ client_v2:
 .PHONY: clean
 clean:
 	rm -f client server client_v2 server_v2
+
+compilation_database:
+	bear -- make
