@@ -19,5 +19,8 @@ int receive_message_from_socket(int socket);
 void connect_client(struct socket_config *config);
 void free_socket_config(struct socket_config *config);
 void make_nonblocking_socket(int fd);
+void sigint_handler(int signum);
+void send_message_to_socket(char *message, int socket);
+void receive_from_stdin_and_send_to_socket(int socket);
 
 #endif /* ifndef COMMON_H */

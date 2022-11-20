@@ -12,3 +12,6 @@ client_v2:
 .PHONY: clean
 clean:
 	rm -f client_v2 server_v2
+
+compilation_database:
+	bear -- make

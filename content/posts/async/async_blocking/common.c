@@ -1,22 +1,27 @@
 #include <stdio.h>
-#include <sys/socket.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <netdb.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include "common.h"
 
 void die(char *message)
 {
     perror(message);
-    exit(EXIT_FAILURE);
+    _exit(EXIT_FAILURE);
 }
 
 struct socket_config *configure_server(char *domain, char *service)
 {
     struct socket_config *config = configure_client(domain, service);
+
+    // Avoids the "Address already in use" error
+    int yes = 1;
+    setsockopt(config->socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
     // Bind the socket to the port
     int errcode = bind(config->socket, config->res->ai_addr, config->res->ai_addrlen);
@@ -106,11 +111,11 @@ int receive_message_from_socket(int socket)
     memset(received_message, 0, MAX_MESSAGE_SIZE);
     int errcode = recv(socket, received_message, MAX_MESSAGE_SIZE, 0);
     if (errcode == -1) {
-        if (errno == EAGAIN || errno == EWOULDBLOCK) {
-            printf("Haven't received anything and but now it's not blocking so you can poll it later\n");
-            return 1;
-        }
         die("Could not receive message");
+    }
+    if (errcode == 0) {
+        printf("The connection closed on the other end. Exiting\n");
+        _exit(0);
     }
     printf("Received: \"%s\"\n", received_message);
     return 0;
@@ -131,4 +136,37 @@ void make_nonblocking_socket(int fd)
     if (errcode == -1) {
         die("Could not make socket as non-blocking"); 
     }
+}
+
+void sigint_handler(int signum)
+{
+    fprintf(stderr, "Received Ctrl-C. Exiting...\n");
+    _exit(0);
+}
+
+void send_message_to_socket(char *message, int socket)
+{
+    // Remove the potential newline
+    message[strcspn(message, "\r\n")] = 0;
+    printf("Entered: \"%s\"\n", message);
+
+    int errcode = send(socket, message, strlen(message), 0);
+    if (errcode == -1) {
+        die("Could not send message");
+    }
+}
+
+void receive_from_stdin_and_send_to_socket(int socket)
+{
+    char buf[BUFSIZ];
+    memset(buf, 0, sizeof(buf));
+    int nbytes = read(STDIN_FILENO, buf, sizeof(buf));
+    if (nbytes == -1) {
+        die("error reading from stdin");
+    }
+    if (nbytes == 0) {
+        fprintf(stderr, "received EOF (Ctrl-D)");
+        _exit(EXIT_SUCCESS);
+    }
+    send_message_to_socket(buf, socket);
 }
