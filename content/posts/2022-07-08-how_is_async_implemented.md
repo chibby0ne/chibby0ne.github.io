@@ -55,13 +55,10 @@ There's of course now io_uring
 
 
 
-
-
 Mention that rust has the async/await syntax that in the end resolve into
 functions that return a Futures.
 
 https://os.phil-opp.com/async-await/#state-machine-transformation
-
 
 
 
