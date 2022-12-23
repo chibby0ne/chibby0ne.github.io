@@ -34,10 +34,8 @@ int main(int argc, char *argv[])
         die("epoll_ctl");
     }
 
-    struct epoll_event event_stdin;
-    event_stdin.events = EPOLLIN;
-    event_stdin.data.fd = STDIN_FILENO;
-    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, STDIN_FILENO, &event_stdin) == -1) {
+    event.data.fd = STDIN_FILENO;
+    if (epoll_ctl(epollfd, EPOLL_CTL_ADD, STDIN_FILENO, &event) == -1) {
         die("epoll_ctl");
     }
     
