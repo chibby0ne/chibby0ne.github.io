@@ -51,7 +51,6 @@ int accept_connection(struct socket_config *config)
 
 struct socket_config *configure_client(char *domain, char *service)
 {
-
     struct addrinfo *res;
     struct addrinfo hints;
 

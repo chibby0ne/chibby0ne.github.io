@@ -4,3 +4,5 @@ client_v2
 server_v2
 compile_commands.json
 .cache
+client_epoll
+server_epoll

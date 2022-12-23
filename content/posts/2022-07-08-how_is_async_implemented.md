@@ -4,6 +4,16 @@ date: 2022-07-08T22:26:47+01:00
 draft: true
 ---
 
+This post is by far the one that thrown me into more rabbitholes than I
+anticipated. It also took quite a while to write not due to the content but
+due to the difficulty during experimentation.
+
+I initially set out to look at how is async implemented (in fact that was the
+title of the post) but slowly and surely as I started looking more and more
+into all the different native, usual and non-usual ways that I/O is handled in
+Linux, breadth of the scope became wider and wider. So here we are. A
+compilation of all the ways I/O is handled in Linux.
+
 Bibliography:
 References:
 
