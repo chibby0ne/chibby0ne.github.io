@@ -7,7 +7,8 @@
 #include <sys/epoll.h>
 #include "common.h"
 
-#define MAX_EVENTS 10
+#define MAX_EVENTS  10
+#define TIMEOUT     10
 
 int main(int argc, char *argv[])
 {
@@ -42,7 +43,12 @@ int main(int argc, char *argv[])
     struct epoll_event events[MAX_EVENTS];
     while (true) {
 
-        int nfds_ready = epoll_wait(epollfd, events, MAX_EVENTS, 0);
+        // the main thread will block here for up to TIMEOUT seconds or until an
+        // event happens
+        // This is the reason why this is considered async but blocking (notification)
+        // To make it async and nonblocking all that's needed is to set the
+        // TIMEOUT to 0
+        int nfds_ready = epoll_wait(epollfd, events, MAX_EVENTS, TIMEOUT);
         if (nfds_ready == -1) {
             die("epoll_wait");
         }
