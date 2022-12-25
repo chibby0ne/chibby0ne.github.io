@@ -98,6 +98,9 @@ int main(int argc, char *argv[])
 
                     // request completed successfully
                 case 0:
+                    if (aio_read(&aiocb[i]) == -1) {
+                        die("aio_read");
+                    }
                     continue;
 
                     // asynchronous I/O operation failed
