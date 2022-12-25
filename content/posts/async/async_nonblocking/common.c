@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <aio.h>
+#include <signal.h>
 #include <string.h>
 #include <stdlib.h>
 #include <netdb.h>
@@ -7,6 +9,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <asm-generic/errno.h>
 #include "common.h"
 
 void die(char *message)
@@ -168,4 +171,45 @@ void receive_from_stdin_and_send_to_socket(int socket)
         _exit(EXIT_SUCCESS);
     }
     send_message_to_socket(buf, socket);
+}
+
+void handler_write(int sig, siginfo_t *si, void *ucontext)
+{
+    if (si->si_code == SI_ASYNCIO) {
+        fprintf(stdout, "Wrote asyncly to stdout or to socket");
+    }
+}
+
+void memcpy_volatile(void *dest, volatile void *src, unsigned long size)
+{
+    char *cdest = (char *)dest;
+    char *csrc = (char *)src;
+    for (int i = 0; i < size; i++) {
+        cdest[i] = csrc[i];
+    }
+}
+
+
+void handler_read(int sig, siginfo_t *si, void *ucontext)
+{
+    if (si->si_code == SI_ASYNCIO) {
+        struct async_read_writer *reader = (struct async_read_writer *) si->si_value.sival_ptr;
+        struct aiocb *to_write = malloc(sizeof(struct aiocb));
+        char *p = malloc(reader->r->aio_nbytes);
+        if (p == NULL) {
+            die("malloc");
+        }
+        memcpy_volatile(p, reader->r->aio_buf, reader->r->aio_nbytes);
+        to_write->aio_buf = p;
+        to_write->aio_nbytes = reader->r->aio_nbytes;
+        to_write->aio_fildes = reader->fildes_to_write;
+        to_write->aio_offset = 0;
+        to_write->aio_reqprio = 0;
+        to_write->aio_sigevent.sigev_notify = SIGEV_SIGNAL;
+        to_write->aio_sigevent.sigev_signo = SIGUSR2;
+
+        if (aio_write(to_write) == -1) {
+            die("aio_write");
+        }
+    }
 }

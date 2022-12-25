@@ -1,6 +1,9 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <signal.h>
+
+
 #define MAX_MESSAGE_SIZE 1024
 #define WAIT_PERIOD_SEC 1
 
@@ -9,6 +12,10 @@ struct socket_config {
     struct addrinfo *res;
 };
 
+struct async_read_writer {
+    struct aiocb *r;
+    int fildes_to_write;
+};
 
 void die(char *message);
 struct socket_config *configure_server(char *domain, char *service);
@@ -22,5 +29,9 @@ void make_nonblocking_socket(int fd);
 void sigint_handler(int signum);
 void send_message_to_socket(char *message, int socket);
 void receive_from_stdin_and_send_to_socket(int socket);
+
+void handler_write(int sig, siginfo_t *si, void *ucontext);
+void memcpy_volatile(void *dest, volatile void *src, unsigned long size);
+void handler_read(int sig, siginfo_t *si, void *ucontext);
 
 #endif /* ifndef COMMON_H */
