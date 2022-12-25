@@ -150,7 +150,7 @@ void send_message_to_socket(char *message, int socket)
 {
     // Remove the potential newline
     message[strcspn(message, "\r\n")] = 0;
-    printf("Entered: \"%s\"\n", message);
+    /* printf("Entered: \"%s\"\n", message); */
 
     int errcode = send(socket, message, strlen(message), 0);
     if (errcode == -1) {
@@ -194,22 +194,33 @@ void handler_read(int sig, siginfo_t *si, void *ucontext)
 {
     if (si->si_code == SI_ASYNCIO) {
         struct async_read_writer *reader = (struct async_read_writer *) si->si_value.sival_ptr;
-        struct aiocb *to_write = malloc(sizeof(struct aiocb));
-        char *p = malloc(reader->r->aio_nbytes);
-        if (p == NULL) {
-            die("malloc");
-        }
-        memcpy_volatile(p, reader->r->aio_buf, reader->r->aio_nbytes);
-        to_write->aio_buf = p;
-        to_write->aio_nbytes = reader->r->aio_nbytes;
-        to_write->aio_fildes = reader->fildes_to_write;
-        to_write->aio_offset = 0;
-        to_write->aio_reqprio = 0;
-        to_write->aio_sigevent.sigev_notify = SIGEV_SIGNAL;
-        to_write->aio_sigevent.sigev_signo = SIGUSR2;
 
-        if (aio_write(to_write) == -1) {
-            die("aio_write");
+        char p[BUFSIZ];
+        memcpy_volatile(p, reader->r->aio_buf, reader->r->aio_nbytes);
+        p[strcspn(p, "\r\n")] = 0;
+        if (reader->fildes_to_write == STDOUT_FILENO) {
+            fprintf(stderr, "Received from socket: \"%s\"\n", p);
+        } else {
+            fprintf(stderr, "About to send to socket: \"%s\"\n", p);
+            send_message_to_socket(p, reader->fildes_to_write);
         }
+
+        /* struct aiocb *to_write = malloc(sizeof(struct aiocb)); */
+        /* char *p = malloc(reader->r->aio_nbytes); */
+        /* if (p == NULL) { */
+        /*     die("malloc"); */
+        /* } */
+        /* memcpy_volatile(p, reader->r->aio_buf, reader->r->aio_nbytes); */
+        /* to_write->aio_buf = p; */
+        /* to_write->aio_nbytes = reader->r->aio_nbytes; */
+        /* to_write->aio_fildes = reader->fildes_to_write; */
+        /* to_write->aio_offset = 0; */
+        /* to_write->aio_reqprio = 0; */
+        /* to_write->aio_sigevent.sigev_notify = SIGEV_SIGNAL; */
+        /* to_write->aio_sigevent.sigev_signo = SIGUSR2; */
+
+        /* if (aio_write(to_write) == -1) { */
+        /*     die("aio_write"); */
+        /* } */
     }
 }
