@@ -56,7 +56,7 @@ url = "/cv"
 weight = 6
 [[menu.main]]
 name = "CTFs"
-url = "https://github.com/chibby0ne/CTFs"
+url = "https://github.com/chibby0ne/CTFs/blob/main/README.md"
 weight = 7
 [[menu.main]]
 name = "RSS Feed"
