@@ -39,7 +39,7 @@ which apply the logarithm of base 10 and the logarithm of base $e$ respectively:
 &lt;p>&lt;img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Logarithm_keys.jpg" alt="log keys in calculator">&lt;/p>
 &lt;p>By Waifer X - 100502-1150494Uploaded by Pieter Kuiper, CC BY 2.0, &lt;a href="https://commons.wikimedia.org/w/index.php?curid=10715338">link&lt;/a>&lt;/p>
 &lt;p>But something that I learned while checking for errors doing the derivative is that mathematicians and calculator designers
-have different things in mind when writing &amp;ldquo;&lt;strong>log&lt;/strong>&amp;quot;:&lt;/p>
+have different things in mind when writing &amp;ldquo;&lt;strong>log&lt;/strong>&amp;rdquo;:&lt;/p>
 &lt;p>From Wikipedia&amp;rsquo;s &lt;a href="https://en.wikipedia.org/wiki/Common_logarithm">Common Logarithm&lt;/a>:&lt;/p>
 &lt;blockquote>
 &lt;p>On calculators it is usually &amp;ldquo;log&amp;rdquo;, but mathematicians usually mean natural logarithm (logarithm with base e ≈ 2.71828) rather than common logarithm when they write &amp;ldquo;log&amp;rdquo;. To mitigate this ambiguity the ISO 80000 specification recommends that $log_{10}{x}$ should be written $lg{x}$ and $log_{e}{x}$ should be $ln{x}$.&lt;/p>
@@ -87,33 +87,33 @@ pretty well.&lt;/p>
 the &lt;code>node modules&lt;/code> but vim(and tern) would be aware of it. We have to install it
 in &lt;code>node_modules&lt;/code> of the tern instance that&amp;rsquo;s run by vim.&lt;/p>
 &lt;p>To find it we run, with a vim instance reading a Javascript file:&lt;/p>
-&lt;pre>&lt;code>ps aux | grep tern
+&lt;pre tabindex="0">&lt;code>ps aux | grep tern
 &lt;/code>&lt;/pre>&lt;p>We find that the process is running as:&lt;/p>
-&lt;pre>&lt;code>/usr/bin/node /home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/node_modules/tern/bin/tern --port 46973 --host 127.0.0.1 --persistent --no-port-file
+&lt;pre tabindex="0">&lt;code>/usr/bin/node /home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/node_modules/tern/bin/tern --port 46973 --host 127.0.0.1 --persistent --no-port-file
 &lt;/code>&lt;/pre>&lt;p>We want to navigate to this directory &lt;code>/home/user/.vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tern_runtime/&lt;/code>, because the &lt;code>node_modules&lt;/code> is the place where we want it to be installed.&lt;/p>
 &lt;p>We run:&lt;/p>
-&lt;pre>&lt;code>npm install --prefix . tern-chrome-extension
+&lt;pre tabindex="0">&lt;code>npm install --prefix . tern-chrome-extension
 &lt;/code>&lt;/pre>&lt;p>And we make sure everything went ok by checking if there&amp;rsquo;s a directory with
 that name in &lt;code>node_modules&lt;/code> or in the &lt;code>package.json&lt;/code>&lt;/p>
-&lt;pre>&lt;code>$ cat package.json
+&lt;pre tabindex="0">&lt;code>$ cat package.json
 {
-&amp;quot;description&amp;quot;: &amp;quot;ycmd tern runtime area with required tern version and plugins&amp;quot;,
-&amp;quot;dependencies&amp;quot;: {
-&amp;quot;tern&amp;quot;: &amp;quot;0.21.0&amp;quot;,
-&amp;quot;tern-chrome-extension&amp;quot;: &amp;quot;^46.1.20160420&amp;quot;
+&amp;#34;description&amp;#34;: &amp;#34;ycmd tern runtime area with required tern version and plugins&amp;#34;,
+&amp;#34;dependencies&amp;#34;: {
+&amp;#34;tern&amp;#34;: &amp;#34;0.21.0&amp;#34;,
+&amp;#34;tern-chrome-extension&amp;#34;: &amp;#34;^46.1.20160420&amp;#34;
 }
 }
 &lt;/code>&lt;/pre>&lt;p>Now all that&amp;rsquo;s needed to create/edit the &lt;code>.tern-project&lt;/code> file, and add the
 chrome-extension to the plugins section.&lt;/p>
-&lt;pre>&lt;code>$ cat .tern-project
+&lt;pre tabindex="0">&lt;code>$ cat .tern-project
 {
-&amp;quot;libs&amp;quot;: [
-&amp;quot;browser&amp;quot;,
-&amp;quot;ecma5&amp;quot;
+&amp;#34;libs&amp;#34;: [
+&amp;#34;browser&amp;#34;,
+&amp;#34;ecma5&amp;#34;
 ],
-&amp;quot;plugins&amp;quot;: {
-&amp;quot;node&amp;quot;: {},
-&amp;quot;chrome-extension&amp;quot;: {}
+&amp;#34;plugins&amp;#34;: {
+&amp;#34;node&amp;#34;: {},
+&amp;#34;chrome-extension&amp;#34;: {}
 }
 }
 &lt;/code>&lt;/pre>&lt;p>That&amp;rsquo;s it! Now you can enjoy having the Chrome API completion in vim.&lt;/p>
@@ -145,7 +145,7 @@ SMB/CIFS file systems (or shares as they are also called).&lt;/p>
 Unfortunately there&amp;rsquo;s no other way that I&amp;rsquo;m aware of, of storing the
 credentials other than &lt;em>plaintext&lt;/em>.&lt;/p>
 &lt;p>The file should contain two entries as such:&lt;/p>
-&lt;pre>&lt;code>username=USERNAME
+&lt;pre tabindex="0">&lt;code>username=USERNAME
 password=PASSWORD
 &lt;/code>&lt;/pre>&lt;p>You should store it somewhere in /etc/samba/ and set its permissions to 600 so
 that only root has read/write access.&lt;/p>
@@ -160,13 +160,13 @@ otherwise systemd will fail at mounting it&lt;/strong>.&lt;/p>
 &lt;p>That is, the internal forward slashes of the path should be the minuses (&amp;quot;-&amp;quot;)
 in the filename.&lt;/p>
 &lt;p>Otherwise you will get an error like this&lt;/p>
-&lt;pre>&lt;code>$ systemctl start mntdir.mount
+&lt;pre tabindex="0">&lt;code>$ systemctl start mntdir.mount
 $ systemctl status mntdir.mount
 ...
 ...
-mntdir.mount's Where= setting doesn't match unit name. Refusing
+mntdir.mount&amp;#39;s Where= setting doesn&amp;#39;t match unit name. Refusing
 &lt;/code>&lt;/pre>&lt;p>This file should contain something like this:&lt;/p>
-&lt;pre>&lt;code>[Unit]
+&lt;pre tabindex="0">&lt;code>[Unit]
 Description=DESCRIPTION
 Requires=systemd-networkd.service
 After=network-online.target
@@ -188,7 +188,7 @@ navigate to that directory.&lt;/p>
 location. i.e: it should have the same name as the &lt;code>.mount&lt;/code> file but with the
 file extension: &lt;code>.automount&lt;/code>&lt;/p>
 &lt;p>Its contents should be something like this:&lt;/p>
-&lt;pre>&lt;code>[Unit]
+&lt;pre tabindex="0">&lt;code>[Unit]
 Description=DESCRIPTION
 Requires=network-online.target
 [Automount]
@@ -200,7 +200,7 @@ WantedBy=multi-user.target
 keeping in mind that the &lt;code>PATH_TO_MOUNT_POINT&lt;/code> should be the same as the one
 in the &lt;code>.mount&lt;/code> file.&lt;/p>
 &lt;p>This file should be enabled so that it runs at boot.&lt;/p>
-&lt;pre>&lt;code>systemctl enable mnt-dir.automount
+&lt;pre tabindex="0">&lt;code>systemctl enable mnt-dir.automount
 &lt;/code>&lt;/pre>&lt;p>Asumming the mount point is /mnt/dir (and therefore the filename is
 mnt-dir.automout).&lt;/p>
 &lt;h2 id="tips">Tips&lt;/h2>
@@ -297,7 +297,7 @@ to enable the wifi and bluetooth. I thought this might be a rfkill switch on
 disabling the radio signals.&lt;/p>
 &lt;p>Using the usb serial cable I checked the status of dhcpcd.service:&lt;/p>
 &lt;p>&lt;em>&lt;strong>Note&lt;/strong>&lt;/em> &lt;em>The artifacts shown in the output are part of the minicom output&lt;/em>&lt;/p>
-&lt;pre>&lt;code>pi@rpi1:/dev$ sudo systemctl status dhcpcd.service
+&lt;pre tabindex="0">&lt;code>pi@rpi1:/dev$ sudo systemctl status dhcpcd.service
 â● dhcpcd.service - dhcpcd on all interfaces
 Loaded: loaded (/lib/systemd/system/dhcpcd.service; enabled; vendor preset: e
 Drop-In: /etc/systemd/system/dhcpcd.service.d
@@ -311,13 +311,13 @@ CGroup: /system.slice/dhcpcd.service
 Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
 Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: waiting for carrier
 &lt;/code>&lt;/pre>&lt;p>The line that confirms it is:&lt;/p>
-&lt;pre>&lt;code>Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
+&lt;pre tabindex="0">&lt;code>Mar 13 22:53:26 rpi1 dhcpcd[331]: wlan0: if_up: Operation not possible due to RF
 &lt;/code>&lt;/pre>&lt;p>I knew about Linux&amp;rsquo;s rfkill because that&amp;rsquo;s what laptops enable/disable when
 you press the function (Fn) key that enables/disable wifi in Linux. There are
 two types of block: soft and hard block. Normally laptops&amp;rsquo; Fn key shortcut
 enable/disable a soft block.&lt;/p>
 &lt;p>To find out what case is there is I ran:&lt;/p>
-&lt;pre>&lt;code>pi@rpi1:/dev$ rfkill list all
+&lt;pre tabindex="0">&lt;code>pi@rpi1:/dev$ rfkill list all
 0: phy0: Wireless LAN
 Soft blocked: yes
 Hard blocked: no
@@ -334,7 +334,7 @@ the system finished changing runlevels as part of the boot process.&lt;/p>
 could set it up the wifi connection from the microSD without booting the pi.&lt;/p>
 &lt;p>So I did this for the 3rd pi&amp;rsquo;s microSD card, and verified with nmap from my
 desktop.&lt;/p>
-&lt;pre>&lt;code>Nmap scan report for 192.168.178.7
+&lt;pre tabindex="0">&lt;code>Nmap scan report for 192.168.178.7
 Host is up (0.073s latency).
 &lt;/code>&lt;/pre>&lt;p>Finally, I was able to set up a pi&amp;rsquo;s wifi by directly editing the microsd on
 my desktop, without needing to boot into the device. All in all, it was a
@@ -368,7 +368,7 @@ repositories.&lt;/p>
 &lt;p>What does this have to do with libtinfo?&lt;/p>
 &lt;p>Well libtinfo (more specifically libtinfo5) was one of those packages managed
 by pacaur. Problem is every time I did an update it warned with:&lt;/p>
-&lt;pre>&lt;code>libtinfo5 not present in AUR with pacaur --skipping
+&lt;pre tabindex="0">&lt;code>libtinfo5 not present in AUR with pacaur --skipping
 &lt;/code>&lt;/pre>&lt;p>Meaning that it wasn&amp;rsquo;t being maintained anymore since it is not in the AUR.&lt;/p>
 &lt;p>So I decide to remove it. I couldn&amp;rsquo;t remember what I was using it for, but I
 was sure it wasn&amp;rsquo;t very important, and in case something failed I&amp;rsquo;d just
@@ -382,14 +382,14 @@ the packages I uninstalled again.&lt;/p>
 &lt;p>Mmm&amp;hellip; let&amp;rsquo;s try loggin in as root. It worked!&lt;/p>
 &lt;p>Now just for science (queue meme), I tried try to su as my user, I get the
 clue:&lt;/p>
-&lt;pre>&lt;code>zsh: error while loading shared libraries: libtinfo.so.6: cannot open shared object file: No such file or directory
+&lt;pre tabindex="0">&lt;code>zsh: error while loading shared libraries: libtinfo.so.6: cannot open shared object file: No such file or directory
 &lt;/code>&lt;/pre>&lt;p>Turns out &lt;code>libtinfo&lt;/code> is a library that &lt;em>normally&lt;/em> (read: in other distros)
 gets installed when installing &lt;code>libncurses&lt;/code>, just &lt;em>&lt;strong>not&lt;/strong>&lt;/em> in Arch.&lt;/p>
 &lt;p>&lt;code>libtinfo&lt;/code> is in turn is required by zsh (I discovered from the message),
 which is the shell I&amp;rsquo;m using, and since this failed it prevented me from
 opening a terminal emulator.&lt;/p>
 &lt;p>A quick google revealed the best working solution:&lt;/p>
-&lt;pre>&lt;code>ln -s libncursesw.so.6 libtinfo.so.6
+&lt;pre tabindex="0">&lt;code>ln -s libncursesw.so.6 libtinfo.so.6
 &lt;/code>&lt;/pre>&lt;p>This solution doesn&amp;rsquo;t require you to install the old unmaintained package again,
 and can be done for any version of &lt;code>libncurses&lt;/code>.&lt;/p>
 &lt;p>In the future, the package maintainers of &lt;code>libncurses&lt;/code> should probably add
@@ -410,7 +410,7 @@ added to the queue.&lt;/p>
 represents a vertex (node) of a Graph and its members are its index and its
 distance to the source vertex.&lt;/p>
 &lt;p>The relevant parts of the implementation are:&lt;/p>
-&lt;pre>&lt;code>class Vertex {
+&lt;pre tabindex="0">&lt;code>class Vertex {
 private int distance;
 private int index;
 public int getDistance() {
@@ -452,18 +452,18 @@ queue.add(v);
 of the elements and the structure of the heap in the backend.
 In our case, the priority is given by the distance of the Vertex.&lt;/p>
 &lt;p>The problem surges in that if we later do:&lt;/p>
-&lt;pre>&lt;code> v[i].setDistance(0);
+&lt;pre tabindex="0">&lt;code> v[i].setDistance(0);
 &lt;/code>&lt;/pre>&lt;p>The position in the queue will not change, i.e &lt;strong>the heap in the backend
 remains in the same state as it was before the distance for &lt;em>v[i]&lt;/em> was changed&lt;/strong>.
 The only moment where the priority queue actually runs the comparator is when
 is when the queue is being acted upon i.e: either when using &lt;em>add&lt;/em> or &lt;em>remove&lt;/em>
 methods.&lt;/p>
-&lt;pre>&lt;code> \\ initial state
+&lt;pre tabindex="0">&lt;code> \\ initial state
 v[i].setDistance(0);
-\\ same state as 'initial state'!
+\\ same state as &amp;#39;initial state&amp;#39;!
 &lt;/code>&lt;/pre>&lt;p>The only way to achieve the expected result is to
 do this:&lt;/p>
-&lt;pre>&lt;code> // initial state i.e: v[i] is in position P
+&lt;pre tabindex="0">&lt;code> // initial state i.e: v[i] is in position P
 v[i].setDistance(0);
 // same state as initial state i.e: v[i] is in position P
 queue.remove(v[i]);
@@ -496,43 +496,43 @@ using).&lt;/p>
 Just remove any reference to nvidia on the Section corresponding to the Device.&lt;/p>
 &lt;p>One one you can test the Xorg.conf is in a sane state is by using&lt;/p>
 &lt;p>Your /etc/X11/Xorg.conf will look something like this:&lt;/p>
-&lt;pre>&lt;code>Section &amp;quot;Monitor&amp;quot;
-Identifier &amp;quot;Monitor0&amp;quot;
-VendorName &amp;quot;Unknown&amp;quot;
-ModelName &amp;quot;Unknown&amp;quot;
+&lt;pre tabindex="0">&lt;code>Section &amp;#34;Monitor&amp;#34;
+Identifier &amp;#34;Monitor0&amp;#34;
+VendorName &amp;#34;Unknown&amp;#34;
+ModelName &amp;#34;Unknown&amp;#34;
 HorizSync 28.0 - 33.0
 VertRefresh 43.0 - 72.0
-Option &amp;quot;DPMS&amp;quot;
+Option &amp;#34;DPMS&amp;#34;
 EndSection
-Section &amp;quot;Device&amp;quot;
-Identifier &amp;quot;Device0&amp;quot;
-Driver &amp;quot;nvidia&amp;quot;
-VendorName &amp;quot;NVIDIA Corporation&amp;quot;
+Section &amp;#34;Device&amp;#34;
+Identifier &amp;#34;Device0&amp;#34;
+Driver &amp;#34;nvidia&amp;#34;
+VendorName &amp;#34;NVIDIA Corporation&amp;#34;
 EndSection
-Section &amp;quot;Screen&amp;quot;
-Identifer &amp;quot;Screen0&amp;quot;
-Device &amp;quot;Device0&amp;quot;
-Monitor &amp;quot;Monitor0&amp;quot;
+Section &amp;#34;Screen&amp;#34;
+Identifer &amp;#34;Screen0&amp;#34;
+Device &amp;#34;Device0&amp;#34;
+Monitor &amp;#34;Monitor0&amp;#34;
 DefaultDepth 24
-SubSection &amp;quot;Display&amp;quot;
+SubSection &amp;#34;Display&amp;#34;
 Depth 24
 EndSubSection
 EndSection
 &lt;/code>&lt;/pre>&lt;p>You should modify it so that it looks like this:&lt;/p>
-&lt;pre>&lt;code>Section &amp;quot;Monitor&amp;quot;
-Identifier &amp;quot;Monitor0&amp;quot;
-VendorName &amp;quot;Unknown&amp;quot;
-ModelName &amp;quot;Unknown&amp;quot;
+&lt;pre tabindex="0">&lt;code>Section &amp;#34;Monitor&amp;#34;
+Identifier &amp;#34;Monitor0&amp;#34;
+VendorName &amp;#34;Unknown&amp;#34;
+ModelName &amp;#34;Unknown&amp;#34;
 HorizSync 28.0 - 33.0
 VertRefresh 43.0 - 72.0
-Option &amp;quot;DPMS&amp;quot;
+Option &amp;#34;DPMS&amp;#34;
 EndSection
-Section &amp;quot;Screen&amp;quot;
-Identifer &amp;quot;Screen0&amp;quot;
-Device &amp;quot;Device0&amp;quot;
-Monitor &amp;quot;Monitor0&amp;quot;
+Section &amp;#34;Screen&amp;#34;
+Identifer &amp;#34;Screen0&amp;#34;
+Device &amp;#34;Device0&amp;#34;
+Monitor &amp;#34;Monitor0&amp;#34;
 DefaultDepth 24
-SubSection &amp;quot;Display&amp;quot;
+SubSection &amp;#34;Display&amp;#34;
 Depth 24
 EndSubSection
 EndSection

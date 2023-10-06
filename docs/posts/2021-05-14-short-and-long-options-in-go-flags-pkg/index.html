@@ -1,15 +1,13 @@
-<!doctype html><html><head><title>Short and Long Options with Go flag standard package</title><meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="Diving into Go source code"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:title" content="Short and Long Options with Go flag standard package"><meta property="og:description" content="Diving into Go source code"><meta property="og:type" content="article"><meta property="og:url" content="https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/"><meta property="article:published_time" content="2021-05-14T02:18:25+02:00"><meta property="article:modified_time" content="2021-05-14T02:18:25+02:00"><meta property="og:site_name" content="Murmurations of Neurons"><meta name=twitter:card content="summary"><meta name=twitter:title content="Short and Long Options with Go flag standard package"><meta name=twitter:description content="Diving into Go source code"><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-55399960-1','auto');ga('send','pageview');}</script><link rel=stylesheet href=/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen><link rel=stylesheet href=/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen><script src=/js/toc.js></script><link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});});</script><script src=https://cdn.jsdelivr.net/npm/vue-disqus@3/dist/vue-disqus.js></script><a rel=me href=https://hachyderm.io/@chibby0ne></a></head><body><div id=app><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://www.antoniojgutierrez.com/><div class=nav-title>Murmurations of Neurons</div><div class=nav-subtitle>An exploration of ideas and thoughts on programming, computers, nature and life in general</div></a><div class=nav-link-list><a class="a-block nav-link-item false" href=/about>About me</a>
-<a class="a-block nav-link-item active" href=/posts>Archive</a>
-<a class="a-block nav-link-item false" href=/categories>Categories</a>
-<a class="a-block nav-link-item false" href=/tags>Tags</a>
-<a class="a-block nav-link-item false" href=/cv>CV</a>
-<a class="a-block nav-link-item false" href=/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
-Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer class=extra-container><div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }"></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up</i></a>
-<a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item false" href=/about>About me</a>
+<!doctype html><html><head><title>Short and Long Options with Go flag standard package</title><meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="Diving into Go source code"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:title" content="Short and Long Options with Go flag standard package"><meta property="og:description" content="Diving into Go source code"><meta property="og:type" content="article"><meta property="og:url" content="https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-05-14T02:18:25+02:00"><meta property="article:modified_time" content="2021-05-14T02:18:25+02:00"><meta property="og:site_name" content="Murmurations of Neurons"><meta name=twitter:card content="summary"><meta name=twitter:title content="Short and Long Options with Go flag standard package"><meta name=twitter:description content="Diving into Go source code"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-55399960-1","auto"),ga("send","pageview"))</script><script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css><link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script><script src=https://cdn.jsdelivr.net/npm/vue-disqus@3/dist/vue-disqus.js></script>
+<a rel=me href=https://hachyderm.io/@chibby0ne></a></head><body><div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item false" href=/about>About me</a>
 <a class="a-block drawer-menu-item active" href=/posts>Archive</a>
 <a class="a-block drawer-menu-item false" href=/categories>Categories</a>
 <a class="a-block drawer-menu-item false" href=/tags>Tags</a>
 <a class="a-block drawer-menu-item false" href=/cv>CV</a>
+<a class="a-block drawer-menu-item false" href=github.com/chibby0ne/CTFs>CTFs</a>
 <a class="a-block drawer-menu-item false" href=/index.xml>RSS Feed</a><div class=toc></div></div></div></div><transition name=fade><div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div></transition><nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container"><div id=navBackground class=nav-background></div><div class="container container-narrow nav-content"><button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
 <i class=material-icons>menu</i></button>
 <a id=navTitle class=navbar-brand href=https://www.antoniojgutierrez.com/>Murmurations of Neurons</a>
@@ -36,56 +34,56 @@ In contrast, the long options are those that start with double dash <code>--</co
 consist of a word e.g: to use the same example of verbose mode that would be
 <code>--verbose</code>.</p><p>In order to find this out let&rsquo;s first write small program that uses the <code>flag</code>
 package and discover how the invocation of them change the output:</p><p>First let&rsquo;s create a directory where to put the program and initialize the
-go.mod:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ mkdir -p ~/go_experiments/using_flag
-$ <span style=color:#658b00>cd</span> !$
-$ go mod init github.com/chibby0ne/<span style=color:#8b008b;font-weight:700>$(</span>basename <span style=color:#8b008b;font-weight:700>$(</span><span style=color:#658b00>pwd</span><span style=color:#8b008b;font-weight:700>))</span>
-</code></pre></div><p>This creates a directory <code>using_flag</code> inside a <code>go_experiments</code>
+go.mod:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ mkdir -p ~/go_experiments/using_flag
+</span></span><span style=display:flex><span>$ <span style=color:#658b00>cd</span> !$
+</span></span><span style=display:flex><span>$ go mod init github.com/chibby0ne/<span style=color:#8b008b;font-weight:700>$(</span>basename <span style=color:#8b008b;font-weight:700>$(</span><span style=color:#658b00>pwd</span><span style=color:#8b008b;font-weight:700>))</span>
+</span></span></code></pre></div><p>This creates a directory <code>using_flag</code> inside a <code>go_experiments</code>
 directory located in your home directory and initializes a go mod with the
 organization/user name <code>chibby0ne</code> (my username) and repository name the same
 as the directory name (<code>using_flag</code>). Of course you can use your Github
 username, but since this is just for experimentation it doesn&rsquo;t really matter
 the organization/username or module name you choose.</p><ul><li><em>The <code>!$</code> used in the second line is a shortcut to refer to the last argument of the last command. Pretty neat huh? You can check more about it in the <a href=https://linux.die.net/man/1/bash>man pages of bash looking into history expansion</a></em></li></ul><p>Now copy the following code in and write it to a <code>main.go</code> file, and build it
-with <code>go build</code></p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#8b008b;font-weight:700>package</span> main
-
-<span style=color:#8b008b;font-weight:700>import</span> (
-    <span style=color:#cd5555>&#34;fmt&#34;</span>
-    <span style=color:#cd5555>&#34;flag&#34;</span>
-)
-
-<span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>main</span>() {
-    <span style=color:#8b008b;font-weight:700>var</span> verbose <span style=color:#00688b;font-weight:700>bool</span>
-    flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;verbose&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
-    flag.<span style=color:#008b45>Parse</span>()
-    <span style=color:#8b008b;font-weight:700>if</span> verbose {
-        fmt.<span style=color:#008b45>Println</span>(<span style=color:#cd5555>&#34;verbose is on&#34;</span>)
-    }
-}
-</code></pre></div><p>This program should write: <code>verbose is on</code> to stdout whenever the <code>verbose</code> flag
-is set, otherwise it shouldn&rsquo;t print anything.</p><p>Let&rsquo;s see the output with only no flag:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ ./using_flag
-$
-</code></pre></div><p>No output as expected.</p><p>Let&rsquo;s see the output with only one dash (as usually done):</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ ./using_flag -verbose
-verbose is on
-$
-</code></pre></div><p>Now let&rsquo;s see the output with <em>two</em> dashes:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ ./using_flag --verbose
-verbose is on
-$
-</code></pre></div><p>As you can see the <code>flag</code> package allows this usage with double dash or long
+with <code>go build</code></p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8b008b;font-weight:700>package</span> main
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>import</span> (
+</span></span><span style=display:flex><span>    <span style=color:#cd5555>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#cd5555>&#34;flag&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>var</span> verbose <span style=color:#00688b;font-weight:700>bool</span>
+</span></span><span style=display:flex><span>    flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;verbose&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
+</span></span><span style=display:flex><span>    flag.<span style=color:#008b45>Parse</span>()
+</span></span><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>if</span> verbose {
+</span></span><span style=display:flex><span>        fmt.<span style=color:#008b45>Println</span>(<span style=color:#cd5555>&#34;verbose is on&#34;</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>This program should write: <code>verbose is on</code> to stdout whenever the <code>verbose</code> flag
+is set, otherwise it shouldn&rsquo;t print anything.</p><p>Let&rsquo;s see the output with only no flag:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ ./using_flag
+</span></span><span style=display:flex><span>$
+</span></span></code></pre></div><p>No output as expected.</p><p>Let&rsquo;s see the output with only one dash (as usually done):</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ ./using_flag -verbose
+</span></span><span style=display:flex><span>verbose is on
+</span></span><span style=display:flex><span>$
+</span></span></code></pre></div><p>Now let&rsquo;s see the output with <em>two</em> dashes:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ ./using_flag --verbose
+</span></span><span style=display:flex><span>verbose is on
+</span></span><span style=display:flex><span>$
+</span></span></code></pre></div><p>As you can see the <code>flag</code> package allows this usage with double dash or long
 option format but its usage is not <em>&ldquo;well documented&rdquo;</em> in the package
 documentation.</p><p>Why is this the case?</p><p>Let&rsquo;s dig into what happens when we set a <code>BoolVar</code> (which is the case for any
 XVar where <em>X</em> is any type). All the source code shown corresponds to <strong>go version
-go1.16.4 linux/amd64</strong>:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// BoolVar defines a bool flag with specified name, default value, and usage string.
-</span><span style=color:#228b22>// The argument p points to a bool variable in which to store the value of the flag.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>BoolVar</span>(p *<span style=color:#00688b;font-weight:700>bool</span>, name <span style=color:#00688b;font-weight:700>string</span>, value <span style=color:#00688b;font-weight:700>bool</span>, usage <span style=color:#00688b;font-weight:700>string</span>) {
-	CommandLine.<span style=color:#008b45>Var</span>(<span style=color:#008b45>newBoolValue</span>(value, p), name, usage)
-}
-</code></pre></div><p>Let&rsquo;s decompose the magic out of this one liner:</p><ol><li>What does <code>newBoolValue</code> do?</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// -- bool Value
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>type</span> boolValue <span style=color:#00688b;font-weight:700>bool</span>
-
-<span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>newBoolValue</span>(val <span style=color:#00688b;font-weight:700>bool</span>, p *<span style=color:#00688b;font-weight:700>bool</span>) *boolValue {
-	*p = val
-	<span style=color:#8b008b;font-weight:700>return</span> (*boolValue)(p)
-}
-</code></pre></div><p><code>newBoolValue</code> is an unexported (private in other languages terminology)
+go1.16.4 linux/amd64</strong>:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// BoolVar defines a bool flag with specified name, default value, and usage string.
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// The argument p points to a bool variable in which to store the value of the flag.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>BoolVar</span>(p *<span style=color:#00688b;font-weight:700>bool</span>, name <span style=color:#00688b;font-weight:700>string</span>, value <span style=color:#00688b;font-weight:700>bool</span>, usage <span style=color:#00688b;font-weight:700>string</span>) {
+</span></span><span style=display:flex><span>	CommandLine.<span style=color:#008b45>Var</span>(<span style=color:#008b45>newBoolValue</span>(value, p), name, usage)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Let&rsquo;s decompose the magic out of this one liner:</p><ol><li>What does <code>newBoolValue</code> do?</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// -- bool Value
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>type</span> boolValue <span style=color:#00688b;font-weight:700>bool</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>newBoolValue</span>(val <span style=color:#00688b;font-weight:700>bool</span>, p *<span style=color:#00688b;font-weight:700>bool</span>) *boolValue {
+</span></span><span style=display:flex><span>	*p = val
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>return</span> (*boolValue)(p)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><code>newBoolValue</code> is an unexported (private in other languages terminology)
 function that creates a <code>boolValue</code> which is an type alias for <code>bool</code>. The pointer to
 <code>bool</code> passed (<code>p</code> in <code>BoolVar</code> and in <code>newBoolValue</code> functions) is assigned to
 the default value (<code>value</code> in <code>BoolVar</code> function and <code>val</code> in <code>newBoolValue</code>
@@ -94,242 +92,242 @@ Then the pointer to <code>bool</code> is casted to a pointer to <code>boolValue<
 returned.</p><p>You might be wondering: <em>Why create this internal <code>boolValue</code> for simply
 storing the <code>bool</code>?</em></p><p>Because <code>bool</code> needs to be augmented with methods used by the flags package,
 such as <code>Get()</code>, <code>Set()</code> and <code>String()</code>, these methods satisfy the interfaces
-used through the package which are <code>Getter</code> and <code>Value</code>.</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#8b008b;font-weight:700>type</span> Getter <span style=color:#8b008b;font-weight:700>interface</span> {
-   Value
-   <span style=color:#008b45>Get</span>() <span style=color:#8b008b;font-weight:700>interface</span>{}
-}
-</code></pre></div><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#8b008b;font-weight:700>type</span> Value <span style=color:#8b008b;font-weight:700>interface</span> {
-    <span style=color:#008b45>String</span>() <span style=color:#00688b;font-weight:700>string</span>
-    <span style=color:#008b45>Set</span>(<span style=color:#00688b;font-weight:700>string</span>) <span style=color:#00688b;font-weight:700>error</span>
-}
-</code></pre></div><p>According to documentation: <code>Value</code> is the interface to the dynamic value
+used through the package which are <code>Getter</code> and <code>Value</code>.</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8b008b;font-weight:700>type</span> Getter <span style=color:#8b008b;font-weight:700>interface</span> {
+</span></span><span style=display:flex><span>   Value
+</span></span><span style=display:flex><span>   <span style=color:#008b45>Get</span>() <span style=color:#8b008b;font-weight:700>interface</span>{}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8b008b;font-weight:700>type</span> Value <span style=color:#8b008b;font-weight:700>interface</span> {
+</span></span><span style=display:flex><span>    <span style=color:#008b45>String</span>() <span style=color:#00688b;font-weight:700>string</span>
+</span></span><span style=display:flex><span>    <span style=color:#008b45>Set</span>(<span style=color:#00688b;font-weight:700>string</span>) <span style=color:#00688b;font-weight:700>error</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>According to documentation: <code>Value</code> is the interface to the dynamic value
 stored in a flag. <code>Getter</code> is an interface that allows the contents of
 <code>Value</code> to be retrieved.</p><p>You can read more of the <a href=https://golang.org/pkg/flag/#Getter>Getter</a> and the
 <a href=https://golang.org/pkg/flag/#Value>Value</a> interface in the documentation,
-but for now let&rsquo;s continue with our dive.</p><ol start=2><li>What is <code>CommandLine</code> and what does its method <code>Var</code> do?</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// CommandLine is the default set of command-line flags, parsed from os.Args.
-</span><span style=color:#228b22>// The top-level functions such as BoolVar, Arg, and so on are wrappers for the
-</span><span style=color:#228b22>// methods of CommandLine.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>var</span> CommandLine = <span style=color:#008b45>NewFlagSet</span>(os.Args[<span style=color:#b452cd>0</span>], ExitOnError)
-</code></pre></div><p>As it&rsquo;s very well described in the godoc, <code>CommandLine</code> is the default flag
+but for now let&rsquo;s continue with our dive.</p><ol start=2><li>What is <code>CommandLine</code> and what does its method <code>Var</code> do?</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// CommandLine is the default set of command-line flags, parsed from os.Args.
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// The top-level functions such as BoolVar, Arg, and so on are wrappers for the
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// methods of CommandLine.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>var</span> CommandLine = <span style=color:#008b45>NewFlagSet</span>(os.Args[<span style=color:#b452cd>0</span>], ExitOnError)
+</span></span></code></pre></div><p>As it&rsquo;s very well described in the godoc, <code>CommandLine</code> is the default flag
 set of command line flags for the given executable, (The name used to invoke
-the program is always given by <code>os.Args[0]</code>)</p><p>And the <code>Var</code> method:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// Var defines a flag with the specified name and usage string. The type and
-</span><span style=color:#228b22>// value of the flag are represented by the first argument, of type Value, which
-</span><span style=color:#228b22>// typically holds a user-defined implementation of Value. For instance, the
-</span><span style=color:#228b22>// caller could create a flag that turns a comma-separated string into a slice
-</span><span style=color:#228b22>// of strings by giving the slice the methods of Value; in particular, Set would
-</span><span style=color:#228b22>// decompose the comma-separated string into the slice.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> (f *FlagSet) <span style=color:#008b45>Var</span>(value Value, name <span style=color:#00688b;font-weight:700>string</span>, usage <span style=color:#00688b;font-weight:700>string</span>) {
-	<span style=color:#228b22>// Remember the default value as a string; it won&#39;t change.
-</span><span style=color:#228b22></span>	flag := &amp;Flag{name, usage, value, value.<span style=color:#008b45>String</span>()}
-	_, alreadythere := f.formal[name]
-	<span style=color:#8b008b;font-weight:700>if</span> alreadythere {
-		<span style=color:#8b008b;font-weight:700>var</span> msg <span style=color:#00688b;font-weight:700>string</span>
-		<span style=color:#8b008b;font-weight:700>if</span> f.name == <span style=color:#cd5555>&#34;&#34;</span> {
-			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;flag redefined: %s&#34;</span>, name)
-		} <span style=color:#8b008b;font-weight:700>else</span> {
-			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;%s flag redefined: %s&#34;</span>, f.name, name)
-		}
-		fmt.<span style=color:#008b45>Fprintln</span>(f.<span style=color:#008b45>Output</span>(), msg)
-		<span style=color:#658b00>panic</span>(msg) <span style=color:#228b22>// Happens only if flags are declared with identical names
-</span><span style=color:#228b22></span>	}
-	<span style=color:#8b008b;font-weight:700>if</span> f.formal == <span style=color:#8b008b;font-weight:700>nil</span> {
-		f.formal = <span style=color:#658b00>make</span>(<span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag)
-	}
-	f.formal[name] = flag
-}
-</code></pre></div><p>There&rsquo;s a lot going on in there but let&rsquo;s go step by step.</p><p>The godoc mentions that <code>Var</code>'s first argument usually holds a user-defined
+the program is always given by <code>os.Args[0]</code>)</p><p>And the <code>Var</code> method:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// Var defines a flag with the specified name and usage string. The type and
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// value of the flag are represented by the first argument, of type Value, which
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// typically holds a user-defined implementation of Value. For instance, the
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// caller could create a flag that turns a comma-separated string into a slice
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// of strings by giving the slice the methods of Value; in particular, Set would
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// decompose the comma-separated string into the slice.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> (f *FlagSet) <span style=color:#008b45>Var</span>(value Value, name <span style=color:#00688b;font-weight:700>string</span>, usage <span style=color:#00688b;font-weight:700>string</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#228b22>// Remember the default value as a string; it won&#39;t change.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	flag := &amp;Flag{name, usage, value, value.<span style=color:#008b45>String</span>()}
+</span></span><span style=display:flex><span>	_, alreadythere := f.formal[name]
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> alreadythere {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>var</span> msg <span style=color:#00688b;font-weight:700>string</span>
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> f.name == <span style=color:#cd5555>&#34;&#34;</span> {
+</span></span><span style=display:flex><span>			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;flag redefined: %s&#34;</span>, name)
+</span></span><span style=display:flex><span>		} <span style=color:#8b008b;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;%s flag redefined: %s&#34;</span>, f.name, name)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		fmt.<span style=color:#008b45>Fprintln</span>(f.<span style=color:#008b45>Output</span>(), msg)
+</span></span><span style=display:flex><span>		<span style=color:#658b00>panic</span>(msg) <span style=color:#228b22>// Happens only if flags are declared with identical names
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	}
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> f.formal == <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>		f.formal = <span style=color:#658b00>make</span>(<span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	f.formal[name] = flag
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>There&rsquo;s a lot going on in there but let&rsquo;s go step by step.</p><p>The godoc mentions that <code>Var</code>&rsquo;s first argument usually holds a user-defined
 implementation of <code>Value</code> and it could have a custom <code>Set()</code> method that
 converts its arguments into a slice or some other type aggregate type. In our
 case that&rsquo;s not the case but since it&rsquo;s part of this method documentation
-which is shown in the godoc it&rsquo;s good to be as general as possible.</p><p>Looking at the code we see that:</p><ol><li>A <code>Flag</code> is created.</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>flag := &amp;Flag{name, usage, value, value.<span style=color:#008b45>String</span>()}
-</code></pre></div><p>And a <code>Flag</code> is:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// A Flag represents the state of a flag.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>type</span> Flag <span style=color:#8b008b;font-weight:700>struct</span> {
-	Name     <span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// name as it appears on command line
-</span><span style=color:#228b22></span>	Usage    <span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// help message
-</span><span style=color:#228b22></span>	Value    Value  <span style=color:#228b22>// value as set
-</span><span style=color:#228b22></span>	DefValue <span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// default value (as text); for usage message
-</span><span style=color:#228b22></span>}
-</code></pre></div><p>It&rsquo;s simply a struct that aggregates the name, usage, value and default value.</p><ol start=2><li>A check is made on a unexported map (<code>f.formal</code>) which is part of the
-<code>FlagSet</code> (in this case of <code>CommandLine</code>).</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>_, alreadythere := f.formal[name]
-</code></pre></div><p>The <code>FlagSet</code> structure has several unexported fields of which the <code>Var</code>
-function uses <code>name</code> (a string) and <code>formal</code> (a map of type <code>[string]*Flag</code>)</p><p>As can be seen here:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// A FlagSet represents a set of defined flags. The zero value of a FlagSet
-</span><span style=color:#228b22>// has no name and has ContinueOnError error handling.
-</span><span style=color:#228b22>//
-</span><span style=color:#228b22>// Flag names must be unique within a FlagSet. An attempt to define a flag whose
-</span><span style=color:#228b22>// name is already in use will cause a panic.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>type</span> FlagSet <span style=color:#8b008b;font-weight:700>struct</span> {
-	<span style=color:#228b22>// Usage is the function called when an error occurs while parsing flags.
-</span><span style=color:#228b22></span>	<span style=color:#228b22>// The field is a function (not a method) that may be changed to point to
-</span><span style=color:#228b22></span>	<span style=color:#228b22>// a custom error handler. What happens after Usage is called depends
-</span><span style=color:#228b22></span>	<span style=color:#228b22>// on the ErrorHandling setting; for the command line, this defaults
-</span><span style=color:#228b22></span>	<span style=color:#228b22>// to ExitOnError, which exits the program after calling Usage.
-</span><span style=color:#228b22></span>	Usage <span style=color:#8b008b;font-weight:700>func</span>()
-
-	name          <span style=color:#00688b;font-weight:700>string</span>
-	parsed        <span style=color:#00688b;font-weight:700>bool</span>
-	actual        <span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag
-	formal        <span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag
-	args          []<span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// arguments after flags
-</span><span style=color:#228b22></span>	errorHandling ErrorHandling
-	output        io.Writer <span style=color:#228b22>// nil means stderr; use Output() accessor
-</span><span style=color:#228b22></span>}
-</code></pre></div><p>The check is made as can be seen to see if the flag is redefined, returning a
-different error depending on whether the flagSet has an empty name or not.</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>    <span style=color:#8b008b;font-weight:700>if</span> alreadythere {
-		<span style=color:#8b008b;font-weight:700>var</span> msg <span style=color:#00688b;font-weight:700>string</span>
-		<span style=color:#8b008b;font-weight:700>if</span> f.name == <span style=color:#cd5555>&#34;&#34;</span> {
-			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;flag redefined: %s&#34;</span>, name)
-		} <span style=color:#8b008b;font-weight:700>else</span> {
-			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;%s flag redefined: %s&#34;</span>, f.name, name)
-		}
-		fmt.<span style=color:#008b45>Fprintln</span>(f.<span style=color:#008b45>Output</span>(), msg)
-		<span style=color:#658b00>panic</span>(msg) <span style=color:#228b22>// Happens only if flags are declared with identical names
-</span><span style=color:#228b22></span>	}
-</code></pre></div><ol start=3><li>If the map is not yet created (nil) then a maps is created.</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>    <span style=color:#8b008b;font-weight:700>if</span> f.formal == <span style=color:#8b008b;font-weight:700>nil</span> {
-		f.formal = <span style=color:#658b00>make</span>(<span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag)
-	}
-</code></pre></div><ol start=4><li>Add an entry in the map with the name of the flag as key and the pointer to
-the flag itself as value.</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>f.formal[name] = flag
-</code></pre></div><p>Now the next piece of the puzzle comes in the next line of our program:
-<code>flag.Parse()</code>.</p><p>Diving deep again:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// Parse parses the command-line flags from os.Args[1:]. Must be called
-</span><span style=color:#228b22>// after all flags are defined and before flags are accessed by the program.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>Parse</span>() {
-	<span style=color:#228b22>// Ignore errors; CommandLine is set for ExitOnError.
-</span><span style=color:#228b22></span>	CommandLine.<span style=color:#008b45>Parse</span>(os.Args[<span style=color:#b452cd>1</span>:])
-}
-</code></pre></div><p>We can see that it calls the <code>Parse</code> method of the <code>*FlagSet</code> <code>CommandLine</code>
-with all the arguments passed to the executable.</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// Parse parses flag definitions from the argument list, which should not
-</span><span style=color:#228b22>// include the command name. Must be called after all flags in the FlagSet
-</span><span style=color:#228b22>// are defined and before flags are accessed by the program.
-</span><span style=color:#228b22>// The return value will be ErrHelp if -help or -h were set but not defined.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> (f *FlagSet) <span style=color:#008b45>Parse</span>(arguments []<span style=color:#00688b;font-weight:700>string</span>) <span style=color:#00688b;font-weight:700>error</span> {
-	f.parsed = <span style=color:#8b008b;font-weight:700>true</span>
-	f.args = arguments
-	<span style=color:#8b008b;font-weight:700>for</span> {
-		seen, err := f.<span style=color:#008b45>parseOne</span>()
-		<span style=color:#8b008b;font-weight:700>if</span> seen {
-			<span style=color:#8b008b;font-weight:700>continue</span>
-		}
-		<span style=color:#8b008b;font-weight:700>if</span> err == <span style=color:#8b008b;font-weight:700>nil</span> {
-			<span style=color:#8b008b;font-weight:700>break</span>
-		}
-		<span style=color:#8b008b;font-weight:700>switch</span> f.errorHandling {
-		<span style=color:#8b008b;font-weight:700>case</span> ContinueOnError:
-			<span style=color:#8b008b;font-weight:700>return</span> err
-		<span style=color:#8b008b;font-weight:700>case</span> ExitOnError:
-			<span style=color:#8b008b;font-weight:700>if</span> err == ErrHelp {
-				os.<span style=color:#008b45>Exit</span>(<span style=color:#b452cd>0</span>)
-			}
-			os.<span style=color:#008b45>Exit</span>(<span style=color:#b452cd>2</span>)
-		<span style=color:#8b008b;font-weight:700>case</span> PanicOnError:
-			<span style=color:#658b00>panic</span>(err)
-		}
-	}
-	<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>nil</span>
-}
-</code></pre></div><p>We can summarize this function as parsing each flag until all flags are parsed
+which is shown in the godoc it&rsquo;s good to be as general as possible.</p><p>Looking at the code we see that:</p><ol><li>A <code>Flag</code> is created.</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>flag := &amp;Flag{name, usage, value, value.<span style=color:#008b45>String</span>()}
+</span></span></code></pre></div><p>And a <code>Flag</code> is:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// A Flag represents the state of a flag.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>type</span> Flag <span style=color:#8b008b;font-weight:700>struct</span> {
+</span></span><span style=display:flex><span>	Name     <span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// name as it appears on command line
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	Usage    <span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// help message
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	Value    Value  <span style=color:#228b22>// value as set
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	DefValue <span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// default value (as text); for usage message
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>}
+</span></span></code></pre></div><p>It&rsquo;s simply a struct that aggregates the name, usage, value and default value.</p><ol start=2><li>A check is made on a unexported map (<code>f.formal</code>) which is part of the
+<code>FlagSet</code> (in this case of <code>CommandLine</code>).</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>_, alreadythere := f.formal[name]
+</span></span></code></pre></div><p>The <code>FlagSet</code> structure has several unexported fields of which the <code>Var</code>
+function uses <code>name</code> (a string) and <code>formal</code> (a map of type <code>[string]*Flag</code>)</p><p>As can be seen here:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// A FlagSet represents a set of defined flags. The zero value of a FlagSet
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// has no name and has ContinueOnError error handling.
+</span></span></span><span style=display:flex><span><span style=color:#228b22>//
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// Flag names must be unique within a FlagSet. An attempt to define a flag whose
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// name is already in use will cause a panic.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>type</span> FlagSet <span style=color:#8b008b;font-weight:700>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#228b22>// Usage is the function called when an error occurs while parsing flags.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	<span style=color:#228b22>// The field is a function (not a method) that may be changed to point to
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	<span style=color:#228b22>// a custom error handler. What happens after Usage is called depends
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	<span style=color:#228b22>// on the ErrorHandling setting; for the command line, this defaults
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	<span style=color:#228b22>// to ExitOnError, which exits the program after calling Usage.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	Usage <span style=color:#8b008b;font-weight:700>func</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	name          <span style=color:#00688b;font-weight:700>string</span>
+</span></span><span style=display:flex><span>	parsed        <span style=color:#00688b;font-weight:700>bool</span>
+</span></span><span style=display:flex><span>	actual        <span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag
+</span></span><span style=display:flex><span>	formal        <span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag
+</span></span><span style=display:flex><span>	args          []<span style=color:#00688b;font-weight:700>string</span> <span style=color:#228b22>// arguments after flags
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	errorHandling ErrorHandling
+</span></span><span style=display:flex><span>	output        io.Writer <span style=color:#228b22>// nil means stderr; use Output() accessor
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>}
+</span></span></code></pre></div><p>The check is made as can be seen to see if the flag is redefined, returning a
+different error depending on whether the flagSet has an empty name or not.</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>if</span> alreadythere {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>var</span> msg <span style=color:#00688b;font-weight:700>string</span>
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> f.name == <span style=color:#cd5555>&#34;&#34;</span> {
+</span></span><span style=display:flex><span>			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;flag redefined: %s&#34;</span>, name)
+</span></span><span style=display:flex><span>		} <span style=color:#8b008b;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>			msg = fmt.<span style=color:#008b45>Sprintf</span>(<span style=color:#cd5555>&#34;%s flag redefined: %s&#34;</span>, f.name, name)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		fmt.<span style=color:#008b45>Fprintln</span>(f.<span style=color:#008b45>Output</span>(), msg)
+</span></span><span style=display:flex><span>		<span style=color:#658b00>panic</span>(msg) <span style=color:#228b22>// Happens only if flags are declared with identical names
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	}
+</span></span></code></pre></div><ol start=3><li>If the map is not yet created (nil) then a maps is created.</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>if</span> f.formal == <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>		f.formal = <span style=color:#658b00>make</span>(<span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag)
+</span></span><span style=display:flex><span>	}
+</span></span></code></pre></div><ol start=4><li>Add an entry in the map with the name of the flag as key and the pointer to
+the flag itself as value.</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>f.formal[name] = flag
+</span></span></code></pre></div><p>Now the next piece of the puzzle comes in the next line of our program:
+<code>flag.Parse()</code>.</p><p>Diving deep again:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// Parse parses the command-line flags from os.Args[1:]. Must be called
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// after all flags are defined and before flags are accessed by the program.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>Parse</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#228b22>// Ignore errors; CommandLine is set for ExitOnError.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	CommandLine.<span style=color:#008b45>Parse</span>(os.Args[<span style=color:#b452cd>1</span>:])
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>We can see that it calls the <code>Parse</code> method of the <code>*FlagSet</code> <code>CommandLine</code>
+with all the arguments passed to the executable.</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// Parse parses flag definitions from the argument list, which should not
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// include the command name. Must be called after all flags in the FlagSet
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// are defined and before flags are accessed by the program.
+</span></span></span><span style=display:flex><span><span style=color:#228b22>// The return value will be ErrHelp if -help or -h were set but not defined.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> (f *FlagSet) <span style=color:#008b45>Parse</span>(arguments []<span style=color:#00688b;font-weight:700>string</span>) <span style=color:#00688b;font-weight:700>error</span> {
+</span></span><span style=display:flex><span>	f.parsed = <span style=color:#8b008b;font-weight:700>true</span>
+</span></span><span style=display:flex><span>	f.args = arguments
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>for</span> {
+</span></span><span style=display:flex><span>		seen, err := f.<span style=color:#008b45>parseOne</span>()
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> seen {
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>continue</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> err == <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>break</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>switch</span> f.errorHandling {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>case</span> ContinueOnError:
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>return</span> err
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>case</span> ExitOnError:
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>if</span> err == ErrHelp {
+</span></span><span style=display:flex><span>				os.<span style=color:#008b45>Exit</span>(<span style=color:#b452cd>0</span>)
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>			os.<span style=color:#008b45>Exit</span>(<span style=color:#b452cd>2</span>)
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>case</span> PanicOnError:
+</span></span><span style=display:flex><span>			<span style=color:#658b00>panic</span>(err)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>We can summarize this function as parsing each flag until all flags are parsed
 and either errors/panics in case of an error or returns nil in case
 there wasn&rsquo;t any.</p><p>More specifically the loop ends if <code>err</code> returned from <code>f.parseOne()</code> is
 nil, and continues if the <code>seen</code> returned by <code>f.parseOne()</code> is <code>true</code>.</p><p>Do note, that even though arguments passed are being assigned to <code>f.args</code>, the
 for loop doesn&rsquo;t explicitly iterate over them, instead it an infinite loops,
-and <code>f.parseOne()</code> handles parsing and shifting the arguments passed.</p><p>As we can see the real key to understating the <code>Parse</code> method is <code>f.parseOne()</code>:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#228b22>// parseOne parses one flag. It reports whether a flag was seen.
-</span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> (f *FlagSet) <span style=color:#008b45>parseOne</span>() (<span style=color:#00688b;font-weight:700>bool</span>, <span style=color:#00688b;font-weight:700>error</span>) {
-	<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(f.args) == <span style=color:#b452cd>0</span> {
-		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-	}
-	s := f.args[<span style=color:#b452cd>0</span>]
-	<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) &lt; <span style=color:#b452cd>2</span> || s[<span style=color:#b452cd>0</span>] != <span style=color:#cd5555>&#39;-&#39;</span> {
-		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-	}
-	numMinuses := <span style=color:#b452cd>1</span>
-	<span style=color:#8b008b;font-weight:700>if</span> s[<span style=color:#b452cd>1</span>] == <span style=color:#cd5555>&#39;-&#39;</span> {
-		numMinuses++
-		<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) == <span style=color:#b452cd>2</span> { <span style=color:#228b22>// &#34;--&#34; terminates the flags
-</span><span style=color:#228b22></span>			f.args = f.args[<span style=color:#b452cd>1</span>:]
-			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-		}
-	}
-	name := s[numMinuses:]
-	<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(name) == <span style=color:#b452cd>0</span> || name[<span style=color:#b452cd>0</span>] == <span style=color:#cd5555>&#39;-&#39;</span> || name[<span style=color:#b452cd>0</span>] == <span style=color:#cd5555>&#39;=&#39;</span> {
-		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;bad flag syntax: %s&#34;</span>, s)
-	}
-
-	<span style=color:#228b22>// it&#39;s a flag. does it have an argument?
-</span><span style=color:#228b22></span>	f.args = f.args[<span style=color:#b452cd>1</span>:]
-	hasValue := <span style=color:#8b008b;font-weight:700>false</span>
-	value := <span style=color:#cd5555>&#34;&#34;</span>
-	<span style=color:#8b008b;font-weight:700>for</span> i := <span style=color:#b452cd>1</span>; i &lt; <span style=color:#658b00>len</span>(name); i++ { <span style=color:#228b22>// equals cannot be first
-</span><span style=color:#228b22></span>		<span style=color:#8b008b;font-weight:700>if</span> name[i] == <span style=color:#cd5555>&#39;=&#39;</span> {
-			value = name[i+<span style=color:#b452cd>1</span>:]
-			hasValue = <span style=color:#8b008b;font-weight:700>true</span>
-			name = name[<span style=color:#b452cd>0</span>:i]
-			<span style=color:#8b008b;font-weight:700>break</span>
-		}
-	}
-	m := f.formal
-	flag, alreadythere := m[name] <span style=color:#228b22>// BUG
-</span><span style=color:#228b22></span>	<span style=color:#8b008b;font-weight:700>if</span> !alreadythere {
-		<span style=color:#8b008b;font-weight:700>if</span> name == <span style=color:#cd5555>&#34;help&#34;</span> || name == <span style=color:#cd5555>&#34;h&#34;</span> { <span style=color:#228b22>// special case for nice help message.
-</span><span style=color:#228b22></span>			f.<span style=color:#008b45>usage</span>()
-			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, ErrHelp
-		}
-		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;flag provided but not defined: -%s&#34;</span>, name)
-	}
-
-	<span style=color:#8b008b;font-weight:700>if</span> fv, ok := flag.Value.(boolFlag); ok &amp;&amp; fv.<span style=color:#008b45>IsBoolFlag</span>() { <span style=color:#228b22>// special case: doesn&#39;t need an arg
-</span><span style=color:#228b22></span>		<span style=color:#8b008b;font-weight:700>if</span> hasValue {
-			<span style=color:#8b008b;font-weight:700>if</span> err := fv.<span style=color:#008b45>Set</span>(value); err != <span style=color:#8b008b;font-weight:700>nil</span> {
-				<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;invalid boolean value %q for -%s: %v&#34;</span>, value, name, err)
-			}
-		} <span style=color:#8b008b;font-weight:700>else</span> {
-			<span style=color:#8b008b;font-weight:700>if</span> err := fv.<span style=color:#008b45>Set</span>(<span style=color:#cd5555>&#34;true&#34;</span>); err != <span style=color:#8b008b;font-weight:700>nil</span> {
-				<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;invalid boolean flag %s: %v&#34;</span>, name, err)
-			}
-		}
-	} <span style=color:#8b008b;font-weight:700>else</span> {
-		<span style=color:#228b22>// It must have a value, which might be the next argument.
-</span><span style=color:#228b22></span>		<span style=color:#8b008b;font-weight:700>if</span> !hasValue &amp;&amp; <span style=color:#658b00>len</span>(f.args) &gt; <span style=color:#b452cd>0</span> {
-			<span style=color:#228b22>// value is the next arg
-</span><span style=color:#228b22></span>			hasValue = <span style=color:#8b008b;font-weight:700>true</span>
-			value, f.args = f.args[<span style=color:#b452cd>0</span>], f.args[<span style=color:#b452cd>1</span>:]
-		}
-		<span style=color:#8b008b;font-weight:700>if</span> !hasValue {
-			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;flag needs an argument: -%s&#34;</span>, name)
-		}
-		<span style=color:#8b008b;font-weight:700>if</span> err := flag.Value.<span style=color:#008b45>Set</span>(value); err != <span style=color:#8b008b;font-weight:700>nil</span> {
-			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;invalid value %q for flag -%s: %v&#34;</span>, value, name, err)
-		}
-	}
-	<span style=color:#8b008b;font-weight:700>if</span> f.actual == <span style=color:#8b008b;font-weight:700>nil</span> {
-		f.actual = <span style=color:#658b00>make</span>(<span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag)
-	}
-	f.actual[name] = flag
-	<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>true</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-}
-</code></pre></div><p>Whoa! That&rsquo;s a lot to unpack. Fortunately we don&rsquo;t need to analyze the whole
+and <code>f.parseOne()</code> handles parsing and shifting the arguments passed.</p><p>As we can see the real key to understating the <code>Parse</code> method is <code>f.parseOne()</code>:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#228b22>// parseOne parses one flag. It reports whether a flag was seen.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span><span style=color:#8b008b;font-weight:700>func</span> (f *FlagSet) <span style=color:#008b45>parseOne</span>() (<span style=color:#00688b;font-weight:700>bool</span>, <span style=color:#00688b;font-weight:700>error</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(f.args) == <span style=color:#b452cd>0</span> {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	s := f.args[<span style=color:#b452cd>0</span>]
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) &lt; <span style=color:#b452cd>2</span> || s[<span style=color:#b452cd>0</span>] != <span style=color:#cd5555>&#39;-&#39;</span> {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	numMinuses := <span style=color:#b452cd>1</span>
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> s[<span style=color:#b452cd>1</span>] == <span style=color:#cd5555>&#39;-&#39;</span> {
+</span></span><span style=display:flex><span>		numMinuses++
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) == <span style=color:#b452cd>2</span> { <span style=color:#228b22>// &#34;--&#34; terminates the flags
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>			f.args = f.args[<span style=color:#b452cd>1</span>:]
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	name := s[numMinuses:]
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(name) == <span style=color:#b452cd>0</span> || name[<span style=color:#b452cd>0</span>] == <span style=color:#cd5555>&#39;-&#39;</span> || name[<span style=color:#b452cd>0</span>] == <span style=color:#cd5555>&#39;=&#39;</span> {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;bad flag syntax: %s&#34;</span>, s)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#228b22>// it&#39;s a flag. does it have an argument?
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	f.args = f.args[<span style=color:#b452cd>1</span>:]
+</span></span><span style=display:flex><span>	hasValue := <span style=color:#8b008b;font-weight:700>false</span>
+</span></span><span style=display:flex><span>	value := <span style=color:#cd5555>&#34;&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>for</span> i := <span style=color:#b452cd>1</span>; i &lt; <span style=color:#658b00>len</span>(name); i++ { <span style=color:#228b22>// equals cannot be first
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>		<span style=color:#8b008b;font-weight:700>if</span> name[i] == <span style=color:#cd5555>&#39;=&#39;</span> {
+</span></span><span style=display:flex><span>			value = name[i+<span style=color:#b452cd>1</span>:]
+</span></span><span style=display:flex><span>			hasValue = <span style=color:#8b008b;font-weight:700>true</span>
+</span></span><span style=display:flex><span>			name = name[<span style=color:#b452cd>0</span>:i]
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>break</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	m := f.formal
+</span></span><span style=display:flex><span>	flag, alreadythere := m[name] <span style=color:#228b22>// BUG
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>	<span style=color:#8b008b;font-weight:700>if</span> !alreadythere {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> name == <span style=color:#cd5555>&#34;help&#34;</span> || name == <span style=color:#cd5555>&#34;h&#34;</span> { <span style=color:#228b22>// special case for nice help message.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>			f.<span style=color:#008b45>usage</span>()
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, ErrHelp
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;flag provided but not defined: -%s&#34;</span>, name)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> fv, ok := flag.Value.(boolFlag); ok &amp;&amp; fv.<span style=color:#008b45>IsBoolFlag</span>() { <span style=color:#228b22>// special case: doesn&#39;t need an arg
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>		<span style=color:#8b008b;font-weight:700>if</span> hasValue {
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>if</span> err := fv.<span style=color:#008b45>Set</span>(value); err != <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>				<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;invalid boolean value %q for -%s: %v&#34;</span>, value, name, err)
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		} <span style=color:#8b008b;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>if</span> err := fv.<span style=color:#008b45>Set</span>(<span style=color:#cd5555>&#34;true&#34;</span>); err != <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>				<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;invalid boolean flag %s: %v&#34;</span>, name, err)
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	} <span style=color:#8b008b;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#228b22>// It must have a value, which might be the next argument.
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>		<span style=color:#8b008b;font-weight:700>if</span> !hasValue &amp;&amp; <span style=color:#658b00>len</span>(f.args) &gt; <span style=color:#b452cd>0</span> {
+</span></span><span style=display:flex><span>			<span style=color:#228b22>// value is the next arg
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>			hasValue = <span style=color:#8b008b;font-weight:700>true</span>
+</span></span><span style=display:flex><span>			value, f.args = f.args[<span style=color:#b452cd>0</span>], f.args[<span style=color:#b452cd>1</span>:]
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> !hasValue {
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;flag needs an argument: -%s&#34;</span>, name)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> err := flag.Value.<span style=color:#008b45>Set</span>(value); err != <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, f.<span style=color:#008b45>failf</span>(<span style=color:#cd5555>&#34;invalid value %q for flag -%s: %v&#34;</span>, value, name, err)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> f.actual == <span style=color:#8b008b;font-weight:700>nil</span> {
+</span></span><span style=display:flex><span>		f.actual = <span style=color:#658b00>make</span>(<span style=color:#8b008b;font-weight:700>map</span>[<span style=color:#00688b;font-weight:700>string</span>]*Flag)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	f.actual[name] = flag
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>true</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Whoa! That&rsquo;s a lot to unpack. Fortunately we don&rsquo;t need to analyze the whole
 function to get to the single and double dashes logic, but let&rsquo;s take it
-piecemeal:</p><ol><li>Check if there are no arguments:</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>    <span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(f.args) == <span style=color:#b452cd>0</span> {
-		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-	}
-</code></pre></div><p>So if there are no arguments it simply ends parsing.</p><ol start=2><li>Getting the first command line argument (the actual option/flag name)</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>s := f.args[<span style=color:#b452cd>0</span>]
-</code></pre></div><p>Since <code>f.args</code> was all the command line arguments with whom the executable was
+piecemeal:</p><ol><li>Check if there are no arguments:</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(f.args) == <span style=color:#b452cd>0</span> {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>	}
+</span></span></code></pre></div><p>So if there are no arguments it simply ends parsing.</p><ol start=2><li>Getting the first command line argument (the actual option/flag name)</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>s := f.args[<span style=color:#b452cd>0</span>]
+</span></span></code></pre></div><p>Since <code>f.args</code> was all the command line arguments with whom the executable was
 called (this is simply assigning to <code>s</code> the first command line argument).
 Later we will see that the <code>f.args</code> slice gets updated in this function, so
-that it we advance the command line arguments seen.</p><p>In our example program, this would make:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>s := <span style=color:#cd5555>&#34;-verbose&#34;</span>
-</code></pre></div><ol start=3><li><strong>The actual explanation of why the short and long options work</strong></li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>    <span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) &lt; <span style=color:#b452cd>2</span> || s[<span style=color:#b452cd>0</span>] != <span style=color:#cd5555>&#39;-&#39;</span> {
-		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-	}
-	numMinuses := <span style=color:#b452cd>1</span>
-	<span style=color:#8b008b;font-weight:700>if</span> s[<span style=color:#b452cd>1</span>] == <span style=color:#cd5555>&#39;-&#39;</span> {
-		numMinuses++
-		<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) == <span style=color:#b452cd>2</span> { <span style=color:#228b22>// &#34;--&#34; terminates the flags
-</span><span style=color:#228b22></span>			f.args = f.args[<span style=color:#b452cd>1</span>:]
-			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
-		}
-	}
-	name := s[numMinuses:]
-</code></pre></div><p>To explain this part let&rsquo;s continue with the flag in our example program <code>s</code>,
-but let&rsquo;s assume we have invoked it with 2 dashes:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>s := <span style=color:#cd5555>&#34;--verbose&#34;</span>
-</code></pre></div><p>The first if returns if the length of <code>s</code> is 1 or not if the first rune
+that it we advance the command line arguments seen.</p><p>In our example program, this would make:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>s := <span style=color:#cd5555>&#34;-verbose&#34;</span>
+</span></span></code></pre></div><ol start=3><li><strong>The actual explanation of why the short and long options work</strong></li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) &lt; <span style=color:#b452cd>2</span> || s[<span style=color:#b452cd>0</span>] != <span style=color:#cd5555>&#39;-&#39;</span> {
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	numMinuses := <span style=color:#b452cd>1</span>
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> s[<span style=color:#b452cd>1</span>] == <span style=color:#cd5555>&#39;-&#39;</span> {
+</span></span><span style=display:flex><span>		numMinuses++
+</span></span><span style=display:flex><span>		<span style=color:#8b008b;font-weight:700>if</span> <span style=color:#658b00>len</span>(s) == <span style=color:#b452cd>2</span> { <span style=color:#228b22>// &#34;--&#34; terminates the flags
+</span></span></span><span style=display:flex><span><span style=color:#228b22></span>			f.args = f.args[<span style=color:#b452cd>1</span>:]
+</span></span><span style=display:flex><span>			<span style=color:#8b008b;font-weight:700>return</span> <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#8b008b;font-weight:700>nil</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	name := s[numMinuses:]
+</span></span></code></pre></div><p>To explain this part let&rsquo;s continue with the flag in our example program <code>s</code>,
+but let&rsquo;s assume we have invoked it with 2 dashes:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>s := <span style=color:#cd5555>&#34;--verbose&#34;</span>
+</span></span></code></pre></div><p>The first if returns if the length of <code>s</code> is 1 or not if the first rune
 (character) is not a dash. None of these is our case.</p><p>Since we don&rsquo;t enter the body of the if statement the first rune <em>must</em> be a
 dash, or minus as it is called in the code, then the <code>numMinuses</code> is set to 1.</p><p>The second if checks whether the second character of the string is a dash <code>-</code>
 and if it is it increments the <code>numMinuses</code> to 2. If it isn&rsquo;t then the body of
@@ -346,96 +344,104 @@ double dashes are also possible.</p><p><img src=../../img/screenshot_flag_pkg_go
 have short/long options using just flag package?</strong></p><p>Well with this newfound knowledge of how flags are made and kept in the
 <code>*FlagSet</code> this should be now a bit more straightforward, but let&rsquo;s check how it
 is done in
-<a href=https://github.com/FiloSottile/age/blob/master/cmd/age/age.go#L97-L102>age</a></p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go>	flag.<span style=color:#008b45>BoolVar</span>(&amp;decryptFlag, <span style=color:#cd5555>&#34;d&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;decrypt the input&#34;</span>)
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;decryptFlag, <span style=color:#cd5555>&#34;decrypt&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;decrypt the input&#34;</span>)
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;encryptFlag, <span style=color:#cd5555>&#34;e&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;encrypt the input&#34;</span>)
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;encryptFlag, <span style=color:#cd5555>&#34;encrypt&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;encrypt the input&#34;</span>)
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;passFlag, <span style=color:#cd5555>&#34;p&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;use a passphrase&#34;</span>)
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;passFlag, <span style=color:#cd5555>&#34;passphrase&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;use a passphrase&#34;</span>)
-</code></pre></div><p>As can be seen all that it&rsquo;s needed is to assign to the same variable two
+<a href=https://github.com/FiloSottile/age/blob/master/cmd/age/age.go#L97-L102>age</a></p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;decryptFlag, <span style=color:#cd5555>&#34;d&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;decrypt the input&#34;</span>)
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;decryptFlag, <span style=color:#cd5555>&#34;decrypt&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;decrypt the input&#34;</span>)
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;encryptFlag, <span style=color:#cd5555>&#34;e&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;encrypt the input&#34;</span>)
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;encryptFlag, <span style=color:#cd5555>&#34;encrypt&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;encrypt the input&#34;</span>)
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;passFlag, <span style=color:#cd5555>&#34;p&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;use a passphrase&#34;</span>)
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;passFlag, <span style=color:#cd5555>&#34;passphrase&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;use a passphrase&#34;</span>)
+</span></span></code></pre></div><p>As can be seen all that it&rsquo;s needed is to assign to the same variable two
 flags: one with a single letter and one with a word. Of course this doesn&rsquo;t
 prevent anyone from using the single dash with the word form or the double
 dash with the single letter, but if the ergonomics and restricting the usages
 are really important, you can always modify <code>flag.Usage</code> so that these two
 cases are documented, <a href=https://github.com/FiloSottile/age/blob/master/cmd/age/age.go#L35>as it is done with
-<code>age</code></a>.</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#8b008b;font-weight:700>const</span> usage = <span style=color:#a61717;background-color:#e3d2d2>`</span>Usage:
-    age [--encrypt] (-r RECIPIENT | -R PATH)... [--armor] [-o OUTPUT] [INPUT]
-    age [--encrypt] --passphrase [--armor] [-o OUTPUT] [INPUT]
-    age --decrypt [-i PATH]... [-o OUTPUT] [INPUT]
-Options:
-    -e, --encrypt               Encrypt the input to the output. Default <span style=color:#8b008b;font-weight:700>if</span> omitted.
-    -d, --decrypt               Decrypt the input to the output.
-    -o, --output OUTPUT         Write the result to the file at path OUTPUT.
-    -a, --armor                 Encrypt to a PEM encoded format.
-    -p, --passphrase            Encrypt with a passphrase.
-</code></pre></div><p>We can test it in our tiny example program by adding an extra line with <code>"v"</code>
-as flag name such that it looks like this:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#8b008b;font-weight:700>package</span> main
-
-<span style=color:#8b008b;font-weight:700>import</span> (
-    <span style=color:#cd5555>&#34;fmt&#34;</span>
-    <span style=color:#cd5555>&#34;flag&#34;</span>
-)
-
-<span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>main</span>() {
-    <span style=color:#8b008b;font-weight:700>var</span> verbose <span style=color:#00688b;font-weight:700>bool</span>
-    flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;verbose&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
-    flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;v&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
-    flag.<span style=color:#008b45>Parse</span>()
-    <span style=color:#8b008b;font-weight:700>if</span> verbose {
-        fmt.<span style=color:#008b45>Println</span>(<span style=color:#cd5555>&#34;verbose is on&#34;</span>)
-    }
-}
-</code></pre></div><p>Don&rsquo;t forget to build it after modifying it.</p><p>Invoking it with <code>-v</code>, <code>--v</code> and of course the other two cases works as well:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ ./using_flag -v
-verbose is on
-$ ./using_flag --verbose
-verbose is on
-$ ./using_flag --v
-verbose is on
-$ ./using_flag -verbose
-verbose is on
-</code></pre></div><p>And of course invoking it with three (or more dashes) dashes results in a
-error:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ ./using_flag ---verbose
-bad flag syntax: ---verbose
-Usage of ./using_flag:
-  -v    verbose output
-  -verbose
-        verbose output
-$
-</code></pre></div><p>For completion&rsquo;s sake we&rsquo;ll modify the <code>flag.Usage</code> so that we have a neater
-error when we either print help or have an error parsing flags:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#8b008b;font-weight:700>package</span> main
-
-<span style=color:#8b008b;font-weight:700>import</span> (
-	<span style=color:#cd5555>&#34;flag&#34;</span>
-	<span style=color:#cd5555>&#34;fmt&#34;</span>
-)
-
-<span style=color:#8b008b;font-weight:700>const</span> usage = <span style=color:#cd5555>`Usage of using_flag:
-</span><span style=color:#cd5555>  -v, --verbose verbose output
-</span><span style=color:#cd5555>  -h, --help prints help information 
-</span><span style=color:#cd5555>`</span>
-
-<span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>main</span>() {
-	<span style=color:#8b008b;font-weight:700>var</span> verbose <span style=color:#00688b;font-weight:700>bool</span>
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;verbose&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
-	flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;v&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
-	flag.Usage = <span style=color:#8b008b;font-weight:700>func</span>() { fmt.<span style=color:#008b45>Print</span>(usage) }
-	flag.<span style=color:#008b45>Parse</span>()
-	<span style=color:#8b008b;font-weight:700>if</span> verbose {
-		fmt.<span style=color:#008b45>Println</span>(<span style=color:#cd5555>&#34;verbose is on&#34;</span>)
-	}
-}
-</code></pre></div><p>which outputs:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ ./using_flag ---verbose
-bad flag syntax: ---verbose
-Usage of using_flag:
-  -v, --verbose verbose output
-  -h, --help    prints <span style=color:#658b00>help</span> information
-$
-</code></pre></div><p>I think the main reason people assume this isn&rsquo;t possible is because the
+<code>age</code></a>.</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8b008b;font-weight:700>const</span> usage = <span style=color:#a61717;background-color:#e3d2d2>`</span>Usage:
+</span></span><span style=display:flex><span>    age [--encrypt] (-r RECIPIENT | -R PATH)... [--armor] [-o OUTPUT] [INPUT]
+</span></span><span style=display:flex><span>    age [--encrypt] --passphrase [--armor] [-o OUTPUT] [INPUT]
+</span></span><span style=display:flex><span>    age --decrypt [-i PATH]... [-o OUTPUT] [INPUT]
+</span></span><span style=display:flex><span>Options:
+</span></span><span style=display:flex><span>    -e, --encrypt               Encrypt the input to the output. Default <span style=color:#8b008b;font-weight:700>if</span> omitted.
+</span></span><span style=display:flex><span>    -d, --decrypt               Decrypt the input to the output.
+</span></span><span style=display:flex><span>    -o, --output OUTPUT         Write the result to the file at path OUTPUT.
+</span></span><span style=display:flex><span>    -a, --armor                 Encrypt to a PEM encoded format.
+</span></span><span style=display:flex><span>    -p, --passphrase            Encrypt with a passphrase.
+</span></span></code></pre></div><p>We can test it in our tiny example program by adding an extra line with <code>"v"</code>
+as flag name such that it looks like this:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8b008b;font-weight:700>package</span> main
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>import</span> (
+</span></span><span style=display:flex><span>    <span style=color:#cd5555>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#cd5555>&#34;flag&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>var</span> verbose <span style=color:#00688b;font-weight:700>bool</span>
+</span></span><span style=display:flex><span>    flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;verbose&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
+</span></span><span style=display:flex><span>    flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;v&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
+</span></span><span style=display:flex><span>    flag.<span style=color:#008b45>Parse</span>()
+</span></span><span style=display:flex><span>    <span style=color:#8b008b;font-weight:700>if</span> verbose {
+</span></span><span style=display:flex><span>        fmt.<span style=color:#008b45>Println</span>(<span style=color:#cd5555>&#34;verbose is on&#34;</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Don&rsquo;t forget to build it after modifying it.</p><p>Invoking it with <code>-v</code>, <code>--v</code> and of course the other two cases works as well:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ ./using_flag -v
+</span></span><span style=display:flex><span>verbose is on
+</span></span><span style=display:flex><span>$ ./using_flag --verbose
+</span></span><span style=display:flex><span>verbose is on
+</span></span><span style=display:flex><span>$ ./using_flag --v
+</span></span><span style=display:flex><span>verbose is on
+</span></span><span style=display:flex><span>$ ./using_flag -verbose
+</span></span><span style=display:flex><span>verbose is on
+</span></span></code></pre></div><p>And of course invoking it with three (or more dashes) dashes results in a
+error:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ ./using_flag ---verbose
+</span></span><span style=display:flex><span>bad flag syntax: ---verbose
+</span></span><span style=display:flex><span>Usage of ./using_flag:
+</span></span><span style=display:flex><span>  -v    verbose output
+</span></span><span style=display:flex><span>  -verbose
+</span></span><span style=display:flex><span>        verbose output
+</span></span><span style=display:flex><span>$
+</span></span></code></pre></div><p>For completion&rsquo;s sake we&rsquo;ll modify the <code>flag.Usage</code> so that we have a neater
+error when we either print help or have an error parsing flags:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#8b008b;font-weight:700>package</span> main
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#cd5555>&#34;flag&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#cd5555>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>const</span> usage = <span style=color:#cd5555>`Usage of using_flag:
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>  -v, --verbose verbose output
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>  -h, --help prints help information 
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>`</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8b008b;font-weight:700>func</span> <span style=color:#008b45>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>var</span> verbose <span style=color:#00688b;font-weight:700>bool</span>
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;verbose&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>BoolVar</span>(&amp;verbose, <span style=color:#cd5555>&#34;v&#34;</span>, <span style=color:#8b008b;font-weight:700>false</span>, <span style=color:#cd5555>&#34;verbose output&#34;</span>)
+</span></span><span style=display:flex><span>	flag.Usage = <span style=color:#8b008b;font-weight:700>func</span>() { fmt.<span style=color:#008b45>Print</span>(usage) }
+</span></span><span style=display:flex><span>	flag.<span style=color:#008b45>Parse</span>()
+</span></span><span style=display:flex><span>	<span style=color:#8b008b;font-weight:700>if</span> verbose {
+</span></span><span style=display:flex><span>		fmt.<span style=color:#008b45>Println</span>(<span style=color:#cd5555>&#34;verbose is on&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>which outputs:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ ./using_flag ---verbose
+</span></span><span style=display:flex><span>bad flag syntax: ---verbose
+</span></span><span style=display:flex><span>Usage of using_flag:
+</span></span><span style=display:flex><span>  -v, --verbose verbose output
+</span></span><span style=display:flex><span>  -h, --help    prints <span style=color:#658b00>help</span> information
+</span></span><span style=display:flex><span>$
+</span></span></code></pre></div><p>I think the main reason people assume this isn&rsquo;t possible is because the
 flag documentation doesn&rsquo;t <em><strong>show</strong></em> that the options could be passed with
 <em>single or double dash</em>. The fact that by far most people that want a CLI that
 handles flags cleaning use <a href=https://www.github.com/spf13/cobra>spf13/cobra</a>
 doesn&rsquo;t help either. Also it doesn&rsquo;t help that is a high quality package with
 nice ergonomics.</p><p>But as you can see, it&rsquo;s not essential to use in order to have regular
 Unix-style command line options.</p><p>That&rsquo;s all folks. Happy hacking!</p><hr width=100% id=EOF><p style=color:#777>Last modified on 2021-05-14</p><p class=verify-in-keybase>You can make sure that the author wrote this post by copy-pasting <a href=https://raw.githubusercontent.com/chibby0ne/chibby0ne.github.io/master/posts_signatures/2021-05-14-short-and-long-options-in-go-flags-pkg.asc>this signature</a> into <a href=https://keybase.io/verify>this Keybase page</a>.</p></div></div><nav class=post-pagination><a class=newer-posts href=/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/>Next<br>Defining installation location in build systems</a>
-<a class=older-posts href=/posts/2021-01-31-steps_todo_before_factory_reset_android/>Previous<br>Things to backup before doing a factory reset of an Android Phone</a></nav><div class=post-comment-wrapper><div id=disqus_thread></div><script>var disqus_config=function(){this.page.url='\/posts\/2021-05-14-short-and-long-options-in-go-flags-pkg\/';this.page.identifier='\/posts\/2021-05-14-short-and-long-options-in-go-flags-pkg\/';};(function(){var d=document,s=d.createElement('script');s.src='https://antoniojgutierrez.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript rel=nofollow>comments powered by Disqus.</a></noscript></div></div></div></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+<a class=older-posts href=/posts/2021-01-31-steps_todo_before_factory_reset_android/>Previous<br>Things to backup before doing a factory reset of an Android Phone</a></nav><div class=post-comment-wrapper><div id=disqus_thread></div><script>var disqus_config=function(){this.page.url="https://www.antoniojgutierrez.com/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/",this.page.identifier="/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/"};(function(){var e=document,t=e.createElement("script");t.src="https://antoniojgutierrez.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript rel=nofollow>comments powered by Disqus.</a></noscript></div></div></div></div></div><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://www.antoniojgutierrez.com/><div class=nav-title>Murmurations of Neurons</div><div class=nav-subtitle>An exploration of ideas and thoughts on programming, computers, nature and life in general</div></a><div class=nav-link-list><a class="a-block nav-link-item false" href=/about>About me</a>
+<a class="a-block nav-link-item active" href=/posts>Archive</a>
+<a class="a-block nav-link-item false" href=/categories>Categories</a>
+<a class="a-block nav-link-item false" href=/tags>Tags</a>
+<a class="a-block nav-link-item false" href=/cv>CV</a>
+<a class="a-block nav-link-item false" href=github.com/chibby0ne/CTFs>CTFs</a>
+<a class="a-block nav-link-item false" href=/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer class=extra-container><div class=toc-wrapper><div class=toc></div></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up</i></a>
+<a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
 Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><script src=/js/journal.js></script></body></html>

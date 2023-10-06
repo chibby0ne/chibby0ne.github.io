@@ -1,16 +1,14 @@
-<!doctype html><html><head><title>Defining installation location in build systems</title><meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="Prefix and Destdir meaning"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:title" content="Defining installation location in build systems"><meta property="og:description" content="Prefix and Destdir meaning"><meta property="og:type" content="article"><meta property="og:url" content="https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/"><meta property="article:published_time" content="2021-05-23T20:16:34+02:00"><meta property="article:modified_time" content="2021-05-23T20:16:34+02:00"><meta property="og:site_name" content="Murmurations of Neurons"><meta name=twitter:card content="summary"><meta name=twitter:title content="Defining installation location in build systems"><meta name=twitter:description content="Prefix and Destdir meaning"><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-55399960-1','auto');ga('send','pageview');}</script><link rel=stylesheet href=/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen><link rel=stylesheet href=/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen><script src=/js/toc.js></script><link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});});</script><script src=https://cdn.jsdelivr.net/npm/vue-disqus@3/dist/vue-disqus.js></script><a rel=me href=https://hachyderm.io/@chibby0ne></a></head><body><div id=app><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://www.antoniojgutierrez.com/><div class=nav-title>Murmurations of Neurons</div><div class=nav-subtitle>An exploration of ideas and thoughts on programming, computers, nature and life in general</div></a><div class=nav-link-list><a class="a-block nav-link-item false" href=/about>About me</a>
-<a class="a-block nav-link-item active" href=/posts>Archive</a>
-<a class="a-block nav-link-item false" href=/categories>Categories</a>
-<a class="a-block nav-link-item false" href=/tags>Tags</a>
-<a class="a-block nav-link-item false" href=/cv>CV</a>
-<a class="a-block nav-link-item false" href=/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
-Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer class=extra-container><div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }"><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#autotools-gnu-build-system onclick="onNavClick(`#autotools-gnu-build-system-nav`)" id=autotools-gnu-build-system-nav>Autotools (GNU Build System)</a></li><li><a href=#cmake onclick="onNavClick(`#cmake-nav`)" id=cmake-nav>CMake</a></li><li><a href=#meson onclick="onNavClick(`#meson-nav`)" id=meson-nav>Meson</a></li><li><a href=#summary onclick="onNavClick(`#summary-nav`)" id=summary-nav>Summary</a></li></ul></div></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up</i></a>
-<a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item false" href=/about>About me</a>
+<!doctype html><html><head><title>Defining installation location in build systems</title><meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="Prefix and Destdir meaning"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:title" content="Defining installation location in build systems"><meta property="og:description" content="Prefix and Destdir meaning"><meta property="og:type" content="article"><meta property="og:url" content="https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-05-23T20:16:34+02:00"><meta property="article:modified_time" content="2021-05-23T20:16:34+02:00"><meta property="og:site_name" content="Murmurations of Neurons"><meta name=twitter:card content="summary"><meta name=twitter:title content="Defining installation location in build systems"><meta name=twitter:description content="Prefix and Destdir meaning"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-55399960-1","auto"),ga("send","pageview"))</script><script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css><link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script><script src=https://cdn.jsdelivr.net/npm/vue-disqus@3/dist/vue-disqus.js></script>
+<a rel=me href=https://hachyderm.io/@chibby0ne></a></head><body><div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item false" href=/about>About me</a>
 <a class="a-block drawer-menu-item active" href=/posts>Archive</a>
 <a class="a-block drawer-menu-item false" href=/categories>Categories</a>
 <a class="a-block drawer-menu-item false" href=/tags>Tags</a>
 <a class="a-block drawer-menu-item false" href=/cv>CV</a>
-<a class="a-block drawer-menu-item false" href=/index.xml>RSS Feed</a><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#autotools-gnu-build-system onclick="onNavClick(`#autotools-gnu-build-system-nav`)" id=autotools-gnu-build-system-nav>Autotools (GNU Build System)</a></li><li><a href=#cmake onclick="onNavClick(`#cmake-nav`)" id=cmake-nav>CMake</a></li><li><a href=#meson onclick="onNavClick(`#meson-nav`)" id=meson-nav>Meson</a></li><li><a href=#summary onclick="onNavClick(`#summary-nav`)" id=summary-nav>Summary</a></li></ul></div></div></div></div></div><transition name=fade><div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div></transition><nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container"><div id=navBackground class=nav-background></div><div class="container container-narrow nav-content"><button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<a class="a-block drawer-menu-item false" href=github.com/chibby0ne/CTFs>CTFs</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>RSS Feed</a><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#autotools-gnu-build-system class=nav-autotools-gnu-build-system>Autotools (GNU Build System)</a></li><li><a href=#cmake class=nav-cmake>CMake</a></li><li><a href=#meson class=nav-meson>Meson</a></li><li><a href=#summary class=nav-summary>Summary</a></li></ul></div></div></div></div></div><transition name=fade><div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div></transition><nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container"><div id=navBackground class=nav-background></div><div class="container container-narrow nav-content"><button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
 <i class=material-icons>menu</i></button>
 <a id=navTitle class=navbar-brand href=https://www.antoniojgutierrez.com/>Murmurations of Neurons</a>
 <button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
@@ -28,7 +26,7 @@ Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer clas
 &nbsp;
 <i class=material-icons>schedule</i>
 7 min
-31 s.</div></div></div><div class=post-body-wrapper><div class=post-body v-pre><p>There&rsquo;s always a way to change the default installation location in every
+15 s.</div></div></div><div class=post-body-wrapper><div class=post-body v-pre><p>There&rsquo;s always a way to change the default installation location in every
 build system, and fortunately it&rsquo;s almost always the same naming convention
 used to change them.</p><p>The way to change the installation directory is usually through these
 variables: <code>DESTDIR</code> and <code>PREFIX</code>.</p><p>The exact purpose of each, is not exactly clear from the name, and since you&rsquo;d
@@ -39,152 +37,152 @@ formally <em>GNU Build System</em>) being the oldest and (in my opinion) the mos
 cumbersome to use (slow, complicated, hard to debug):</p><p>Let&rsquo;s take a simpler version of the example shown in the <a href=https://www.gnu.org/software/automake/manual/html_node/Creating-amhello.html>documentation of
 autotools</a>:</p><p>In summary, we need to create 4 files (<code>src/main.c</code>, <code>src/Makefile.am</code>,
 <code>Makefile.am</code>, <code>configure.ac</code>) which you can create by executing the shell
-commands posted here, with the help of heredocs.</p><ol><li>Create the directory structure:</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ mkdir ~/amhello/src
-$ <span style=color:#658b00>cd</span> ~/amhello
-</code></pre></div><ol start=2><li>Source file</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cat <span style=color:#cd5555>&lt;&lt;EOF &gt; src/main.c
-</span><span style=color:#cd5555>#include &lt;config.h&gt;
-</span><span style=color:#cd5555>#include &lt;stdio.h&gt;
-</span><span style=color:#cd5555>
-</span><span style=color:#cd5555>int
-</span><span style=color:#cd5555>main (void)
-</span><span style=color:#cd5555>{
-</span><span style=color:#cd5555>  puts (&#34;Hello World!&#34;);
-</span><span style=color:#cd5555>  puts (&#34;This is &#34; PACKAGE_STRING &#34;.&#34;);
-</span><span style=color:#cd5555>  return 0;
-</span><span style=color:#cd5555>}
-</span><span style=color:#cd5555>EOF</span>
-</code></pre></div><ol start=3><li>Automake instruction to generate the binary:</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cat <span style=color:#cd5555>&lt;&lt;EOF &gt; src/Makefile.am
-</span><span style=color:#cd5555>bin_PROGRAMS = hello
-</span><span style=color:#cd5555>hello_SOURCES = main.c
-</span><span style=color:#cd5555>EOF</span>
-</code></pre></div><ol start=3><li>Automake instruction for this directory:</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ cat <span style=color:#cd5555>&lt;&lt;EOF &gt; Makefile.am
-</span><span style=color:#cd5555>SUBDIRS = src
-</span><span style=color:#cd5555>EOF</span>
-</code></pre></div><ol start=4><li>Autoconf instructions to create the <code>configure</code> script:</li></ol><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cat <span style=color:#cd5555>&lt;&lt;EOF &gt; configure.ac
-</span><span style=color:#cd5555>AC_INIT([amhello], [1.0], [bug-automake@gnu.org])
-</span><span style=color:#cd5555>AM_INIT_AUTOMAKE([-Wall -Werror foreign])
-</span><span style=color:#cd5555>AC_PROG_CC
-</span><span style=color:#cd5555>AC_CONFIG_HEADERS([config.h])
-</span><span style=color:#cd5555>AC_CONFIG_FILES([
-</span><span style=color:#cd5555> Makefile
-</span><span style=color:#cd5555> src/Makefile
-</span><span style=color:#cd5555>])
-</span><span style=color:#cd5555>AC_OUTPUT
-</span><span style=color:#cd5555>EOF</span>
-</code></pre></div><p>Now let&rsquo;s generate the <code>GNU Build System</code> files:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ autoreconf --install
-configure.ac:3: installing <span style=color:#cd5555>&#39;./compile&#39;</span>
-configure.ac:2: installing <span style=color:#cd5555>&#39;./install-sh&#39;</span>
-configure.ac:2: installing <span style=color:#cd5555>&#39;./missing&#39;</span>
-src/Makefile.am: installing <span style=color:#cd5555>&#39;./depcomp&#39;</span>
-</code></pre></div><p>Your directory should now look like this:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>.
-├── aclocal.m4
-├── autom4te.cache
-│   ├── output.0
-│   ├── output.1
-│   ├── output.2
-│   ├── requests
-│   ├── traces.0
-│   ├── traces.1
-│   └── traces.2
-├── compile
-├── config.h.in
-├── configure
-├── configure.ac
-├── depcomp
-├── install-sh
-├── Makefile.am
-├── Makefile.in
-├── missing
-└── src
-    ├── main.c
-    ├── Makefile.am
-    └── Makefile.in
-</code></pre></div><p>The usual flow for Autotools based systems is: <code>configure</code>, <code>make</code>, <code>make install</code>.</p><p>So let&rsquo;s start with <code>configure</code> which checks the host systems
-characteristics and creates the Makefiles needed to build the program.</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ./configure 
-checking <span style=color:#8b008b;font-weight:700>for</span> a BSD-compatible install... /usr/bin/install -c
-checking whether build environment is sane... yes
-checking <span style=color:#8b008b;font-weight:700>for</span> a race-free mkdir -p... /usr/bin/mkdir -p
-checking <span style=color:#8b008b;font-weight:700>for</span> gawk... gawk
-checking whether make sets <span style=color:#8b008b;font-weight:700>$(</span>MAKE<span style=color:#8b008b;font-weight:700>)</span>... yes
-checking whether make supports nested variables... yes
-checking <span style=color:#8b008b;font-weight:700>for</span> gcc... gcc
-checking whether the C compiler works... yes
-checking <span style=color:#8b008b;font-weight:700>for</span> C compiler default output file name... a.out
-checking <span style=color:#8b008b;font-weight:700>for</span> suffix of executables...
-checking whether we are cross compiling... no
-checking <span style=color:#8b008b;font-weight:700>for</span> suffix of object files... o
-checking whether the compiler supports GNU C... yes
-checking whether gcc accepts -g... yes
-checking <span style=color:#8b008b;font-weight:700>for</span> gcc option to <span style=color:#658b00>enable</span> C11 features... none needed
-checking whether gcc understands -c and -o together... yes
-checking whether make supports the include directive... yes (GNU style)
-checking dependency style of gcc... gcc3
-checking that generated files are newer than configure... <span style=color:#8b008b;font-weight:700>done</span>
-configure: creating ./config.status
-config.status: creating Makefile
-config.status: creating src/Makefile
-config.status: creating config.h
-config.status: executing depfiles commands
-</code></pre></div><p>You can see from the output that it checks for compilers and features of the
+commands posted here, with the help of heredocs.</p><ol><li>Create the directory structure:</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ mkdir ~/amhello/src
+</span></span><span style=display:flex><span>$ <span style=color:#658b00>cd</span> ~/amhello
+</span></span></code></pre></div><ol start=2><li>Source file</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cat <span style=color:#cd5555>&lt;&lt;EOF &gt; src/main.c
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>#include &lt;config.h&gt;
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>#include &lt;stdio.h&gt;
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>int
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>main (void)
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>{
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>  puts (&#34;Hello World!&#34;);
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>  puts (&#34;This is &#34; PACKAGE_STRING &#34;.&#34;);
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>  return 0;
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>}
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>EOF</span>
+</span></span></code></pre></div><ol start=3><li>Automake instruction to generate the binary:</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cat <span style=color:#cd5555>&lt;&lt;EOF &gt; src/Makefile.am
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>bin_PROGRAMS = hello
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>hello_SOURCES = main.c
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>EOF</span>
+</span></span></code></pre></div><ol start=3><li>Automake instruction for this directory:</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ cat <span style=color:#cd5555>&lt;&lt;EOF &gt; Makefile.am
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>SUBDIRS = src
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>EOF</span>
+</span></span></code></pre></div><ol start=4><li>Autoconf instructions to create the <code>configure</code> script:</li></ol><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cat <span style=color:#cd5555>&lt;&lt;EOF &gt; configure.ac
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>AC_INIT([amhello], [1.0], [bug-automake@gnu.org])
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>AC_PROG_CC
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>AC_CONFIG_HEADERS([config.h])
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>AC_CONFIG_FILES([
+</span></span></span><span style=display:flex><span><span style=color:#cd5555> Makefile
+</span></span></span><span style=display:flex><span><span style=color:#cd5555> src/Makefile
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>])
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>AC_OUTPUT
+</span></span></span><span style=display:flex><span><span style=color:#cd5555>EOF</span>
+</span></span></code></pre></div><p>Now let&rsquo;s generate the <code>GNU Build System</code> files:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ autoreconf --install
+</span></span><span style=display:flex><span>configure.ac:3: installing <span style=color:#cd5555>&#39;./compile&#39;</span>
+</span></span><span style=display:flex><span>configure.ac:2: installing <span style=color:#cd5555>&#39;./install-sh&#39;</span>
+</span></span><span style=display:flex><span>configure.ac:2: installing <span style=color:#cd5555>&#39;./missing&#39;</span>
+</span></span><span style=display:flex><span>src/Makefile.am: installing <span style=color:#cd5555>&#39;./depcomp&#39;</span>
+</span></span></code></pre></div><p>Your directory should now look like this:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── aclocal.m4
+</span></span><span style=display:flex><span>├── autom4te.cache
+</span></span><span style=display:flex><span>│   ├── output.0
+</span></span><span style=display:flex><span>│   ├── output.1
+</span></span><span style=display:flex><span>│   ├── output.2
+</span></span><span style=display:flex><span>│   ├── requests
+</span></span><span style=display:flex><span>│   ├── traces.0
+</span></span><span style=display:flex><span>│   ├── traces.1
+</span></span><span style=display:flex><span>│   └── traces.2
+</span></span><span style=display:flex><span>├── compile
+</span></span><span style=display:flex><span>├── config.h.in
+</span></span><span style=display:flex><span>├── configure
+</span></span><span style=display:flex><span>├── configure.ac
+</span></span><span style=display:flex><span>├── depcomp
+</span></span><span style=display:flex><span>├── install-sh
+</span></span><span style=display:flex><span>├── Makefile.am
+</span></span><span style=display:flex><span>├── Makefile.in
+</span></span><span style=display:flex><span>├── missing
+</span></span><span style=display:flex><span>└── src
+</span></span><span style=display:flex><span>    ├── main.c
+</span></span><span style=display:flex><span>    ├── Makefile.am
+</span></span><span style=display:flex><span>    └── Makefile.in
+</span></span></code></pre></div><p>The usual flow for Autotools based systems is: <code>configure</code>, <code>make</code>, <code>make install</code>.</p><p>So let&rsquo;s start with <code>configure</code> which checks the host systems
+characteristics and creates the Makefiles needed to build the program.</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./configure 
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> a BSD-compatible install... /usr/bin/install -c
+</span></span><span style=display:flex><span>checking whether build environment is sane... yes
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> a race-free mkdir -p... /usr/bin/mkdir -p
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> gawk... gawk
+</span></span><span style=display:flex><span>checking whether make sets <span style=color:#8b008b;font-weight:700>$(</span>MAKE<span style=color:#8b008b;font-weight:700>)</span>... yes
+</span></span><span style=display:flex><span>checking whether make supports nested variables... yes
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> gcc... gcc
+</span></span><span style=display:flex><span>checking whether the C compiler works... yes
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> C compiler default output file name... a.out
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> suffix of executables...
+</span></span><span style=display:flex><span>checking whether we are cross compiling... no
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> suffix of object files... o
+</span></span><span style=display:flex><span>checking whether the compiler supports GNU C... yes
+</span></span><span style=display:flex><span>checking whether gcc accepts -g... yes
+</span></span><span style=display:flex><span>checking <span style=color:#8b008b;font-weight:700>for</span> gcc option to <span style=color:#658b00>enable</span> C11 features... none needed
+</span></span><span style=display:flex><span>checking whether gcc understands -c and -o together... yes
+</span></span><span style=display:flex><span>checking whether make supports the include directive... yes (GNU style)
+</span></span><span style=display:flex><span>checking dependency style of gcc... gcc3
+</span></span><span style=display:flex><span>checking that generated files are newer than configure... <span style=color:#8b008b;font-weight:700>done</span>
+</span></span><span style=display:flex><span>configure: creating ./config.status
+</span></span><span style=display:flex><span>config.status: creating Makefile
+</span></span><span style=display:flex><span>config.status: creating src/Makefile
+</span></span><span style=display:flex><span>config.status: creating config.h
+</span></span><span style=display:flex><span>config.status: executing depfiles commands
+</span></span></code></pre></div><p>You can see from the output that it checks for compilers and features of the
 current host.</p><p>If there was any issue with the configuration of the build system with your
 host system, such as missing dependencies, <code>configure</code> would have failed
 preventing you to continue to build the program. In our example this shouldn&rsquo;t
 happen but when building from source this is the place where you would usually
 find the error messages informing of a missing/not found dependency.</p><p>After <code>configure</code> succeeds we can build the program by executing <code>make</code>, which
-builds the binary:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ make
-make  all-recursive
-make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-Making all in src
-make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-gcc -DHAVE_CONFIG_H -I. -I..     -g -O2 -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.c
-mv -f .deps/main.Tpo .deps/main.Po
-gcc  -g -O2   -o hello main.o
-make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-</code></pre></div><p>At this point the binary <code>hello</code> is in the <code>src</code> directory, and all that is
-missing is installing this somewhere in the system. That&rsquo;s what the <code>make install</code> does, so let&rsquo;s run it:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ make install
-Making install in src
-make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
- /usr/bin/mkdir -p <span style=color:#cd5555>&#39;/usr/local/bin&#39;</span>
-  /usr/bin/install -c hello <span style=color:#cd5555>&#39;/usr/local/bin&#39;</span>
-/usr/bin/install: cannot create regular file <span style=color:#cd5555>&#39;/usr/local/bin/hello&#39;</span>: Permission denied
-make[2]: *** [Makefile:283: install-binPROGRAMS] Error <span style=color:#b452cd>1</span>
-make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[1]: *** [Makefile:454: install-am] Error <span style=color:#b452cd>2</span>
-make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make: *** [Makefile:350: install-recursive] Error <span style=color:#b452cd>1</span>
-</code></pre></div><p>As we can see, by default <code>make install</code> tries to install the binary in
+builds the binary:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ make
+</span></span><span style=display:flex><span>make  all-recursive
+</span></span><span style=display:flex><span>make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span><span style=display:flex><span>Making all in src
+</span></span><span style=display:flex><span>make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>gcc -DHAVE_CONFIG_H -I. -I..     -g -O2 -MT main.o -MD -MP -MF .deps/main.Tpo -c -o main.o main.c
+</span></span><span style=display:flex><span>mv -f .deps/main.Tpo .deps/main.Po
+</span></span><span style=display:flex><span>gcc  -g -O2   -o hello main.o
+</span></span><span style=display:flex><span>make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span><span style=display:flex><span>make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span></code></pre></div><p>At this point the binary <code>hello</code> is in the <code>src</code> directory, and all that is
+missing is installing this somewhere in the system. That&rsquo;s what the <code>make install</code> does, so let&rsquo;s run it:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ make install
+</span></span><span style=display:flex><span>Making install in src
+</span></span><span style=display:flex><span>make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span> /usr/bin/mkdir -p <span style=color:#cd5555>&#39;/usr/local/bin&#39;</span>
+</span></span><span style=display:flex><span>  /usr/bin/install -c hello <span style=color:#cd5555>&#39;/usr/local/bin&#39;</span>
+</span></span><span style=display:flex><span>/usr/bin/install: cannot create regular file <span style=color:#cd5555>&#39;/usr/local/bin/hello&#39;</span>: Permission denied
+</span></span><span style=display:flex><span>make[2]: *** [Makefile:283: install-binPROGRAMS] Error <span style=color:#b452cd>1</span>
+</span></span><span style=display:flex><span>make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[1]: *** [Makefile:454: install-am] Error <span style=color:#b452cd>2</span>
+</span></span><span style=display:flex><span>make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make: *** [Makefile:350: install-recursive] Error <span style=color:#b452cd>1</span>
+</span></span></code></pre></div><p>As we can see, by default <code>make install</code> tries to install the binary in
 <code>/usr/local/bin</code>, but fails because I invoked the command as a regular user
 and not with superuser rights, and therefore it fails to write to
 <code>/usr/local/bin</code> due to &ldquo;permission denied&rdquo;. More generally, <code>make install</code> by
 default install to <code>/usr/local</code> and then to one of: <code>doc/</code>, <code>lib/</code> and/or
 <code>bin</code> depending of whether it is installing documentation (e.g: man pages), a
 library, or a binary respectively.</p><p>Here&rsquo;s where the <code>DESTDIR</code> could be used, so let&rsquo;s try to run make install
-with a directory in somewhere else:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ make install <span style=color:#00688b>DESTDIR</span>=/tmp/installdir
-Making install in src
-make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
- /usr/bin/mkdir -p <span style=color:#cd5555>&#39;/tmp/installdir/usr/local/bin&#39;</span>
-  /usr/bin/install -c hello <span style=color:#cd5555>&#39;/tmp/installdir/usr/local/bin&#39;</span>
-make[2]: Nothing to be <span style=color:#8b008b;font-weight:700>done</span> <span style=color:#8b008b;font-weight:700>for</span> <span style=color:#cd5555>&#39;install-data-am&#39;</span>.
-make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-make[2]: Nothing to be <span style=color:#8b008b;font-weight:700>done</span> <span style=color:#8b008b;font-weight:700>for</span> <span style=color:#cd5555>&#39;install-exec-am&#39;</span>.
-make[2]: Nothing to be <span style=color:#8b008b;font-weight:700>done</span> <span style=color:#8b008b;font-weight:700>for</span> <span style=color:#cd5555>&#39;install-data-am&#39;</span>.
-make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
-</code></pre></div><p>Ah! So it installed the binary to the <code>DESTDIR</code> given but not exactly there.
-When we list the files there we find:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>/tmp/installdir
-└── usr
-    └── <span style=color:#658b00>local</span>
-        └── bin
-            └── hello
-</code></pre></div><p>So <code>DESTDIR</code> changed the destination directory but it still created the
+with a directory in somewhere else:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ make install <span style=color:#00688b>DESTDIR</span>=/tmp/installdir
+</span></span><span style=display:flex><span>Making install in src
+</span></span><span style=display:flex><span>make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span> /usr/bin/mkdir -p <span style=color:#cd5555>&#39;/tmp/installdir/usr/local/bin&#39;</span>
+</span></span><span style=display:flex><span>  /usr/bin/install -c hello <span style=color:#cd5555>&#39;/tmp/installdir/usr/local/bin&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Nothing to be <span style=color:#8b008b;font-weight:700>done</span> <span style=color:#8b008b;font-weight:700>for</span> <span style=color:#cd5555>&#39;install-data-am&#39;</span>.
+</span></span><span style=display:flex><span>make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Nothing to be <span style=color:#8b008b;font-weight:700>done</span> <span style=color:#8b008b;font-weight:700>for</span> <span style=color:#cd5555>&#39;install-exec-am&#39;</span>.
+</span></span><span style=display:flex><span>make[2]: Nothing to be <span style=color:#8b008b;font-weight:700>done</span> <span style=color:#8b008b;font-weight:700>for</span> <span style=color:#cd5555>&#39;install-data-am&#39;</span>.
+</span></span><span style=display:flex><span>make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span><span style=display:flex><span>make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello&#39;</span>
+</span></span></code></pre></div><p>Ah! So it installed the binary to the <code>DESTDIR</code> given but not exactly there.
+When we list the files there we find:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>/tmp/installdir
+</span></span><span style=display:flex><span>└── usr
+</span></span><span style=display:flex><span>    └── <span style=color:#658b00>local</span>
+</span></span><span style=display:flex><span>        └── bin
+</span></span><span style=display:flex><span>            └── hello
+</span></span></code></pre></div><p>So <code>DESTDIR</code> changed the destination directory but it still created the
 <code>/usr/local/bin</code> in which it tried to install by default!</p><p>Basically <em><strong>DESTDIR gave us a way to check what and how something would be
 installed without actually installing it</strong></em>! In fact if we look at <a href=https://www.gnu.org/software/automake/manual/html_node/DESTDIR.html>the
 documentation</a>
@@ -198,44 +196,52 @@ location by some means.</p></blockquote><p>This snippet also hints as to what pr
 beginning (or prefix) of the absolute path used as installation directory!
 Another difference is <strong>that prefix is set when running the <code>configure</code> script</strong>.</p><p>To illustrate that let&rsquo;s set prefix to <code>boo</code> by rerunning <code>./configure</code>,
 <code>make</code> and <code>make install</code>. We don&rsquo;t need to clean the directory before we do
-so:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ./configure --prefix=boo
-configure: error: expected an absolute directory name <span style=color:#8b008b;font-weight:700>for</span> --prefix: boo
-</code></pre></div><blockquote><p>You can see there&rsquo;s a bit of inconsistency in between setting these
+so:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./configure --prefix=boo
+</span></span><span style=display:flex><span>configure: error: expected an absolute directory name <span style=color:#8b008b;font-weight:700>for</span> --prefix: boo
+</span></span></code></pre></div><blockquote><p>You can see there&rsquo;s a bit of inconsistency in between setting these
 variables. That&rsquo;s because configure is a script and the script handles options
 the regular Unix way with double dash. Whilst Makefiles use variables which
 are usually uppercase and don&rsquo;t use the double dash.</p></blockquote><p>As mentioned before, <strong>prefix is an absolute path</strong> therefore the first
 character <strong>must be a forward slash (/)</strong>.</p><p>For the sake of brevity I will omit the output of the commands except when
-needed:</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ ./configure --prefix=boo
-$ make 
-$ make install
-Making install in src
-make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
- /usr/bin/mkdir -p <span style=color:#cd5555>&#39;/boo/bin&#39;</span>
-/usr/bin/mkdir: cannot create directory ‘/boo’: Permission denied
-make[2]: *** [Makefile:283: install-binPROGRAMS] Error <span style=color:#b452cd>1</span>
-make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make[1]: *** [Makefile:454: install-am] Error <span style=color:#b452cd>2</span>
-make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
-make: *** [Makefile:350: install-recursive] Error <span style=color:#b452cd>1</span>
-</code></pre></div><p>As can be seen, make tried to install the binary in <code>/boo/bin</code> so the prefix
+needed:</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ./configure --prefix=boo
+</span></span><span style=display:flex><span>$ make 
+</span></span><span style=display:flex><span>$ make install
+</span></span><span style=display:flex><span>Making install in src
+</span></span><span style=display:flex><span>make[1]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[2]: Entering directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span> /usr/bin/mkdir -p <span style=color:#cd5555>&#39;/boo/bin&#39;</span>
+</span></span><span style=display:flex><span>/usr/bin/mkdir: cannot create directory ‘/boo’: Permission denied
+</span></span><span style=display:flex><span>make[2]: *** [Makefile:283: install-binPROGRAMS] Error <span style=color:#b452cd>1</span>
+</span></span><span style=display:flex><span>make[2]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make[1]: *** [Makefile:454: install-am] Error <span style=color:#b452cd>2</span>
+</span></span><span style=display:flex><span>make[1]: Leaving directory <span style=color:#cd5555>&#39;/home/chimp/experiments_in_building_stuff/amhello/src&#39;</span>
+</span></span><span style=display:flex><span>make: *** [Makefile:350: install-recursive] Error <span style=color:#b452cd>1</span>
+</span></span></code></pre></div><p>As can be seen, make tried to install the binary in <code>/boo/bin</code> so the prefix
 is indeed the beginning of the install path.</p><h2 id=cmake>CMake</h2><p><code>DESTDIR</code> is a CMake environment variable, therefore its initial value comes
 from the environment of the calling process. Documentation can be seen
 <a href=https://cmake.org/cmake/help/latest/envvar/DESTDIR.html>here</a></p><p>It can be set by either exporting it or setting it in the same line cmake is
-invoked:</p><p>// Some example here of using destdir and its output</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><p>On the other hand the prefix can be set by setting the variable
-<code>CMAKE_INSTALL_PREFIX</code>.</p><p>// Some example here of using <code>CMAKE_INSTALL_PREFIX</code> and its output</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><p>NOTE: <code>CMAKE_INSTALL_PREFIX</code> is also added to <code>CMAKE_SYSTEM_PREFIX_PATH</code>
+invoked:</p><p>// Some example here of using destdir and its output</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><p>On the other hand the prefix can be set by setting the variable
+<code>CMAKE_INSTALL_PREFIX</code>.</p><p>// Some example here of using <code>CMAKE_INSTALL_PREFIX</code> and its output</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><p>NOTE: <code>CMAKE_INSTALL_PREFIX</code> is also added to <code>CMAKE_SYSTEM_PREFIX_PATH</code>
 which is used in calls to <code>find_package</code>, <code>find_program</code>, <code>find_library</code> and
 others. Check the
 <a href=https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html>documentation</a>
 for more information.</p><h2 id=meson>Meson</h2><p>Meson uses <code>DESTDIR</code> and <code>MESON_INSTALL_PREFIX</code> as environment variables which
 can be set in order to customize the installation directory.</p><p>An additional caveat, is that to be able to install something using meson, the
-target first needs to be defined as installable, like so:</p><p>// Some example here of using <code>DESTDIR</code> and its output</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>executable(<span style=color:#cd5555>&#39;prog&#39;</span>, <span style=color:#cd5555>&#39;prog.c&#39;</span>, install : <span style=color:#658b00>true</span>)
-</code></pre></div><p>// Some example here of using <code>MESON_INSTALL_PREFIX</code> and its output</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><p>In addition to that, meson allows a further fine grained customization of
+target first needs to be defined as installable, like so:</p><p>// Some example here of using <code>DESTDIR</code> and its output</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>executable(<span style=color:#cd5555>&#39;prog&#39;</span>, <span style=color:#cd5555>&#39;prog.c&#39;</span>, install : <span style=color:#658b00>true</span>)
+</span></span></code></pre></div><p>// Some example here of using <code>MESON_INSTALL_PREFIX</code> and its output</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash></code></pre></div><p>In addition to that, meson allows a further fine grained customization of
 the installation directory for a given target by setting the <code>install_dir</code>,
-which would be equivalent to <code>DESTDIR</code>.</p><div class=highlight><pre style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>executable(<span style=color:#cd5555>&#39;prog&#39;</span>, <span style=color:#cd5555>&#39;prog.c&#39;</span>, install : true, install_dir : <span style=color:#cd5555>&#39;my/special/dir&#39;</span>)
-</code></pre></div><p><a href=https://mesonbuild.com/Installing.html#installing>Installing</a>
+which would be equivalent to <code>DESTDIR</code>.</p><div class=highlight><pre tabindex=0 style=background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>executable(<span style=color:#cd5555>&#39;prog&#39;</span>, <span style=color:#cd5555>&#39;prog.c&#39;</span>, install : true, install_dir : <span style=color:#cd5555>&#39;my/special/dir&#39;</span>)
+</span></span></code></pre></div><p><a href=https://mesonbuild.com/Installing.html#installing>Installing</a>
 <a href=https://mesonbuild.com/Installing.html#destdir-support>DESTDIR</a></p><h2 id=summary>Summary</h2><p>For changing the installation directory directories in common for a given
 software package&rsquo;s files (i.e: documentation, libraries, sources, binaries,
 etc..), use <code>PREFIX</code>.</p><p>For changing where the installation directory is use <code>DESTDIR</code>.</p><p>Hope this helps!</p><hr width=100% id=EOF><p style=color:#777>Last modified on 2021-05-23</p><p class=verify-in-keybase>You can make sure that the author wrote this post by copy-pasting <a href=https://raw.githubusercontent.com/chibby0ne/chibby0ne.github.io/master/posts_signatures/2021-05-23-difference_between_prefix_destir_in_build_systems.asc>this signature</a> into <a href=https://keybase.io/verify>this Keybase page</a>.</p></div></div><nav class=post-pagination><a class=newer-posts href=/posts/2022-06-19-change_vagrant_machine_name_from_command_line/>Next<br>Set a custom machine name in Vagrant</a>
-<a class=older-posts href=/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/>Previous<br>Short and Long Options with Go flag standard package</a></nav><div class=post-comment-wrapper><div id=disqus_thread></div><script>var disqus_config=function(){this.page.url='\/posts\/2021-05-23-difference_between_prefix_destir_in_build_systems\/';this.page.identifier='\/posts\/2021-05-23-difference_between_prefix_destir_in_build_systems\/';};(function(){var d=document,s=d.createElement('script');s.src='https://antoniojgutierrez.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript rel=nofollow>comments powered by Disqus.</a></noscript></div></div></div></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+<a class=older-posts href=/posts/2021-05-14-short-and-long-options-in-go-flags-pkg/>Previous<br>Short and Long Options with Go flag standard package</a></nav><div class=post-comment-wrapper><div id=disqus_thread></div><script>var disqus_config=function(){this.page.url="https://www.antoniojgutierrez.com/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/",this.page.identifier="/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/"};(function(){var e=document,t=e.createElement("script");t.src="https://antoniojgutierrez.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript rel=nofollow>comments powered by Disqus.</a></noscript></div></div></div></div></div><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://www.antoniojgutierrez.com/><div class=nav-title>Murmurations of Neurons</div><div class=nav-subtitle>An exploration of ideas and thoughts on programming, computers, nature and life in general</div></a><div class=nav-link-list><a class="a-block nav-link-item false" href=/about>About me</a>
+<a class="a-block nav-link-item active" href=/posts>Archive</a>
+<a class="a-block nav-link-item false" href=/categories>Categories</a>
+<a class="a-block nav-link-item false" href=/tags>Tags</a>
+<a class="a-block nav-link-item false" href=/cv>CV</a>
+<a class="a-block nav-link-item false" href=github.com/chibby0ne/CTFs>CTFs</a>
+<a class="a-block nav-link-item false" href=/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer class=extra-container><div class=toc-wrapper><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#autotools-gnu-build-system class=nav-autotools-gnu-build-system>Autotools (GNU Build System)</a></li><li><a href=#cmake class=nav-cmake>CMake</a></li><li><a href=#meson class=nav-meson>Meson</a></li><li><a href=#summary class=nav-summary>Summary</a></li></ul></div></div></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up</i></a>
+<a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
 Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><script src=/js/journal.js></script></body></html>

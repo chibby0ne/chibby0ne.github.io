@@ -1,16 +1,14 @@
-<!doctype html><html><head><title>Set a custom machine name in Vagrant</title><meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="Keeping your VMs tidy"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:title" content="Set a custom machine name in Vagrant"><meta property="og:description" content="Keeping your VMs tidy"><meta property="og:type" content="article"><meta property="og:url" content="https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/"><meta property="article:published_time" content="2022-06-10T01:17:07+02:00"><meta property="article:modified_time" content="2022-06-10T01:17:07+02:00"><meta property="og:site_name" content="Murmurations of Neurons"><meta name=twitter:card content="summary"><meta name=twitter:title content="Set a custom machine name in Vagrant"><meta name=twitter:description content="Keeping your VMs tidy"><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-55399960-1','auto');ga('send','pageview');}</script><link rel=stylesheet href=/scss/journal.min.0f46f98b723f2aad4b02d9370bb6aa7848b5c2b2a5579642014082283683d2d8.css integrity="sha256-D0b5i3I/Kq1LAtk3C7aqeEi1wrKlV5ZCAUCCKDaD0tg=" media=screen><link rel=stylesheet href=/scss/dark-mode.min.79c34391dbcff20df8b4dac718e2606701efcbfdb9f3b08447ac39ac9dc7b463.css integrity="sha256-ecNDkdvP8g34tNrHGOJgZwHvy/2587CER6w5rJ3HtGM=" media=screen><script src=/js/toc.js></script><link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}],throwOnError:false});});</script><script src=https://cdn.jsdelivr.net/npm/vue-disqus@3/dist/vue-disqus.js></script><a rel=me href=https://hachyderm.io/@chibby0ne></a></head><body><div id=app><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://www.antoniojgutierrez.com/><div class=nav-title>Murmurations of Neurons</div><div class=nav-subtitle>An exploration of ideas and thoughts on programming, computers, nature and life in general</div></a><div class=nav-link-list><a class="a-block nav-link-item false" href=/about>About me</a>
-<a class="a-block nav-link-item active" href=/posts>Archive</a>
-<a class="a-block nav-link-item false" href=/categories>Categories</a>
-<a class="a-block nav-link-item false" href=/tags>Tags</a>
-<a class="a-block nav-link-item false" href=/cv>CV</a>
-<a class="a-block nav-link-item false" href=/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
-Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer class=extra-container><div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }"><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#what-is-vagrant onclick="onNavClick(`#what-is-vagrant-nav`)" id=what-is-vagrant-nav>What is Vagrant</a></li><li><a href=#typical-vagrant-workflow onclick="onNavClick(`#typical-vagrant-workflow-nav`)" id=typical-vagrant-workflow-nav>Typical Vagrant Workflow</a></li><li><a href=#so-how-do-we-set-the-machine-name onclick="onNavClick(`#so-how-do-we-set-the-machine-name-nav`)" id=so-how-do-we-set-the-machine-name-nav>So how do we set the machine name?</a></li><li><a href=#reality-check onclick="onNavClick(`#reality-check-nav`)" id=reality-check-nav>Reality check</a></li></ul></div></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up</i></a>
-<a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item false" href=/about>About me</a>
+<!doctype html><html><head><title>Set a custom machine name in Vagrant</title><meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="Keeping your VMs tidy"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:title" content="Set a custom machine name in Vagrant"><meta property="og:description" content="Keeping your VMs tidy"><meta property="og:type" content="article"><meta property="og:url" content="https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-06-10T01:17:07+02:00"><meta property="article:modified_time" content="2022-06-10T01:17:07+02:00"><meta property="og:site_name" content="Murmurations of Neurons"><meta name=twitter:card content="summary"><meta name=twitter:title content="Set a custom machine name in Vagrant"><meta name=twitter:description content="Keeping your VMs tidy"><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-55399960-1","auto"),ga("send","pageview"))</script><script src=/js/toc.js></script>
+<link type=text/css rel=stylesheet href=/vendor/css/bootstrap.min.css><link rel=stylesheet href=/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css integrity=sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js integrity=sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8 crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous></script>
+<script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],throwOnError:!1})})</script><script src=https://cdn.jsdelivr.net/npm/vue-disqus@3/dist/vue-disqus.js></script>
+<a rel=me href=https://hachyderm.io/@chibby0ne></a></head><body><div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item false" href=/about>About me</a>
 <a class="a-block drawer-menu-item active" href=/posts>Archive</a>
 <a class="a-block drawer-menu-item false" href=/categories>Categories</a>
 <a class="a-block drawer-menu-item false" href=/tags>Tags</a>
 <a class="a-block drawer-menu-item false" href=/cv>CV</a>
-<a class="a-block drawer-menu-item false" href=/index.xml>RSS Feed</a><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#what-is-vagrant onclick="onNavClick(`#what-is-vagrant-nav`)" id=what-is-vagrant-nav>What is Vagrant</a></li><li><a href=#typical-vagrant-workflow onclick="onNavClick(`#typical-vagrant-workflow-nav`)" id=typical-vagrant-workflow-nav>Typical Vagrant Workflow</a></li><li><a href=#so-how-do-we-set-the-machine-name onclick="onNavClick(`#so-how-do-we-set-the-machine-name-nav`)" id=so-how-do-we-set-the-machine-name-nav>So how do we set the machine name?</a></li><li><a href=#reality-check onclick="onNavClick(`#reality-check-nav`)" id=reality-check-nav>Reality check</a></li></ul></div></div></div></div></div><transition name=fade><div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div></transition><nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container"><div id=navBackground class=nav-background></div><div class="container container-narrow nav-content"><button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<a class="a-block drawer-menu-item false" href=github.com/chibby0ne/CTFs>CTFs</a>
+<a class="a-block drawer-menu-item false" href=/index.xml>RSS Feed</a><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#what-is-vagrant class=nav-what-is-vagrant>What is Vagrant</a></li><li><a href=#typical-vagrant-workflow class=nav-typical-vagrant-workflow>Typical Vagrant Workflow</a></li><li><a href=#so-how-do-we-set-the-machine-name class=nav-so-how-do-we-set-the-machine-name>So how do we set the machine name?</a></li><li><a href=#reality-check class=nav-reality-check>Reality check</a></li></ul></div></div></div></div></div><transition name=fade><div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div></transition><nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container"><div id=navBackground class=nav-background></div><div class="container container-narrow nav-content"><button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
 <i class=material-icons>menu</i></button>
 <a id=navTitle class=navbar-brand href=https://www.antoniojgutierrez.com/>Murmurations of Neurons</a>
 <button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
@@ -43,25 +41,25 @@ images are then customized by copying files to it and provisioning by
 installing additional packages.</p><p>In the case of Vagrant machines, we don&rsquo;t usually copy files as much as we
 mount a directory from our local machine into the VM.</p><p>It&rsquo;s used by developers and operators to share reproducible virtual
 environments which are stored as code as part of the project&rsquo;s repository.
-Pretty nifty!</p><h2 id=typical-vagrant-workflow>Typical Vagrant Workflow</h2><p>A typical workflow looks like this:</p><pre><code>$ mkdir -p ~/Projects/vagrant_experiments/archlinux; cd !$
+Pretty nifty!</p><h2 id=typical-vagrant-workflow>Typical Vagrant Workflow</h2><p>A typical workflow looks like this:</p><pre tabindex=0><code>$ mkdir -p ~/Projects/vagrant_experiments/archlinux; cd !$
 $ vagrant init arhclinux/archlinux
 A `Vagrantfile` has been placed in this directory. You are now
 ready to `vagrant up` your first virtual environment! Please read
 the comments in the Vagrantfile as well as documentation on
 `vagrantup.com` for more information on using Vagrant.
 </code></pre><p>This then creates this <code>Vagrantfile</code> in the current working directory, with
-the contents:</p><pre><code>Vagrant.configure(&quot;2&quot;) do |config|
-  config.vm.box = &quot;archlinux/archlinux&quot;
+the contents:</p><pre tabindex=0><code>Vagrant.configure(&#34;2&#34;) do |config|
+  config.vm.box = &#34;archlinux/archlinux&#34;
 end
 </code></pre><p>As you can see the initial box of the VM an <code>archlinux</code>.</p><p>If we run <code>vagrant up</code> it starts and provisions the vagrant environment, and
-by will output something like this:</p><pre><code>$ vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==&gt; default: Importing base box 'archlinux/archlinux'...
+by will output something like this:</p><pre tabindex=0><code>$ vagrant up
+Bringing machine &#39;default&#39; up with &#39;virtualbox&#39; provider...
+==&gt; default: Importing base box &#39;archlinux/archlinux&#39;...
 ==&gt; default: Matching MAC address for NAT networking...
-==&gt; default: Checking if box 'archlinux/archlinux' version '20210415.20050' is up to date...
-==&gt; default: A newer version of the box 'archlinux/archlinux' for provider 'virtualbox' is
-==&gt; default: available! You currently have version '20210415.20050'. The latest is version
-==&gt; default: '20220615.61815'. Run `vagrant box update` to update.
+==&gt; default: Checking if box &#39;archlinux/archlinux&#39; version &#39;20210415.20050&#39; is up to date...
+==&gt; default: A newer version of the box &#39;archlinux/archlinux&#39; for provider &#39;virtualbox&#39; is
+==&gt; default: available! You currently have version &#39;20210415.20050&#39;. The latest is version
+==&gt; default: &#39;20220615.61815&#39;. Run `vagrant box update` to update.
 ==&gt; default: Setting the name of the VM: archlinux_default_1655671732047_63504
 ==&gt; default: Clearing any previously set network interfaces...
 ==&gt; default: Preparing network interfaces based on configuration...
@@ -78,7 +76,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
     default: this with a newly generated keypair for better security.
     default:
     default: Inserting generated public key within guest...
-    default: Removing insecure key from the guest if it's present...
+    default: Removing insecure key from the guest if it&#39;s present...
     default: Key inserted! Disconnecting and reconnecting using new SSH key...
 ==&gt; default: Machine booted and ready!
 ==&gt; default: Checking for guest additions in VM...
@@ -87,39 +85,39 @@ Bringing machine 'default' up with 'virtualbox' provider...
 </code></pre><p>The output informs us that it created a VM using virtualbox, started the VM,
 started a SSH daemon on the VM and created a pair of ssh key which is used for
 ssh&rsquo;ing to the VM, and finally that it mounted the local directory into
-<code>/vagrant</code>.</p><p>It additionally mentioned that the VM name will be: <code>archlinux_default_1655671732047_63504</code></p><p>In this line:</p><pre><code>==&gt; default: Setting the name of the VM: archlinux_default_1655671732047_63504
+<code>/vagrant</code>.</p><p>It additionally mentioned that the VM name will be: <code>archlinux_default_1655671732047_63504</code></p><p>In this line:</p><pre tabindex=0><code>==&gt; default: Setting the name of the VM: archlinux_default_1655671732047_63504
 </code></pre><p>We can check all the environment and machines for the current user to see if
-that name appears:</p><pre><code>$ vagrant global-status
+that name appears:</p><pre tabindex=0><code>$ vagrant global-status
 id       name         provider   state    directory
 ---------------------------------------------------------------------------------------------
 c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
-up-to-date (use &quot;vagrant global-status --prune&quot; to prune invalid
+up-to-date (use &#34;vagrant global-status --prune&#34; to prune invalid
 entries). To interact with any of the machines, you can go to that
 directory and run Vagrant, or you can use the ID directly with
 Vagrant commands from any directory. For example:
-&quot;vagrant destroy 1a2b3c4d&quot;
+&#34;vagrant destroy 1a2b3c4d&#34;
 </code></pre><p>So the name is actually <code>default</code> according to Vagrant. So where is the
 <code>archlinux_default_1655671732047_63504</code> it mentioned before?</p><p>Here&rsquo;s the caveat: This command shows us the id and the name associated to
 that ID of the vagrant machines. The name shown was the one used by the
-provisioner to created the VM itself, in this case Virtualbox.</p><p>We can verify this by running:</p><pre><code>$ VBoxManage list vms
-&quot;archlinux_default_1655671732047_63504&quot; {1d8fc426-36bc-4035-a7a8-c76e1cf16128}
+provisioner to created the VM itself, in this case Virtualbox.</p><p>We can verify this by running:</p><pre tabindex=0><code>$ VBoxManage list vms
+&#34;archlinux_default_1655671732047_63504&#34; {1d8fc426-36bc-4035-a7a8-c76e1cf16128}
 </code></pre><p>So the name of the VM in Virtualbox is
 <code>archlinux_default_1655671732047_63504</code>, but the name of the machine is
 <code>default</code>.</p><h2 id=so-how-do-we-set-the-machine-name>So how do we set the machine name?</h2><p>As hinted in the beginning in the case of Multi-Machines, this entails
 managing multiple guest machines per Vagrantfile. That&rsquo;s the thing, <strong>the
 simple default case in vagrant is to manage a single machine per Vagrantfile</strong>.
 You can see from the output of the <code>global-status</code> command that it also
-associates a path to the machine, but by default they are all named <code>default</code>.</p><p>To define a custom name we need to a another &ldquo;define&rdquo; section to the <code>Vagrantfile</code>.</p><pre><code>Vagrant.configure(&quot;2&quot;) do |config|
-  config.vm.define &quot;arch&quot; do |arch|
-    arch.vm.box = &quot;archlinux/archlinux&quot;
+associates a path to the machine, but by default they are all named <code>default</code>.</p><p>To define a custom name we need to a another &ldquo;define&rdquo; section to the <code>Vagrantfile</code>.</p><pre tabindex=0><code>Vagrant.configure(&#34;2&#34;) do |config|
+  config.vm.define &#34;arch&#34; do |arch|
+    arch.vm.box = &#34;archlinux/archlinux&#34;
 end
-</code></pre><p>Here we define machine name as &ldquo;arch&rdquo; and try to run <code>vagrant up</code>:</p><pre><code>Bringing machine 'arch' up with 'virtualbox' provider...
-==&gt; arch: Importing base box 'archlinux/archlinux'...
+</code></pre><p>Here we define machine name as &ldquo;arch&rdquo; and try to run <code>vagrant up</code>:</p><pre tabindex=0><code>Bringing machine &#39;arch&#39; up with &#39;virtualbox&#39; provider...
+==&gt; arch: Importing base box &#39;archlinux/archlinux&#39;...
 ==&gt; arch: Matching MAC address for NAT networking...
-==&gt; arch: Checking if box 'archlinux/archlinux' version '20210415.20050' is up to date...
+==&gt; arch: Checking if box &#39;archlinux/archlinux&#39; version &#39;20210415.20050&#39; is up to date...
 ==&gt; arch: Setting the name of the VM: archlinux_arch_1655673970260_47411
 ==&gt; arch: Fixed port collision for 22 =&gt; 2222. Now on port 2200.
 ==&gt; arch: Clearing any previously set network interfaces...
@@ -133,14 +131,14 @@ end
     arch: SSH username: vagrant
     arch: SSH auth method: private key
         arch: Inserting generated public key within guest...
-    arch: Removing insecure key from the guest if it's present...
+    arch: Removing insecure key from the guest if it&#39;s present...
     arch: Key inserted! Disconnecting and reconnecting using new SSH key...
 ==&gt; arch: Machine booted and ready!
 ==&gt; arch: Checking for guest additions in VM...
 ==&gt; arch: Mounting shared folders...
     arch: /vagrant =&gt; /home/chibby0ne/Projects/vagrant_experiments/archlinux
 </code></pre><p>So the first line told us that it was bringing machine &ldquo;arch&rdquo; up. That&rsquo;s what
-we want: <em>machine</em> name</p><p>And if we check the environments now we can see:</p><pre><code>$ vagrant global-status
+we want: <em>machine</em> name</p><p>And if we check the environments now we can see:</p><pre tabindex=0><code>$ vagrant global-status
 id       name         provider   state    directory
 ---------------------------------------------------------------------------------------------
 c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_experiments/archlinux
@@ -148,25 +146,32 @@ c9924b8  default      virtualbox running  /home/chibby0ne/Projects/vagrant_exper
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
-up-to-date (use &quot;vagrant global-status --prune&quot; to prune invalid
+up-to-date (use &#34;vagrant global-status --prune&#34; to prune invalid
 entries). To interact with any of the machines, you can go to that
 directory and run Vagrant, or you can use the ID directly with
 Vagrant commands from any directory. For example:
-&quot;vagrant destroy 1a2b3c4d&quot;
+&#34;vagrant destroy 1a2b3c4d&#34;
 </code></pre><p>We can see the &ldquo;arch&rdquo; machine now.</p><h2 id=reality-check>Reality check</h2><p>The reality of having custom-named machines, besides having a better and
 easier time at disambiguating which machine which is running from a <code>vagrant status</code> point of view, is that it&rsquo;s of little utility (outside of
 multi-machine setups, in which case I&rsquo;d say it&rsquo;s actually necessary), for two
 reasons:</p><ul><li><p>For a single Vagrantfile with a single machine defined you can only have
 running machine.</p><p>If we check the status of the directory after running the second <code>vagrant up</code> with the <code>arch</code> machine, we will see that <code>arch</code> is running whilst the
-<code>default</code> was halted.</p></li></ul><pre><code>$ vagrant status
+<code>default</code> was halted.</p></li></ul><pre tabindex=0><code>$ vagrant status
 Current machine states:
 
 arch                      running (virtualbox)
-
 </code></pre><ul><li>As hinted before, vagrant will always disambiguate machines by directory.
 In order words, you cannot start or halt a machine from a directory where
 the Vagrantfile defines a different machine, i.e: you know which machine
 you&rsquo;re interfacing with because of the directory you&rsquo;re currently in.</li></ul><p>That said it does add a bit of order and neatness to the environments, and
 doesn&rsquo;t hurt at all since it&rsquo;s just 2 extra lines to the Vagrantfile.</p><p>That&rsquo;s it! Quick and hopefully somewhat useful tip!</p><hr width=100% id=EOF><p style=color:#777>Last modified on 2022-06-10</p><p class=verify-in-keybase>You can make sure that the author wrote this post by copy-pasting <a href=https://raw.githubusercontent.com/chibby0ne/chibby0ne.github.io/master/posts_signatures/2022-06-19-change_vagrant_machine_name_from_command_line.asc>this signature</a> into <a href=https://keybase.io/verify>this Keybase page</a>.</p></div></div><nav class=post-pagination><a class=newer-posts href=/posts/2022-06-08-what_is_xmalloc/>Next<br>What is xmalloc?</a>
-<a class=older-posts href=/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/>Previous<br>Defining installation location in build systems</a></nav><div class=post-comment-wrapper><div id=disqus_thread></div><script>var disqus_config=function(){this.page.url='\/posts\/2022-06-19-change_vagrant_machine_name_from_command_line\/';this.page.identifier='\/posts\/2022-06-19-change_vagrant_machine_name_from_command_line\/';};(function(){var d=document,s=d.createElement('script');s.src='https://antoniojgutierrez.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript rel=nofollow>comments powered by Disqus.</a></noscript></div></div></div></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+<a class=older-posts href=/posts/2021-05-23-difference_between_prefix_destir_in_build_systems/>Previous<br>Defining installation location in build systems</a></nav><div class=post-comment-wrapper><div id=disqus_thread></div><script>var disqus_config=function(){this.page.url="https://www.antoniojgutierrez.com/posts/2022-06-19-change_vagrant_machine_name_from_command_line/",this.page.identifier="/posts/2022-06-19-change_vagrant_machine_name_from_command_line/"};(function(){var e=document,t=e.createElement("script");t.src="https://antoniojgutierrez.disqus.com/embed.js",t.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(t)})()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript rel=nofollow>comments powered by Disqus.</a></noscript></div></div></div></div></div><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://www.antoniojgutierrez.com/><div class=nav-title>Murmurations of Neurons</div><div class=nav-subtitle>An exploration of ideas and thoughts on programming, computers, nature and life in general</div></a><div class=nav-link-list><a class="a-block nav-link-item false" href=/about>About me</a>
+<a class="a-block nav-link-item active" href=/posts>Archive</a>
+<a class="a-block nav-link-item false" href=/categories>Categories</a>
+<a class="a-block nav-link-item false" href=/tags>Tags</a>
+<a class="a-block nav-link-item false" href=/cv>CV</a>
+<a class="a-block nav-link-item false" href=github.com/chibby0ne/CTFs>CTFs</a>
+<a class="a-block nav-link-item false" href=/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><div id=extraContainer class=extra-container><div class=toc-wrapper><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#what-is-vagrant class=nav-what-is-vagrant>What is Vagrant</a></li><li><a href=#typical-vagrant-workflow class=nav-typical-vagrant-workflow>Typical Vagrant Workflow</a></li><li><a href=#so-how-do-we-set-the-machine-name class=nav-so-how-do-we-set-the-machine-name>So how do we set the machine name?</a></li><li><a href=#reality-check class=nav-reality-check>Reality check</a></li></ul></div></div></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up</i></a>
+<a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
 Antonio Gutierrez 2015-2021. CC-BY-NC 4.0</div></div><script src=/js/journal.js></script></body></html>
